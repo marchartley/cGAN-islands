@@ -1,0 +1,23 @@
+[0] Config.pm:307> INFO - This is Biber 2.19
+[0] Config.pm:310> INFO - Logfile is '/home/marc/LaTex/cGAN-islands/main.blg'
+[67] biber:340> INFO - === sam. mai 24, 2025, 11:53:16
+[82] Biber.pm:419> INFO - Reading '/home/marc/LaTex/cGAN-islands/main.bcf'
+[158] Biber.pm:979> INFO - Found 49 citekeys in bib section 0
+[174] Biber.pm:4419> INFO - Processing section 0
+[182] Biber.pm:4610> INFO - Looking for bibtex file 'egbibsample.bib' for section 0
+[289] bibtex.pm:1713> INFO - LaTeX decoding ...
+[1577] bibtex.pm:1519> INFO - Found BibTeX data source '/home/marc/LaTex/cGAN-islands/egbibsample.bib'
+[2045] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[2045] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[2045] Biber.pm:4239> INFO - Sorting list 'apa/apasortcite//global/global' of type 'entry' with template 'apa' and locale 'en-US'
+[2045] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[2127] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[2127] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[2127] Biber.pm:4239> INFO - Sorting list 'apa/global//global/global' of type 'entry' with template 'apa' and locale 'en-US'
+[2127] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[2176] bbl.pm:660> INFO - Writing '/home/marc/LaTex/cGAN-islands/main.bbl' with encoding 'UTF-8'
+[2246] bbl.pm:763> INFO - Output to /home/marc/LaTex/cGAN-islands/main.bbl
+[2247] Biber.pm:131> WARN - Duplicate entry key: 'Weier2013' in file '/home/marc/LaTex/cGAN-islands/egbibsample.bib', skipping ...
+[2247] Biber.pm:131> WARN - Duplicate entry key: 'Spick2019' in file '/home/marc/LaTex/cGAN-islands/egbibsample.bib', skipping ...
+[2247] Biber.pm:131> WARN - Duplicate entry key: 'Park2019' in file '/home/marc/LaTex/cGAN-islands/egbibsample.bib', skipping ...
+[2247] Biber.pm:133> INFO - WARNINGS: 3

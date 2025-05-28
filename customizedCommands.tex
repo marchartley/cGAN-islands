@@ -1,0 +1,658 @@
+\hbadness = 99999
+
+% Non-EG documents:
+% \captionsetup{width=\linewidth}
+
+
+% All documents:
+
+
+% Define \zzcommand for conditional commands
+\def\zzcommand#1{\let#1\undefined\newcommand#1}
+
+% Macros to hold current titles
+% \currentsection
+\zzcommand{\currentsection}{}
+% \currentsubsection
+\zzcommand{\currentsubsection}{}
+% \currentsubsubsection
+\zzcommand{\currentsubsubsection}{}
+\makeatletter
+
+% Save original commands
+\let\oldsection\section
+\let\oldsubsection\subsection
+\let\oldsubsubsection\subsubsection
+
+\makeatletter
+\gdef\currentsection{}
+\gdef\currentsubsection{}
+\gdef\currentsubsubsection{}
+\zzcommand{\section}[1]{
+  \gdef\currentsection{}
+  \gdef\currentsubsection{}
+  \gdef\currentsubsubsection{}
+  \ifthenelse{\equal{#1}{*}}%
+  {\@sectionstar}%
+  {\@sectionnostar{#1}}%
+  % \@ifstar{\@sectionstar}{\@sectionnostar}
+}
+\zzcommand{\@sectionnostar}[1]{%
+  \gdef\currentsection{#1}%
+  \oldsection{#1}%
+}
+\zzcommand{\@sectionstar}[1]{%
+  \gdef\currentsection{#1}
+  \oldsection*{#1}%
+}
+\zzcommand{\subsection}[1]{
+  \gdef\currentsubsection{}
+  \gdef\currentsubsubsection{}
+  \ifthenelse{\equal{#1}{*}}%
+  {\@subsectionstar}
+  {\@subsectionnostar{#1}}
+}
+\zzcommand{\@subsectionnostar}[1]{%
+  \gdef\currentsubsection{#1}%
+  \oldsubsection{#1}%
+}
+\zzcommand{\@subsectionstar}[1]{%
+  \gdef\currentsubsection{#1}%
+  \oldsubsection*{#1}%
+}
+\zzcommand{\subsubsection}[1]{
+  \gdef\currentsubsubsection{}
+  \ifthenelse{\equal{#1}{*}}%
+  {\@subsubsectionstar}
+  {\@subsubsectionnostar{#1}}
+}
+\zzcommand{\@subsubsectionnostar}[1]{%
+  \gdef\currentsubsubsection{#1}%
+  \oldsubsubsection{#1}%
+}
+\zzcommand{\@subsubsectionstar}[1]{%
+  \gdef\currentsubsubsection{#1}%
+  \oldsubsubsection*{#1}%
+}
+\makeatother
+
+% \tensor{expression}
+\zzcommand{\tensor}[1]{\mathbf{#1}}
+% \mtrx{matrix_name}
+\zzcommand{\mtrx}[1]{\mathbf{#1}}
+% \field{field_name}
+\zzcommand{\field}[1]{\mathbf{#1}}
+
+
+% \WarningFilter{hyperref}{Token not allowed in a PDF string} % Remove the warnings about \gls in titles or math functions in titles.
+
+\LetLtxMacro{\OldTilde}{\Tilde}
+\zzcommand{\Tilde}[1]{
+  \StrLen{#1}[\temp]%
+  \ifnum\temp>1
+    \ThisStyle{%
+      \setbox0=\hbox{$\SavedStyle#1$}%
+      \stackengine{-.1\LMpt}{$\SavedStyle#1$}{%
+        \stretchto{\scaleto{\SavedStyle\mkern.2mu\AC}{.5150\wd0}}{.6\ht0}%
+      }{O}{c}{F}{T}{S}%
+    }
+  \else 
+    \OldTilde{#1}
+  \fi
+}
+
+% \Bar{expression}
+\zzcommand{\Bar}[1]{\overline{#1}}
+
+
+\LetLtxMacro{\Oldincludegraphics}{\includegraphics}
+\RenewDocumentCommand{\includegraphics}{O{} m}{%
+	\begin{adjustbox}{max width=\linewidth, max height=\textheight-5\baselineskip}
+	    \Oldincludegraphics[#1]{#2}
+	\end{adjustbox}
+}
+% \inset{inset_size}{path_to_main_image}{path_to_inset_image}
+\zzcommand{\inset}[3][0.2\linewidth]{
+    \noindent\stackinset{r}{0.1cm}{b}{0.1cm}{
+        \colorbox{white}{
+            \includegraphics[width=#1]{#3}
+        }
+    }
+	{\includegraphics{#2}}
+}
+
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+
+\renewenvironment{figure}[1][tbph]{%
+    \origfigure[#1]%
+    \centering
+}{%
+    \endorigfigure
+}
+
+% Non-EG submissions:
+% % \teaser{/* Inside commands of the figure* environment */}
+% \zzcommand{\teaser}[1]{
+%     \begin{figure*}[ht]
+%         \centering
+%         #1
+%     \end{figure*}
+% }
+
+% \minitoc
+\def\minitoc{
+	\etocsettocstyle{\section*{\contentsname}}{}
+	\localtableofcontents
+	\noindent\textbf{\hyperlink{tocpage}{$\uparrow$ Back to summary}}
+}
+% \makeatletter\@addtoreset{chapter}{part}\makeatother%
+
+\sisetup{product-units=repeat}
+
+\emergencystretch=1em
+
+\zzcommand{\cellalign}{cl}
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
+
+% Non-EG submissions:
+% \DeclareCiteCommand{\cite}[\mkbibparens]
+%   {\usebibmacro{prenote}\usebibmacro{cite:init}}%
+%   {\usebibmacro{citeindex}\usebibmacro{countcite}{\thefield{entrykey}}%
+%   \printtext[bibhyperref]{\usebibmacro{cite}}}%
+%   {\multicitedelim}%
+%   {\usebibmacro{postnote}}
+
+% \newbibmacro*{citefullbody}{%
+%   \printnames{labelname}%
+%   \setunit{\addcomma\space}%
+%   \textit{\printfield[]{title}}~(\printfield{year})%
+% }
+
+% \DeclareCiteCommand{\citep}
+% {\usebibmacro{prenote}\usebibmacro{cite:init}}%
+% {\usebibmacro{citeindex}\usebibmacro{countcite}{\thefield{entrykey}}%
+% \printtext[bibhyperref]{\usebibmacro{citefullbody}}}%
+% {\multicitedelim}%
+% {\usebibmacro{postnote}}
+
+
+% \DeclareCiteCommand{\citeProgram}[\mkbibparens]
+%   {\usebibmacro{prenote}\usebibmacro{cite:init}}
+%   {\usebibmacro{citeindex}\usebibmacro{countcite}{\thefield{entrykey}}\printtext[bibhyperref]{\mkbibemph{\printfield{title}},~\printdate}}
+%   {\multicitedelim}
+%   {\usebibmacro{postnote}}
+
+% \AtEveryBibitem{\clearfield{url}}
+% \AtEveryBibitem{\clearfield{doi}}
+% \AtEveryBibitem{\clearfield{note}} % Notes from Mendeley
+% \newtotcounter{citenum}
+% \AtEveryBibitem{\stepcounter{citenum}}
+
+
+% \renewbibmacro*{title}{%
+% {}
+% {\printtext[title]{\mkbibbold{\printfield[title]{title}}}\newunit}}
+
+% \DefineBibliographyStrings{english}{
+%   backrefpage = {Cited on page},
+%   backrefpages = {Cited on pages},
+% }
+% \setlength\bibitemsep{1.2\itemsep}
+
+\newcounter{AltTextImageCurrentSide}
+
+% \begin{Itemize}
+%     \Item{$1} $2
+% \end{Itemize}
+% \length{\parindent}{0}
+\newenvironment{Itemize}
+{    
+  \setcounter{AltTextImageCurrentSide}{0}
+  \begin{itemize}[label={}, leftmargin=\parindent, itemindent=1.0em, itemsep=0em, topsep=0em] %, left=2em, itemsep=0.5em]} % Custom settings
+}
+{\end{itemize}\bigbreak}
+
+% Define new command \Itemthat applies italics to the title only
+% \Item{text}
+\zzcommand{\Item}[1]{%
+  \ifblank{#1}%
+    {\item $\bullet$ }% Case when #1 is empty
+    {\item \textit{#1}}% Case when #1 is not empty
+}
+
+\newlength{\currentparindent}
+\newlength{\contentheightofalttextimage}
+\newsavebox{\alttextbox}
+
+
+
+% Non-EG Only:
+% \ExplSyntaxOn
+% % \AltTextImageR{item_content}{placeholder.pdf}{caption}{label}
+% \zzcommand{\AltTextImageR}[4]{% 
+%   \setcounter{AltTextImageCurrentSide}{1}
+%   \setlength{\currentparindent}{\parindent}%
+%   % \newsavebox{\alttextbox}
+%     \sbox{\alttextbox}{\vbox{\hsize=0.65\linewidth #1}}%
+%     \setlength{\contentheightofalttextimage}{\ht\alttextbox}%
+%   \noindent
+%   \begin{minipage}[t]{0.65\linewidth}
+%     \setlength{\parindent}{\currentparindent}
+%     #1
+%   \end{minipage}%
+%   \hfill % Add horizontal space between text and image
+%   \begin{minipage}[t]{0.30\linewidth}    
+%     \centering
+%     % Parse comma-separated images and stack them
+%     \seq_set_split:Nnn \l_tmpa_seq { , } { #2 }%
+%     \int_set:Nn \l_tmpa_int { \seq_count:N \l_tmpa_seq }%
+%     \dim_set:Nn \l_tmpa_dim { \contentheightofalttextimage / \l_tmpa_int }%
+%     \seq_map_inline:Nn \l_tmpa_seq {%
+%       \includegraphics[width=\linewidth, height=\l_tmpa_dim, keepaspectratio, valign=t]{##1}\\%
+%     }%
+%     % \includegraphics[width=\linewidth, height=\contentheightofalttextimage, keepaspectratio, valign=t]{#2}
+%     \captionsetup{font=footnotesize} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     \captionsetup{width=\linewidth} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     \captionof{figure}{#3} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     % \caption{#3}
+%     \label{#4}
+%   \end{minipage}%
+% }
+% % \AltTextImageL{item_content}{placeholder.pdf}{caption}{label}
+% \zzcommand{\AltTextImageL}[4]{% 
+%   \setcounter{AltTextImageCurrentSide}{0}
+%   \setlength{\currentparindent}{\parindent}%
+%     \sbox{\alttextbox}{\vbox{\hsize=0.65\linewidth #1}}%
+%     \setlength{\contentheightofalttextimage}{\ht\alttextbox}%
+%   \noindent
+%   \begin{minipage}[t]{0.30\linewidth}
+%     \centering
+%     % Parse comma-separated images and stack them
+%     \seq_set_split:Nnn \l_tmpa_seq { , } { #2 }%
+%     \int_set:Nn \l_tmpa_int { \seq_count:N \l_tmpa_seq }%
+%     \dim_set:Nn \l_tmpa_dim { \contentheightofalttextimage / \l_tmpa_int }%
+%     \seq_map_inline:Nn \l_tmpa_seq {%
+%       \includegraphics[width=\linewidth, height=\l_tmpa_dim, keepaspectratio, valign=t]{##1}\\%
+%     }%
+%     % \includegraphics[width=\linewidth, height=\contentheightofalttextimage, keepaspectratio, valign=t]{#2}
+%     \captionsetup{font=footnotesize} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     \captionsetup{width=\linewidth} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     \captionof{figure}{#3} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     % \caption{#3}
+%     \label{#4}
+%   \end{minipage}%
+%   \hfill % Add horizontal space between text and image
+%   \begin{minipage}[t]{0.65\linewidth}
+%     \setlength{\parindent}{\currentparindent}
+%     #1
+%   \end{minipage}%
+% }
+% \ExplSyntaxOff
+
+
+% EG only:
+\ExplSyntaxOn
+% \AltTextImageR{item_content}{placeholder.pdf}{caption}{label}
+\zzcommand{\AltTextImageR}[4]{% 
+  \setcounter{AltTextImageCurrentSide}{1}%
+    #1%
+  \begin{figure}[tbh]%
+    \centering%
+    % Parse comma-separated images and stack them
+    \seq_set_split:Nnn \l_tmpa_seq { , } { #2 }%
+    \int_set:Nn \l_tmpa_int { \seq_count:N \l_tmpa_seq }%
+    \dim_set:Nn \l_tmpa_dim { \contentheightofalttextimage / \l_tmpa_int }%
+    \seq_map_inline:Nn \l_tmpa_seq {%
+      \includegraphics[width=\linewidth]{##1}%
+    }%
+    \caption{#3}%
+    \label{#4}%
+  \end{figure}%
+}
+% \AltTextImageL{item_content}{placeholder.pdf}{caption}{label}
+\zzcommand{\AltTextImageL}[4]{% 
+  \AltTextImageR{#1}{#2}{#3}{#4}%
+}
+\ExplSyntaxOff
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% \AltTextImage{item_content}{placeholder.pdf}{caption}{label}
+\zzcommand{\AltTextImage}[4]
+{
+  \stepcounter{AltTextImageCurrentSide}  % Increment the counter
+  \ifodd\value{AltTextImageCurrentSide}  % Check if the counter is odd
+      \AltTextImageR{#1}{#2}{#3}{#4}
+  \else%
+      \AltTextImageL{#1}{#2}{#3}{#4}
+  \fi
+}
+\ExplSyntaxOff
+
+% \AltTextImage{item_content}{placeholder.pdf}{caption}{label}
+\zzcommand{\AltTextImage}[4]
+{
+  \stepcounter{AltTextImageCurrentSide}  % Increment the counter
+  \ifodd\value{AltTextImageCurrentSide}  % Check if the counter is odd
+      \AltTextImageR{#1}{#2}{#3}{#4}
+  \else%
+      \AltTextImageL{#1}{#2}{#3}{#4}
+  \fi
+}
+
+\lstset {
+    language=C++,
+    backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+}
+
+\makeglossaries
+\DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m g } {
+    \newglossaryentry{gls-#3}{
+        name={#5},
+        text={#5\if\relax\detokenize{#4}\relax\else\glsadd{#3}\fi},
+        plural={\IfValueTF{#7}{#7}{#5s}},
+        longplural={\IfValueTF{#7}{#7}{#5s}},
+        description={#6},
+        #1
+    }
+    \if\relax\detokenize{#4}\relax
+    % nothing
+  \else
+    \newacronym[longplural={\IfValueTF{#7}{#7}{#5s}}, 
+        see={[Glossary:]{gls-#3}},
+        #2]{#3}{#4}{#5\glsadd{gls-#3}}
+  \fi
+    \makeglossaries
+}
+
+
+% \gloss{entry_name}
+\zzcommand{\gloss}[1]{\ifglsentryexists{gls-#1}{\glsentryname{gls-#1}\ifcsdef{inheading}{}{{\glsadd{gls-#1}}}}{[XXXX]}}
+% \glosses{entry_name}
+\zzcommand{\glosses}[1]{\ifglsentryexists{gls-#1}{\glsentrylongpl{gls-#1}\ifcsdef{inheading}{}{{\glsadd{gls-#1}}}}{[XXXX]}}
+% \Gloss{entry_name}
+\zzcommand{\Gloss}[1]{\ifglsentryexists{gls-#1}{\Glsentryname{gls-#1}\ifcsdef{inheading}{}{{\glsadd{gls-#1}}}}{[XXXX]}}
+% \Glosses{entry_name}
+\zzcommand{\Glosses}[1]{\ifglsentryexists{gls-#1}{\Glsentrylongpl{gls-#1}\ifcsdef{inheading}{}{{\glsadd{gls-#1}}}}{[XXXX]}}
+\zzcommand{\glsnamefont}[1]{\makefirstuc{#1}}
+
+% \eqref{label}
+\zzcommand{\eqref}[1]{\cref{#1}}
+% \to 
+\zzcommand{\to}{\mapsto}
+
+
+% \subsubsubsection{title}
+\zzcommand{\subsubsubsection}[1]{\bigskip\noindent\textit{#1}\nopagebreak\par}
+% \subsubsubsubsection{title}
+\zzcommand{\subsubsubsubsection}[1]{\bigskip\noindent\textbf{#1}~}
+
+% \wrapFig{img_path}{width}{label}{caption}
+\zzcommand{\wrapFig}[4]{
+  \wrapFigL{#1}{#2}{#3}{#4}
+}
+
+% \wrapFigLR{img_path}{width}{label}{caption}{|L,R|}
+\zzcommand{\wrapFigLR}[5]{
+  \def\tempwidth{#2}%
+  \ifx\tempwidth\empty
+    \def\tempwidth{0.25}%
+  \fi
+  \begin{wrapfigure}{#5}{\tempwidth \linewidth}
+    \includegraphics[width=\linewidth]{#1}
+    \expandafter\ifx\expandafter\relax\detokenize{#4}\relax\else\caption{#4}\fi
+    \expandafter\ifx\expandafter\relax\detokenize{#3}\relax\else\label{#3}\fi
+    \vspace{-1 \baselineskip}
+  \end{wrapfigure}
+}
+
+% \wrapFigL{img_path}{width}{label}{caption}
+\zzcommand{\wrapFigL}[4]{
+  \wrapFigLR{#1}{#2}{#3}{#4}{L}
+}
+% \wrapFigR{img_path}{width}{label}{caption}
+\zzcommand{\wrapFigR}[4]{
+  \wrapFigLR{#1}{#2}{#3}{#4}{R}
+}
+
+% \zzcommand{\abstract}
+% {
+%     \section*{Abstract}
+% }
+
+% % \shortAbstract{text}
+% \zzcommand{\shortAbstract}[1]
+% {
+%   \noindent
+%   \textit{#1}
+%   \bigskip
+% }
+
+\zzcommand{\smallConclusion}
+{
+  \bigskip
+}
+  
+\zzcommand{\midConclusion}
+{
+  \bigskip\bigskip\bigskip
+}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\appendtographicspath}{m}
+ {
+  \tl_if_exist:cF { Ginput@path } { \tl_new:c { Ginput@path } }
+  \tl_gput_right:cn {Ginput@path} { #1 }
+ }
+\NewDocumentCommand{\prependtographicspath}{m}
+ {
+  \tl_if_exist:cF { Ginput@path } { \tl_new:c { Ginput@path } }
+  \tl_gput_left:cn {Ginput@path} { #1 }
+ }
+\ExplSyntaxOff
+
+% \resetgraphicspath
+\zzcommand{\resetgraphicspath}
+{
+  \graphicspath{}
+}
+
+% \hide{text}
+\zzcommand{\hide}[1] {}
+
+
+
+
+% Counter for citations per section
+\newcounter{sectioncites}
+\newcounter{subsectioncites}
+\newcounter{subsubsectioncites}
+
+% Macro to store list of citation keys used in current section
+\zzcommand{\sectioncitedkeyslist}{,} % Start with a leading comma
+\zzcommand{\subsectioncitedkeyslist}{,} % Start with a leading comma
+\zzcommand{\subsubsectioncitedkeyslist}{,} % Start with a leading comma
+
+% Reset at each section
+\zzcommand{\resetsectioncites}{%
+  \setcounter{sectioncites}{0}%
+  \zzcommand{\sectioncitedkeyslist}{,}%
+  \resetsubsectioncites
+}
+\zzcommand{\resetsubsectioncites}{%
+  \setcounter{subsectioncites}{0}%
+  \zzcommand{\subsectioncitedkeyslist}{,}%
+  \resetsubsubsectioncites
+}
+\zzcommand{\resetsubsubsectioncites}{%
+  \setcounter{subsubsectioncites}{0}%
+  \zzcommand{\subsubsectioncitedkeyslist}{,}%
+}
+% Helper: checks if key is in the list, and adds if not
+\zzcommand{\adduniquecite}[1]{%
+  \def\currentkey{#1}%
+  \IfSubStr{\sectioncitedkeyslist}{,\currentkey,}{\def\foundkey{1}}{\def\foundkey{0}}%
+  \ifnum\foundkey=0%
+    \stepcounter{sectioncites}%
+    \xappto{\sectioncitedkeyslist}{,\currentkey,}%
+  \fi%
+  \IfSubStr{\subsectioncitedkeyslist}{,\currentkey,}{\def\foundkey{1}}{\def\foundkey{0}}%
+  \ifnum\foundkey=0%
+    \stepcounter{subsectioncites}%
+    \xappto{\subsectioncitedkeyslist}{,\currentkey,}%
+  \fi%
+  \IfSubStr{\subsubsectioncitedkeyslist}{,\currentkey,}{\def\foundkey{1}}{\def\foundkey{0}}%
+  \ifnum\foundkey=0%
+    \stepcounter{subsubsectioncites}%
+    \xappto{\subsubsectioncitedkeyslist}{,\currentkey,}%
+  \fi%
+}
+
+% Custom bibmacro to do the tracking per entry
+\newbibmacro*{countcite}[1]{%
+  \adduniquecite{#1}%
+}
+\zzcommand{\showsectioncites}{%
+  \notblank{\currentsection}{%
+  \ifdef{\thesectioncites}{%
+    \ifnum\thesectioncites=0%
+    \else%
+      \textcolor{white}{\texttransparent{0.0}{~\thesectioncites~(\currentsection)}}%
+    \fi%
+  }{}}{}%
+}
+\zzcommand{\showsubsectioncites}{%
+  \notblank{\currentsubsection}{%
+  \ifdef{\thesubsectioncites}{%
+    \ifnum\thesubsectioncites=0%
+    \else%
+      \textcolor{white}{\texttransparent{0.0}{~\thesubsectioncites~(\currentsubsection)}}%
+    \fi%
+  }{}}{}%
+}
+\zzcommand{\showsubsubsectioncites}{%
+  \notblank{\currentsubsubsection}{%
+  \ifdef{\thesubsubsectioncites}{%
+    \ifnum\thesubsubsectioncites=0%
+    \else%
+      \textcolor{white}{\texttransparent{0.0}{~\thesubsubsectioncites~(\currentsubsubsection)}}%
+    \fi%
+  }{}}{}%
+}
+
+\pretocmd{\section}{\showsubsubsectioncites\showsubsectioncites\showsectioncites\resetsectioncites}{}{}
+\pretocmd{\subsection}{\showsubsubsectioncites\showsubsectioncites\resetsubsectioncites}{}{}
+\pretocmd{\subsubsection}{\showsubsubsectioncites\resetsubsubsectioncites}{}{}
+
+
+
+
+
+
+
+
+
+% === User-facing macro ===
+% Holds user-defined row width
+\newcommand{\fitrowwidth}{\linewidth}
+\newcommand{\fitimageoptions}{}
+
+% autofitgraphics with [options]{img1,img2,...}
+\makeatletter
+\NewDocumentCommand{\autofitgraphics}{O{} m}{%
+  \renewcommand{\fitrowwidth}{\linewidth}%
+  \def\fitimageoptions{}%
+  \def\cleanopts{}%
+
+  \def\tempa{#1}%
+  \@for\opt:=\tempa\do{%
+    \IfBeginWith{\opt}{width=}%
+      {\StrBehind{\opt}{=}[{\tempwidth}]\renewcommand{\fitrowwidth}{\tempwidth}}%
+      {\ifx\cleanopts\@empty
+         \edef\cleanopts{\opt}%
+       \else
+         \edef\cleanopts{\cleanopts,\opt}%
+       \fi
+      }%
+  }%
+  \edef\fitimageoptions{\cleanopts}%
+  \fitNimages{#2}%
+}
+\makeatother
+
+\newcounter{fitImgCount}%
+\newcounter{fitImgIndex}%
+\newcommand{\fitNimages}[1]{%
+  \setcounter{fitImgCount}{0}
+  \setcounter{fitImgIndex}{0}
+  \begingroup
+  
+  \def\fitTotalRatio{0}%
+  \global\let\fitWidths\empty
+  \def\fitImgList{}%
+
+  % Copy input to a clean list for repeated processing
+  \renewcommand{\do}[1]{%
+    \edef\fitImgList{\fitImgList,##1}%
+  }%
+  \docsvlist{#1}%
+
+  % First pass: calculate total aspect ratio and store individual ratios
+  \renewcommand{\do}[1]{%
+    \stepcounter{fitImgCount}%
+    \sbox0{\includegraphics{##1}}%
+    \edef\imgWidth{\the\wd0}%
+    \edef\imgHeight{\the\ht0}%
+    \pgfmathsetmacro{\imgRatio}{\imgWidth/\imgHeight}%
+    \pgfmathparse{\fitTotalRatio + \imgRatio}%
+    \xdef\fitTotalRatio{\pgfmathresult}%
+    \expandafter\xdef\csname fitRatio\thefitImgCount\endcsname{\imgRatio}%
+  }%
+  \docsvlist{#1}%
+
+  % Second pass: output images with proportional widths
+  \setcounter{fitImgIndex}{0}%
+  \begin{adjustbox}{width=\fitrowwidth}%
+  \renewcommand{\do}[1]{%
+    \stepcounter{fitImgIndex}%
+    \pgfmathsetmacro{\relwidth}{\csname fitRatio\thefitImgIndex\endcsname / \fitTotalRatio}%
+    \expandafter\includegraphics\expandafter[\fitimageoptions, width=\relwidth\linewidth]{##1}%
+  }%
+  \docsvlist{#1}%
+  \end{adjustbox}%
+  \endgroup
+}
+
+% \delete{text_to_remove}
+\zzcommand{\delete}[1]
+{\remove{#1}}
+\zzcommand{\comment}[1]
+{\par \highlight{~!~!~!~!~!~!~!~!~!~!~} #1 \highlight{~!~!~!~!~!~!~!~!~!~!~} \\}
+\zzcommand{\Replace}{\replace}
+\zzcommand{\Comment}{\comment}
+\zzcommand{\Add}{\add}
+\zzcommand{\Delete}{\delete}
+\zzcommand{\revrepl}{\replace}
+\zzcommand{\revnote}{\comment}

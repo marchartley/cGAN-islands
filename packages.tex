@@ -1,0 +1,98 @@
+% Non-EG submissions:
+% \usepackage{easyReview}
+% \usepackage[hypertexnames=false]{hyperref} 
+% \usepackage{geometry}
+% \usepackage[inner=1.5cm, outer=5cm]{geometry}
+% \usepackage[showframe]{geometry} %just to visualise the borders
+% \usepackage{subcaption}
+
+% EG-submissions:
+\usepackage{hyperref} 
+\ifpdf \usepackage[pdftex]{graphicx} \pdfcompresslevel=9
+\else \usepackage[dvips]{graphicx} \fi
+
+% All submissions:
+\usepackage[backend=biber, backref=true, backrefstyle=none, style=apa, uniquelist=true, maxcitenames=1, uniquename=false, sortcites=false]{biblatex} 
+% \usepackage[utf8]{inputenc}
+% \usepackage{mathpazo}
+% \usepackage[semibold]{sourcesanspro}
+% \usepackage{sectsty}
+% \allsectionsfont{\sffamily}
+% \usepackage[T1]{fontenc}
+% \usepackage[english]{babel}
+\usepackage{amsmath} %%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsfonts} %%%%%%%%%%%%%%%%%%%%%%%
+% \usepackage{fancyhdr}
+\usepackage{amssymb} %%%%%%%%%%%%%%%%%%%%%%%
+% \usepackage{xcolor}
+% \definecolor{Valentia}{RGB}{233,78,82}
+% \definecolor{Titleblue}{RGB}{114, 146, 162}
+% \usepackage{csquotes}
+% \usepackage{mdframed}
+% \usepackage{multirow} %% Pour mettre un texte sur plusieurs rangées
+% \usepackage{multicol} %% Pour mettre un texte sur plusieurs colonnes
+% \usepackage{scrextend} % Forcer la 4eme  de couverture en page pair
+\usepackage{tikz}
+% \usepackage{graphicx}
+% \usepackage[absolute]{textpos} 
+% \usepackage{colortbl}
+% \definecolor{newcolor}{rgb}{.8,.349,.1}
+% \usepackage{array}
+% \usepackage{microtype}
+% \usepackage{framed}
+% \usepackage{latexsym}
+% \usepackage{url}
+% \usepackage[hypcap=false]{caption}
+% \usepackage{stackengine}
+% \usepackage{svg}
+% \usepackage{wrapfig}
+% \usepackage{pdflscape}
+% \usepackage{afterpage}
+% \usepackage{capt-of}
+% \usepackage{longtable}
+% \usepackage{makecell}
+% \usepackage{titlesec}
+\usepackage{float}
+% \usepackage{booktabs}
+% \usepackage{tabularx}
+\usepackage{siunitx}
+%\usepackage{breqn}
+% \usepackage{bookmark}
+% \usepackage{etoc}
+% \usepackage{minitoc}
+\usepackage{transparent}
+\usepackage[export]{adjustbox}
+% \usepackage{etoolbox}
+\usepackage{letltxmacro}
+% \usepackage{xparse}
+\usepackage{listings}
+\usepackage{xstring}
+% \usepackage{ifthen}
+% \usepackage[toc,page]{appendix}
+\usepackage[toc, acronym]{glossaries}
+% \usepackage{upgreek}
+% \usepackage{textgreek}
+% \usepackage[minimal=true]{chemmacros}
+% \usepackage{indentfirst}
+% \usepackage{scalerel}
+% \usepackage{stackengine}
+% \usepackage{wasysym}
+% \usepackage{lscape}
+% \usepackage{afterpage}
+\usepackage{totcount}
+% \usepackage{placeins}
+\usepackage{mathtools}
+% \usepackage{ragged2e}
+\usepackage{enumitem} % for customizing lists
+% \usepackage{silence}
+% \usepackage{expl3}
+
+% \usepackage[backend=biber, backref=true, backrefstyle=none, style=apa, uniquelist=true, maxcitenames=1, uniquename=false, sortcites=false]{biblatex} 
+% backref: add link in the references to go back up
+% uniquelist: write "et al." even if the reference can be ambiguous with only first author name
+% maxcitenames: Yeah... not sure...
+% uniquename: if true and multiple authors have the same last name, the first name initial is added. When dealing with diacritics (accents, cedilles, etc.), it often think that two references have different authors.
+% sortcites: when using multi-citations, the sorting is by default an alphabetical order, which has no sense. sortcites=false does not apply sorting, while sortcites=true uses the value of "sorting". If you want to sort by year in the muli-citations but by name in the References section, use "\newrefcontext[sorting=ydnt]" before the text and "\newrefcontext[sorting=nyt]" just before the References section.
+
+% \usepackage{refcheck} % See if some references are missing or if Ids are wrong
+\usepackage[capitalise, noabbrev]{cleveref}
