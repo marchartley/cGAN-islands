@@ -299,7 +299,7 @@ Conditional GANs (cGANs) extend image-to-image translation methods such as pix2p
 % \subsection{Deep learning}
 % \label{sec:coral-island_sota-deep-learning}
 
-% \begin{figure}[H]
+% \begin{figure}
 % 	\centering
 % 	\includegraphics{schemaGAN_cGAN.jpg}
 %     \caption{The general structure of GAN and cGAN networks are similar: a generator network $G$ is trained to take some noise $z$ as input to try to create a "realistic" output $X_{fake}$ and a discriminator network $D$ is trained parallelly to distinguish generated data from real data. cGAN networks introduce an information of class $c$ in the input, which is used by the generator and discriminator in their inference process. In the end, only the generator is used to create new data. }
@@ -331,7 +331,7 @@ Conditional GANs (cGANs) extend image-to-image translation methods such as pix2p
 
 % While traditional GANs generate data from noise, Conditional GANs (cGANs) extend this concept by incorporating side information, often called class map or label map, to guide generation toward user-specified outcomes \cite{Mirza2014}. This makes them particularly attractive for structured content synthesis tasks, including terrain generation, where user input often defines large-scale layout while realism must emerge from learned detail. The pix2pix framework by \cite{Isola2017} is the canonical cGAN formulation for image-to-image translation. It uses a U-Net generator conditioned on an input image (a sketch or a label map, for example), and a PatchGAN discriminator that evaluates realism at the patch level, encouraging fine detail and local consistency.
 
-% \begin{figure}[H]
+% \begin{figure}
 % \centering
 % \includegraphics[width = 0.8 \linewidth]{example_pix2pix_facade.png}
 % \includegraphics[width = 0.8 \linewidth]{example_pix2pix_maps.png}
@@ -349,7 +349,7 @@ Conditional GANs (cGANs) extend image-to-image translation methods such as pix2p
 
 % In our method, we address this gap by training a pix2pix cGAN to transform label maps (semantic region maps produced by procedural sketch-based modeling) into realistic coral reef island height fields. Each input map encodes key zones of an island (e.g., lagoon, reef crest, beach, island core) using categorical labels, serving as a semantic constraints for terrain synthesis. The cGAN generator learns to condition elevation details on both the global layout and the implicit patterns encoded in the training data. By generating our own synthetic dataset with procedurally modeled coral islands (see \cref{fig:coral-island_difficulties-dataset}), we overcome the shortage of labeled elevation data and enforce geological coherence via data generation design.
 
-% \begin{figure}[H]
+% \begin{figure}
 % \includegraphics[width=0.9 \linewidth]{placeholder.pdf}
 % \caption{Examples of procedural region maps used for training: left to right, canonical island, off-center island, elongated shapes, and multi-island scenes. These maps serve as semantic inputs to the cGAN.}
 % \label{fig:coral-island_difficulties-dataset}
@@ -402,7 +402,7 @@ From these sketches, the procedural system generates a synthetic island terrain 
 \subsubsection*{User interaction}
 \label{sec:coral-island_description-UI}
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width = 0.9 \linewidth]{user_interaction_generation.png}
     \caption{The user can interact directly on the island by editing the different canvases in no specific order. This UI shows, from left to right, the top-view sketch with the different outlines of each regions, the profile-view sketch with the outlines represented in dotted lines, the wind velocity sketch drawn with strokes (last stroke is visible), and the resistance function showing here a high resistance at the top of the island and on the front reef.}
@@ -451,7 +451,7 @@ This combined procedural-and-learning approach provides a simple, flexible, and 
 \section{Procedural terrain generation}
 \label{sec:coral-island_example-generation}
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\autofitgraphics[]{placeholder.pdf}
     \caption{The example generation fully takes its potential in the procedural techniques, using sketches from the user (top-view sketch, profile-view sketch, wind sketch, and resistance sketch) to generate a height field in accordance with a label map. }
@@ -471,7 +471,7 @@ The generation of coral reef islands in this system begins with two intuitive sk
 \label{sec:coral-island_generation-initial}
 
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
     \autofitgraphics[]{Cicia_island.png, Cicia_island-outlines.png}
 	\includegraphics[width=0.90 \linewidth]{Cicia_island-3D.png}
@@ -485,7 +485,7 @@ Each region's boundary is represented in polar coordinates, with $\radius_\p$ in
 
 In this sketch, the user defines the overall horizontal layout of the island, including the size and shape of each feature. Variations in the outline are introduced by allowing the radial distances to vary with angle, ensuring that the island is not strictly symmetrical and introducing more natural, irregular shapes.
 
-\begin{figure}[H]
+\begin{figure}
     \autofitgraphics[]{binary-heights-input-only-outlines-2.png, binary-heights-output-only-heightmap-2.png, binary-heights-render-2.png}
     \caption{Using only the outlines of the island as a input sketch, we can provide a height to each point of the field depending on the region in which it rely.}
     \label{fig:coral-island_procedural-height-only}
@@ -493,7 +493,7 @@ In this sketch, the user defines the overall horizontal layout of the island, in
 
 
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
     \autofitgraphics[]{profileFunction.pdf, schema_profile.jpg}
     \caption{(Left) A profile function $\heightProfile$ is defined as a 1D function and represents the surface from the center of the island to the abysses. (Right) The cross-section representation of an island is often represented as a 1D function defined using terrain features as landmarks. }
@@ -529,7 +529,7 @@ This approach ensures that the height field accurately follows the elevation pro
 
 The result is a height field that captures both the radial structure of the island (from the top-view sketch) and the vertical elevation profile (from the profile-view sketch), producing a realistic representation of islands with smooth transitions between the key terrain features.
 
-\begin{figure}[H]
+\begin{figure}
     \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1.png}
     \autofitgraphics[]{smooth-input-outline-heights-2.png, smooth-output-heights-2.png, smooth-render-2.png}
     \autofitgraphics[]{smooth-input-outline-heights-3.png, smooth-output-heights-3.png, smooth-render-3.png}
@@ -544,7 +544,7 @@ The result is a height field that captures both the radial structure of the isla
 \subsubsection{Wind deformation}
 \label{sec:coral-island_wind-deformation}
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width = 0.8 \linewidth]{windByStrokes.pdf}
     \caption{From the parametric curve defined by a user (red), we define the velocity field by considering the velocity (first derivative) of the curve at the closest point $\closestCp$, modulated by a gaussian distance function $G(x)$. }
@@ -581,7 +581,7 @@ We can then compute the final height $h(\warp \circ \p) = \heightProfile(t_{\p})
 
 This process introduces variations in the terrain, distorting the coastline, creating concave regions, and breaking the original radial symmetry defined by the top-view and profile-view sketches.
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\includegraphics[width=0.45 \linewidth]{resistanceFunction.pdf}
     \caption{The resistance function of the island is defined in the same way than the $\heightProfile$ function. The resistance to erosion and deformation arise from multiple factors such as depth, materials, wind shadowing, biotic and abiotic factors, ... Modeling all these factors is complex. As such, using a user-defined approximation through a resistance function $\resistance$ allows for more control. }
@@ -600,7 +600,7 @@ The deformation vector previously described is scaled by the resistance function
 
 This ensures that the wind deformation has the greatest impact on areas like the coastline and beach, where erosion naturally plays a larger role, while deeper regions like the abyss or stronger regions like mountains remain stable and relatively unchanged.
 
-\begin{figure}[H]
+\begin{figure}
     \autofitgraphics[]{result_low_resistance.png, result_high_resistance.png}
     \caption{(Left) Given a uniform wind velocity field and a resistance function similar as \cref{fig:coral-island_resistance-function}, the coasts are smoothly eroded while the interior of the island is almost unaffected. (Right) Modifying the resistance function to affect a strong resistance to borders simulate the effect of coast reinforcements.}
 \end{figure}
@@ -635,7 +635,7 @@ This scaling reduces the overall height of the island, simulating how volcanic i
 \subsubsection{Coral reef growth}
 \label{sec:coral-island_reef-growth}
 
-\begin{figure}[H]
+\begin{figure}
     \includegraphics[width=0.7\linewidth]{Reef_function.png}
     \caption{The modeling of the reef growth in our model is described by a piecewise function $\heightCoral$ which is flat in the lagoon, the crest and abyss, and follows a smoothstep function as transitions for the backreef and fore reef regions. }
     \label{fig:coral-island_reef-function}
@@ -691,14 +691,14 @@ We obtain the piecewise function as shown in \cref{fig:coral-island_reef-functio
 % \subsubsection{Blending height fields}
 % \label{subsubsec:height-functions-blending}
 
-% \begin{figure}[H]
+% \begin{figure}
 %     \autofitgraphics[]{blend_function_low_approx.png, blend_function_high_approx.png}
 %     \autofitgraphics[]{blend_compare_closeup_low.png, blend_compare_closeup_high.png}
 %     \caption{Blending two functions $f: \R \to \R$ (black) and $g: \R \to \R$ (blue) with the $\max$ operator (red), causing a discontinuity, and with the $\smoothmax$ operator (green), resolving the issue at the cost of slight underestimations with low values of $k$. Left: $k=5$, right: $k=50$}
 %     \label{fig:coral-island_blend-function-island}
 % \end{figure}
 
-% \begin{figure}[H]
+% \begin{figure}
 %     \autofitgraphics[]{blend_function_with_upper_low.png, blend_function_with_upper_high.png}
 %     \autofitgraphics[]{blend_closeup_k_5.png, blend_closeup_k_10.png, blend_closeup_k_50.png}
 %     \caption{The $\smoothmax^+$ operator(orange) is a function that use to overestimate the maximum value of two functions, especially when the difference between the two functions is small, while the $\smoothmax^-$ function (green) tends to underestimate the $\max$ operator. Taking $\smoothmax$ (red) as the average of $\smoothmax^-$ and $\smoothmax^+$ creates a much more precise blending, even with lower values of $k$ (Left: $k=5$, center: $k=10$, right: $k=50$).}
@@ -750,7 +750,7 @@ In this section, we introduce the use of a conditional Generative Adversarial Ne
 \label{sec:coral-island_dataset-generation}
 
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\autofitgraphics[]{placeholder.pdf}
     \caption{Using a large set of pairs of height field-label map, the training of a deep learning model result in a user-friendly interface requiring solely a hand-drawn label map to produce a 2.5D height field of the desired island.}
@@ -791,7 +791,7 @@ This configuration allows the process to create quickly a large quantity of data
 \subsection{Data augmentation}
 \label{sec:coral-island_data-augmentation}
 
-\begin{figure}[H]
+\begin{figure}
     \autofitgraphics[]{6_features.png, 6_heightmaps.png, 6_results.png}
     \caption{By applying our three data augmentation functions, the deep learning model learns to overcome some constraints previously set by the initial algorithm: (A) the translation removes the constraint to have an island ultimately at the center of the map, (B) the directional scaling, typical from image processing, reduces the symmety constraint on the results and (C) the copy-paste unlock the possibility to obtain more than one island per map.}
     \label{fig:coral-island_data-augmentation-examples}
@@ -799,17 +799,17 @@ This configuration allows the process to create quickly a large quantity of data
 
 To enhance the variety of the dataset and improve the model's ability to generalize, we apply several data augmentation techniques:
 \begin{Itemize}
-    \AltTextImage{
-        \Item{Translation:} Since the original algorithm always centers the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island_data-augmentation-translation}). This ensures that the cGAN can generate islands in any position within the frame. }
-        {translation_example.png}{}{fig:coral-island_data-augmentation-translation}
+    % \AltTextImage{
+        \Item{Translation:} Since the original algorithm always centers the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island_data-augmentation-translation}). This ensures that the cGAN can generate islands in any position within the frame. 
+        % }{translation_example.png}{}{fig:coral-island_data-augmentation-translation}
 
-    \AltTextImage{
-        \Item{Directional scaling:} By scaling the terrain in one direction, we create elongated islands that resemble corridors or archipelagos, adding another layer of diversity to the dataset. Such islands are usually found on tectonic plates convergence boundaries, creating island arcs with high density of volcanic centers like the Izu-Bonin-Mariana arc system (\cref{fig:coral-island_data-augmentation-scaling} shows an example of elongated island). }
-        {Babeldaob_island.png}{Babeldaob Island, in the Caroline Islands.}{fig:coral-island_data-augmentation-scaling}
+    % \AltTextImage{
+        \Item{Directional scaling:} By scaling the terrain in one direction, we create elongated islands that resemble corridors or archipelagos, adding another layer of diversity to the dataset. Such islands are usually found on tectonic plates convergence boundaries, creating island arcs with high density of volcanic centers like the Izu-Bonin-Mariana arc system (\cref{fig:coral-island_data-augmentation-scaling} shows an example of elongated island). 
+        % }{Babeldaob_island.png}{Babeldaob Island, in the Caroline Islands.}{fig:coral-island_data-augmentation-scaling}
 
-    \AltTextImage{
-        \Item{Copy-paste:} In some cases, we combine multiple islands into a single sample, ensuring they do not overlap. The regions not covered by any island are assigned the abyss ID. Although this approach ensures non-overlapping regions, future work could explore using blending techniques to position islands more closely without the risk of overlap (\cref{fig:coral-island_data-augmentation-copy-paste}).}
-        {copy_paste_example.png}{}{fig:coral-island_data-augmentation-copy-paste}
+    % \AltTextImage{
+        \Item{Copy-paste:} In some cases, we combine multiple islands into a single sample, ensuring they do not overlap. The regions not covered by any island are assigned the abyss ID. Although this approach ensures non-overlapping regions, future work could explore using blending techniques to position islands more closely without the risk of overlap (\cref{fig:coral-island_data-augmentation-copy-paste}). 
+        % }{copy_paste_example.png}{}{fig:coral-island_data-augmentation-copy-paste}
 \end{Itemize}
 
 All augmentation techniques are applied both to the height field and the label map simultaneously to ensure consistency between the input (the label map) and the output (the height field).
