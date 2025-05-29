@@ -1168,9 +1168,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.175"
-     inkscape:cx="1997.7795"
-     inkscape:cy="1400.6775"
+     inkscape:zoom="0.12374369"
+     inkscape:cx="3308.4376"
+     inkscape:cy="2266.8292"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1202,6 +1202,41 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(532.67297,1142.9177)">
+    <rect
+       style="opacity:1;fill:#ff8c01;fill-opacity:1;stroke:#000000;stroke-width:0.77245772;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect1137"
+       width="1300.4305"
+       height="666.4129"
+       x="-532.28674"
+       y="-1103.1201" />
+    <rect
+       y="-880.08533"
+       x="-79.649391"
+       height="214.36046"
+       width="253.82724"
+       id="rect2041"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.96499997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.96499997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect2033"
+       width="253.82724"
+       height="214.36046"
+       x="-507.47083"
+       y="-1086.8654" />
+    <rect
+       style="opacity:1;fill:#cbb201;fill-opacity:1;stroke:#000000;stroke-width:0.96499997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect1141"
+       width="840.61902"
+       height="511.0238"
+       x="988.02979"
+       y="-1100.756" />
+    <rect
+       style="opacity:0.512;fill:#ffb201;fill-opacity:1;stroke:#000000;stroke-width:0.80478084;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect1139"
+       width="1010.1125"
+       height="609.79541"
+       x="312.88419"
+       y="-1072.8658" />
     <image
        y="-997.19049"
        x="368.90479"
@@ -1218,6 +1253,13 @@
        preserveAspectRatio="none"
        height="205.05208"
        width="231.77499" />
+    <rect
+       y="-872.50488"
+       x="-507.47083"
+       height="214.36046"
+       width="253.82724"
+       id="rect2035"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.96499997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     <image
        y="-1086.8654"
        x="-507.47083"
@@ -1226,6 +1268,13 @@
        preserveAspectRatio="none"
        height="205.05208"
        width="231.77499" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.81547672;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect2037"
+       width="286.31476"
+       height="135.70872"
+       x="-485.38611"
+       y="-652.14069" />
     <g
        id="g20326"
        style="stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none"
@@ -1426,6 +1475,13 @@
          d="m -42.495853,-30.137901 -9.087165,-20.045214"
          style="fill:none;stroke:#0060ff;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5793)" />
     </g>
+    <rect
+       y="-628.13434"
+       x="-89.447548"
+       height="135.70872"
+       width="286.31476"
+       id="rect2039"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.81547672;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     <g
        transform="matrix(0.08105183,0,0,0.08105183,-113.10293,-607.30265)"
        inkscape:label="profileFunction"
@@ -1840,60 +1896,39 @@
        preserveAspectRatio="none"
        height="151.20259"
        width="151.20259" />
-    <rect
-       style="opacity:1;fill:none;fill-opacity:0.15849059;stroke:#000000;stroke-width:0.77245772;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
-       id="rect1137"
-       width="1300.4305"
-       height="666.4129"
-       x="-532.28674"
-       y="-1103.1201" />
-    <rect
-       style="opacity:1;fill:none;fill-opacity:0.15849059;stroke:#000000;stroke-width:0.80478084;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
-       id="rect1139"
-       width="1010.1125"
-       height="609.79541"
-       x="312.88419"
-       y="-1072.8658" />
-    <rect
-       style="opacity:1;fill:none;fill-opacity:0.15849059;stroke:#000000;stroke-width:0.96499997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
-       id="rect1141"
-       width="840.61902"
-       height="511.0238"
-       x="988.02979"
-       y="-1100.756" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="-482.70447"
-       y="-1134.8768"
+       style="font-style:normal;font-weight:normal;font-size:35.27777863px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="-244.30005"
+       y="-1070.1975"
        id="text1145"><tspan
          sodipodi:role="line"
          id="tspan1143"
-         x="-482.70447"
-         y="-1134.8768"
-         style="stroke-width:0.26458332">Generation algorithm</tspan></text>
+         x="-244.30005"
+         y="-1070.1975"
+         style="font-size:35.27777863px;stroke-width:0.26458332">Generation algorithm</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="824.07581"
-       y="-1083.2832"
+       style="font-style:normal;font-weight:normal;font-size:35.27777863px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="754.58575"
+       y="-1041.5891"
        id="text1149"><tspan
          sodipodi:role="line"
          id="tspan1147"
-         x="824.07581"
-         y="-1083.2832"
-         style="stroke-width:0.26458332">cGAN training</tspan></text>
+         x="754.58575"
+         y="-1041.5891"
+         style="font-size:35.27777863px;stroke-width:0.26458332">cGAN training</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="1031.5929"
-       y="-1114.5166"
+       style="font-style:normal;font-weight:normal;font-size:35.27777863px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="1412.7194"
+       y="-1071.219"
        id="text1153"><tspan
          sodipodi:role="line"
          id="tspan1151"
-         x="1031.5929"
-         y="-1114.5166"
-         style="stroke-width:0.26458332">Inference model</tspan></text>
+         x="1412.7194"
+         y="-1071.219"
+         style="font-size:35.27777863px;stroke-width:0.26458332">Inference model</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 614.58926,-820.2976 H 808.11308"
