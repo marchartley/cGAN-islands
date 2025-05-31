@@ -656,3 +656,24 @@
 \zzcommand{\Delete}{\delete}
 \zzcommand{\revrepl}{\replace}
 \zzcommand{\revnote}{\comment}
+
+
+\makeatletter
+% define a macro to collect figure content
+\newcommand{\deferredfloats}{}
+
+% define an environment that stores the full content for later use
+\newenvironment{deferredfigure}
+  {\collect@body\storedeferredfigure}
+  {}
+
+\newcommand{\storedeferredfigure}[1]{%
+  \gappto\deferredfloats{%
+    \begin{figure}[htbp]
+    #1
+    \end{figure}
+  }%
+}
+\makeatother
+
+\zzcommand{\paragraph}[1]{\noindent\textbf{#1}\ }
