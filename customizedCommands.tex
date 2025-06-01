@@ -414,18 +414,25 @@
   \wrapFigL{#1}{#2}{#3}{#4}
 }
 
+\newlength{\prevColumnsep}
 % \wrapFigLR{img_path}{width}{label}{caption}{|L,R|}
 \zzcommand{\wrapFigLR}[5]{
+  % \begingroup
+  % \setlength{\prevColumnsep}{\columnsep}
+  \setlength{\columnsep}{1em}
   \def\tempwidth{#2}%
   \ifx\tempwidth\empty
     \def\tempwidth{0.25}%
   \fi
   \begin{wrapfigure}{#5}{\tempwidth \linewidth}
+    \centering
     \includegraphics[width=\linewidth]{#1}
     \expandafter\ifx\expandafter\relax\detokenize{#4}\relax\else\caption{#4}\fi
     \expandafter\ifx\expandafter\relax\detokenize{#3}\relax\else\label{#3}\fi
-    \vspace{-1 \baselineskip}
+    % \vspace{-1 \baselineskip}
   \end{wrapfigure}
+  % \setlength{\columnsep}{\prevColumnsep}
+  % \endgroup
 }
 
 % \wrapFigL{img_path}{width}{label}{caption}
