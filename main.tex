@@ -666,8 +666,8 @@ To break the radial symmetry inherent in sketch-based terrain generation and int
 The deformation vector at any terrain point $\p$ is computed as a sum over all strokes, weighted by a Gaussian falloff centered on the closest point $\closestCp$ along each curve (\cref{fig:coral-island_wind-effect-result}, top):
 
 \begin{align}
-    \warp(\p) = \sum_{\curve \in \text{curves}} S \frac{\curve'(\q)}{\| \curve'(\q) \| } \cdot G_\std\left(\| \p - \closestCp \| \right), \quad
-    G_\std(x) = \frac{1}{\std \sqrt{2\pi}} e^{-\frac{x^2}{2 \std^2}}.
+    \warp(\p) &= \sum_{\curve \in \text{curves}} S \frac{\curve'(\q)}{\| \curve'(\q) \| } \cdot G_\std\left(\| \p - \closestCp \| \right) \\
+    G_\std(x) &= \frac{1}{\std \sqrt{2\pi}} e^{-\frac{x^2}{2 \std^2}}.
 \end{align}
 
 To preserve semantic structure across terrain regions, a resistance function $\resistance(\distRegions)$ modulates the deformation based on terrain zones such as beach, lagoon, or abyss (\cref{fig:coral-island_resistance-result}). The final deformation vector becomes:
@@ -696,7 +696,7 @@ This warp is applied to both the height field and the label map, ensuring consis
 \subsection{Coral reef modeling}
 \label{sec:coral-island_coral-reef}
 
-Once the terrain has been generated and deformed by the wind, we simulate the long-term geological evolution of coral reef islands through two parallel processes: the subsidence of the volcanic island and the upward growth of coral reefs. As observed in nature, the volcanic base sinks over time while coral formations grow vertically to remain close to the water surface, following the “keep-up” strategy of reef development.
+Once the terrain has been generated and deformed by the wind, we simulate the long-term geological evolution of coral reef islands through two parallel processes: the subsidence of the volcanic island and the upward growth of coral reefs. As observed in nature, the volcanic base sinks over time while coral formations grow vertically to remain close to the water surface, following the "keep-up" strategy of reef development.
 
 \subsubsection{Subsidence}
 \label{sec:coral-island_subsidence}
@@ -747,7 +747,7 @@ We denote the interpolating function as:
 The complete coral height field, as displayed in \cref{fig:coral-island_reef-function}, is built as a piecewise function:
 \begin{align}
     \label{eq:coral-island_full-reef-function}
-    \heightCoral(x) &= \sum_{r \in \text{subregions}}{
+    &\heightCoral(x) = \sum_{r \in \text{subregions}}{
     \begin{dcases}
         h_r & \text{if } x_{\text{r,start}} \leq x \leq x_{\text{r,end}} \\
         0 & \text{otherwise}
@@ -841,8 +841,9 @@ In this section, we introduce the use of a conditional Generative Adversarial Ne
 \begin{figure}
 	\centering
 	\autofitgraphics[]{examples-going-more-complex.pdf} %{placeholder.pdf}
-    \caption{Using a large set of pairs of height field-label map, the training of a deep learning model result in a user-friendly interface requiring solely a hand-drawn label map to produce a 2.5D height field of the desired island.}
-    \label{fig:coral-island_cGAN-pipeline}
+    \caption{Examples from a dataset with increasing data augmentation.}
+    % \caption{Using a large set of pairs of height field-label map, the training of a deep learning model result in a user-friendly interface requiring solely a hand-drawn label map to produce a 2.5D height field of the desired island.}
+    \label{fig:coral-island_cGAN-examples}
 \end{figure}
 
 
@@ -884,24 +885,24 @@ Moreover, we purposefully left the Saturation component unchanged at this stage,
 \subsection{Data augmentation}
 \label{sec:coral-island_data-augmentation}
 
-\begin{deferredfigure}
-    \autofitgraphics[]{6_features.png, 6_heightmaps.png, 6_results.png}
-    \caption{By applying our three data augmentation functions, the deep learning model learns to overcome some constraints previously set by the initial algorithm: (A) the translation removes the constraint to have an island ultimately at the center of the map, (B) the directional scaling, typical from image processing, reduces the symmety constraint on the results and (C) the copy-paste unlock the possibility to obtain more than one island per map.}
-    \label{fig:coral-island_data-augmentation-examples}
-\end{deferredfigure}
+% \begin{figure}
+%     \autofitgraphics[]{6_features.png, 6_heightmaps.png, 6_results.png}
+%     \caption{By applying our three data augmentation functions, the deep learning model learns to overcome some constraints previously set by the initial algorithm: (A) the translation removes the constraint to have an island ultimately at the center of the map, (B) the directional scaling, typical from image processing, reduces the symmety constraint on the results and (C) the copy-paste unlock the possibility to obtain more than one island per map.}
+%     \label{fig:coral-island_data-augmentation-examples}
+% \end{figure}
 
-To enhance the variety of the dataset and improve the model's ability to generalize, we apply several data augmentation techniques:
+To enhance the variety of the dataset and improve the model's ability to generalize, we apply several data augmentation techniques in addition of the usual affine transformations (rotation, scaling, and flipping):
 \begin{Itemize}
-    \AltTextImage{
-        \Item{Translation:} Since the original algorithm always centers the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island_data-augmentation-translation}). This ensures that the cGAN can generate islands in any position within the frame. 
-        }{translation_example.png}{}{fig:coral-island_data-augmentation-translation}
+    % \AltTextImage{
+        \Item{Translation:} Since the original algorithm always centers the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island_cGAN-examples}, leftmost). This ensures that the cGAN can generate islands in any position within the frame. By wrapping the island on the borders, the model learns that data can appear on the edges on the image.
+        % }{translation_example.png}{}{fig:coral-island_data-augmentation-translation}
 
     % \AltTextImage{
-        \Item{Directional scaling:} By scaling the terrain in one direction, we create elongated islands that resemble corridors or archipelagos, adding another layer of diversity to the dataset. Such islands are usually found on tectonic plates convergence boundaries, creating island arcs with high density of volcanic centers like the Izu-Bonin-Mariana arc system (\cref{fig:coral-island_data-augmentation-scaling} shows an example of elongated island). 
+        % \Item{Directional scaling:} By scaling the terrain in one direction, we create elongated islands that resemble corridors or archipelagos, adding another layer of diversity to the dataset. Such islands are usually found on tectonic plates convergence boundaries. 
         % }{Babeldaob_island.png}{Babeldaob Island, in the Caroline Islands.}{fig:coral-island_data-augmentation-scaling}
 
     % \AltTextImage{
-        \Item{Copy-paste:} In some cases, we combine multiple islands into a single sample, ensuring they do not overlap. The regions not covered by any island are assigned the abyss ID. Although this approach ensures non-overlapping regions, future work could explore using blending techniques to position islands more closely without the risk of overlap (\cref{fig:coral-island_data-augmentation-copy-paste}). 
+        \Item{Copy-paste:} In some cases, we combine multiple islands into a single sample, with only a maximum intersection over union (IoU) of 10\%, allowing the abysses to overlap but without obtaining other region types to merge. Height fields blending is done through the smooth maximum function \cref{eq:coral-island_smoothmax-function}, and the label blending uses the usual $\max$ operator. The regions not covered by any island are assigned the abyss ID, which is very close to the minimal height, meaning that in this case specifically, the subsidence factor (Value channel) is close to irrelevant (\cref{fig:coral-island_cGAN-examples}, rightmost). 
         % }{copy_paste_example.png}{}{fig:coral-island_data-augmentation-copy-paste}
 \end{Itemize}
 
@@ -913,48 +914,48 @@ All augmentation techniques are applied both to the height field and the label m
 
 
 
-\section{Results and evaluation}
+\section{Results}
 
 The resulting model for coral island generation enables a high control-level from a user perspective as the unconstraint painting allows for complex scenarios while producing in real-time the resulting height fields. In this chapter we used the software Blender to provide renders directly from the outputed height fields. As our pix2pix model is trained to output $256\times256$ images, the resolution of the 3D models is limited by this architecture.
 
-\subsection{Control}
-\label{sec:coral-island_control}
+% \subsection{Control}
+% \label{sec:coral-island_control}
 
-Using deep-learning-based models, most constraints from our initial assumptions are lifted (radial layout, isolated islands, ...). The control over the overall shapes of the islands regions are given through digital painting, here using the GIMP software. Each pixel of the image are encoded in HSV, with the region identifier encoded in the Hue channel. The user may increase or decrease the subsidence level of the island by modifying the Saturation channel over the whole image (see \cref{fig:coral-island_results-subsidence}).
+Using deep-learning-based models, most constraints from our initial assumptions are lifted (radial layout, isolated islands, ...). The control over the overall shapes of the islands regions are given through digital painting, here using the GIMP software. Each pixel of the image are encoded in HSV, with the region identifier encoded in the Hue channel. The user may increase or decrease the subsidence level of the island by modifying the Saturation channel over the whole image (see \cref{fig:coral-island_results-subsidence}). 
 
-Since the model is based on statistics over the pixel values instead of hard values, users are not limited to a finite number of region identifiers, meaning that the output is more or less robust to noise (due to image compression, for example) and to the fuzzy values resulting from anti-aliasing of brushes often set by default, or resizing algorithm, by image editors, or even due to compression algorithm. The example displayed in \cref{fig:coral-island_results-fuzzy} presents a sketch for which the outlines of the regions are at the same time blurry and with layouts that are not expected (such as the small red regions inside the southern lagoon region or the adjacency of beach regions directly with the abyssal region) on the top figure and over-saturated on the bottom figure. The learned model does not include inconsistancies and results in plausible 3D models.
+Since the model is based on statistics over the pixel values instead of hard values, users are not limited to a finite number of region identifiers, meaning that the output is more or less robust to noise (due to image compression, for example) and to the fuzzy values resulting from anti-aliasing of brushes often set by default, or resizing algorithm, by image editors, or even due to compression algorithm. The example displayed in \cref{fig:coral-island_results-fuzzy} presents a sketch for which the outlines of the regions are at the same time blurry and with layouts that are not expected (such as the small red regions inside the southern lagoon region or the adjacency of beach regions directly with the abyssal region) on the top figure and over-saturated on the bottom figure. The learned model does not include inconsistancies and results in plausible 3D models. We can note that the input label map doesn't require to be hand drawn, as a simple Perlin noise can produce it randomly, as shown in the examples of \cref{fig:coral-island_perlin-examples}.
 
 The tolerence over the input values may be used to provide even more control about the transitions between two regions. \cref{fig:coral-island_results_dino} shows an example of input map with regions that are leaking over neighboring regions, and the introduction of new hue values non-existant in the dataset (light green and dark green) but are the interpolated hue value of mountain regions and beach regions.
 
 Since the procedural phase included low randomness, the output of the cGAN is limiting its inpredictibility and the results to a slight change on the input create only slight changes on the output, preventing unexpected results. \cref{fig:coral-island_results-subsidence} shows the result of an input map with only a variation on the subsidence level, the resulting height fields are very similar. Adding the real-time computation of outputs, it becomes possible to construct progressively a landscape and correct small mistakes to intuitively design islands inspired by real-world regions (see an reproduction of Mayotte in \cref{fig:coral-island_example-Mayotte}). 
 
 
-\begin{deferredfigure}
+\begin{figure}
     \autofitgraphics[]{2_features.png, 2_heightmaps.png, 2_results.png}
     \autofitgraphics[]{1_features.png, 1_heightmaps.png, 1_results.png}
     \caption{An identical label map yield similar height fields over multiple inferences from the model, even after modifying the subsidence factor (visible in the luminosity of the input image).}
     \label{fig:coral-island_results-subsidence}
-\end{deferredfigure}
-\begin{deferredfigure}
+\end{figure}
+\begin{figure}
     \autofitgraphics[]{3_features.png, 3_heightmaps.png, 3_results.png}
     \autofitgraphics[]{4_features.png, 4_heightmaps.png, 4_results.png}
     \caption{Using a generative neural network allows a higher level of tolerence on the user input. Here the user used an fuzzy brush to draw the label map, resulting in some pixels that are inconsistent with the dataset and unlogical island layouts (some small "abyss" regions [red] are found between "beach" [green], "lagoon" [cyan] and "reef" [blue]). The model ignores the inconsistencies even for over-saturated pixels. }
     \label{fig:coral-island_results-fuzzy}
-\end{deferredfigure}
-\begin{deferredfigure}
+\end{figure}
+\begin{figure}
     \autofitgraphics[]{DinoIsland_features.png, DinoIsland_heightmaps.png, DinoIsland_results.png}
     \caption{Without constraints on the generation, the user may use unrealistic layout and the neural network will however output a plausible result.}
     \label{fig:coral-island_results_dino}
-\end{deferredfigure}
-\begin{deferredfigure}
+\end{figure}
+\begin{figure}
     \autofitgraphics[]{Mayotte-example.png, 5_results.png}
     \caption{Comparison between of real (left) and synthetic (right) islands of Mayotte.}
     \label{fig:coral-island_example-Mayotte}
-\end{deferredfigure}
+\end{figure}
 
 
-\subsection{Performances}
-\label{sec:coral-island_performances}
+% \subsection{Performances}
+% \label{sec:coral-island_performances}
 
 The Python script for the initial island dataset generation is poorly optimized and takes about 2.5s per island of size $256 \times 256$ as the parallelization does not take place here. Implementing an optimized C++ version of the initial generation process reduces this execution time to 50ms per generation.
 
@@ -965,6 +966,15 @@ We not only show that using a neural network reduces the constraints on the gene
 
 
 
+
+\paragraph{Limitations} 
+While this approach brings significant advantages, there are also some limitations to consider. The reliance on a synthetic dataset means that the cGAN inherits some biases and limitations of the original procedural algorithm. This could limit the true diversity of the terrains that the model can generate, as the output is confined by the patterns present in the training data. Additionally, the cGAN model's internal logic lacks transparency, offering limited user control over the generation process once the model has been trained. This contrasts with traditional procedural methods, which typically allow for real-time tweaking of parameters.
+
+Moreover the training time of the cGAN is far from real-time with the proposed hyper parameters from \cite{Isola2017}, since after an epoch of 9000 examples, representing about 30 minutes of training, still outputs grid artifacts. After the second epoch, visual artifacts are rare. 
+
+\paragraph{Future work}
+Further improvements could be made to the synthetic dataset. Incorporating more complex geological processes, such as wave erosion or tidal influences, could lead to even more realistic terrains. Additionally, refining the way islands are blended in multi-island samples, or adding more diverse input conditions (e.g., different geological settings), could help the model generalize better and produce more varied and dynamic landscapes.  While the current model allows for rapid terrain generation, adding more options for users to interact with the cGAN, such as tweaking parameters like wind strength or island size, could enhance the flexibility of the system. 
+Many other neural networks models could be exploited to increase the possibilities, such as newer variants of cGANs \cite{Park2019}, or models with style transfer functionalities \cite{Gatys2015,Zhu2020} in order to change the overall aspect of a terrain \cite{Perche2023a,Perche2023b}, use text-to-images models \cite{Rombach2021,Radford2021} to generate height fields from a verbal prompt, or super-resolution models \cite{Dong2014} to increase the definition of details in the final output \cite{Guerin2016a}.
 
 
 
@@ -1006,13 +1016,6 @@ We not only show that using a neural network reduces the constraints on the gene
 This work has presented a novel approach to generating coral reef island terrains by combining traditional procedural methods with deep learning techniques. We first developed a procedural generation algorithm capable of creating a wide variety of island terrains through a combination of top-view and profile-view sketches, wind deformation, and subsidence and coral reef growth simulation. By applying these methods, we were able to produce realistic terrains based on geological processes, capturing key features of coral reef islands such as beaches, lagoons, and coral reefs.
 
 To further enhance flexibility and realism in the generation process, we incorporated a Conditional Generative Adversarial Network (cGAN), using the pix2pix model to generate height maps from label maps of island features. The cGAN model allowed us to overcome some of the constraints inherent in the procedural algorithm, such as radial symmetry and fixed island positioning. With data augmentation techniques, we were able to train the cGAN on a synthetic dataset, generating varied and realistic island terrains.
-
-\paragraph{Limitations} 
-While this approach brings significant advantages, there are also some limitations to consider. The reliance on a synthetic dataset means that the cGAN inherits some biases and limitations of the original procedural algorithm. This could limit the true diversity of the terrains that the model can generate, as the output is confined by the patterns present in the training data. Additionally, the cGAN model's internal logic lacks transparency, offering limited user control over the generation process once the model has been trained. This contrasts with traditional procedural methods, which typically allow for real-time tweaking of parameters.
-
-\paragraph{Future work}
-Further improvements could be made to the synthetic dataset. Incorporating more complex geological processes, such as wave erosion or tidal influences, could lead to even more realistic terrains. Additionally, refining the way islands are blended in multi-island samples, or adding more diverse input conditions (e.g., different geological settings), could help the model generalize better and produce more varied and dynamic landscapes.  While the current model allows for rapid terrain generation, adding more options for users to interact with the cGAN, such as tweaking parameters like wind strength or island size, could enhance the flexibility of the system. 
-Many other neural networks models could be exploited to increase the possibilities, such as newer variants of cGANs \cite{Park2019}, or models with style transfer functionalities \cite{Gatys2015,Zhu2020} in order to change the overall aspect of a terrain \cite{Perche2023a,Perche2023b}, use text-to-images models \cite{Rombach2021,Radford2021} to generate height fields from a verbal prompt, or super-resolution models \cite{Dong2014} to increase the definition of details in the final output \cite{Guerin2016a}.
 
 
 % There are several directions for future research and improvements. One promising avenue is to incorporate the wind velocity field more directly into the cGAN training process, potentially as an additional input condition. This would allow the model to better capture wind-driven terrain features such as cliffs or other deformations influenced by wind patterns.
