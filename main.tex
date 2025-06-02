@@ -571,7 +571,7 @@ where $i$ is the index of the region containing $\p$ (i.e., $\Radius_i \le \radi
 
 \begin{figure}
     \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1.png}
-    \caption{Given top-view and side-view outlines, the 3D result is be obtain by revolution. }
+    \caption{Given top-view and side-view outlines, the 3D result is obtained by revolution. }
     \label{fig:coral-island_procedural-smooth-heights}
 \end{figure}
 
@@ -727,7 +727,7 @@ We define distinct reef zones anchored at specific depths:
     \Item{} Fore reef sloping to abyss: $h_\text{abyss} = -100$\,m
 \end{Itemize}
 
-Each reef subregion is defined over a parametric domain $x \in [0, 1]$. For instance:
+Each reef subregion is defined over a parametric domain $x \in [0, 1]$, with $x=0$ the begining of the reef region and $x=1$ its end, directly inputing the parametric distance $x = \distRegions - i_{\text{reef region}}$. For instance:
 \begin{Itemize}
     \Item{} Back reef: $x_{\text{back,start}} = 0$, $x_{\text{back,end}} = 0.5$
     \Item{} Reef crest: $x_{\text{crest,start}} = 0.75$, $x_{\text{crest,end}} = 0.8$
@@ -746,6 +746,7 @@ We denote the interpolating function as:
 
 The complete coral height field, as displayed in \cref{fig:coral-island_reef-function}, is built as a piecewise function:
 \begin{align}
+    \label{eq:coral-island_full-reef-function}
     \heightCoral(x) &= \sum_{r \in \text{subregions}}{
     \begin{dcases}
         h_r & \text{if } x_{\text{r,start}} \leq x \leq x_{\text{r,end}} \\
@@ -760,7 +761,6 @@ The complete coral height field, as displayed in \cref{fig:coral-island_reef-fun
         \end{dcases}
     }
 \end{align}
-
 
 
 % \subsubsection{Blending height fields}
@@ -807,8 +807,16 @@ The complete coral height field, as displayed in \cref{fig:coral-island_reef-fun
 \subsubsection{Output}
 \label{sec:coral-island_procedural-output}
 
+\begin{figure}
+    \autofitgraphics[]{volcano-input.png, volcano-render.png}
+    \autofitgraphics[]{volcano-heightmap.png, volcano-corals.png, volcano-output.png}
+    \caption{Volcano with single vent. (Bottom right) The initial height field is computed directly from the user input, (bottom center) the reef height field is outputed from \cref{eq:coral-island_full-reef-function}, and finally, (bottom left) we blend the two results with \cref{eq:coral-island_smoothmax-function}.}
+    \label{fig:coral-island_volcano-example}
+\end{figure}
+
 Finally, we merge the island base height field and the coral reef height field by our \textit{ad-hoc} smooth maximum operator $\smoothmax$ defined as:
 \begin{align}
+    \label{eq:coral-island_smoothmax-function}
     \smoothmax(a, b) = \begin{dcases}
         % a + \frac{b - a}{2k} \left( \frac{1}{1+e^{-k(b - a)}} + \frac{1}{1-e^{-k(b-a)}} \right) &\text{for } a \neq b \\
         a + \frac{\delta}{2k} \left( \frac{1}{1+e^{-k\delta}} + \frac{1}{1-e^{-k\delta}} \right) &\text{for } a \neq b \\
@@ -817,12 +825,7 @@ Finally, we merge the island base height field and the coral reef height field b
 \end{align} 
 with $\delta=b-a$ for conciseness, and $k$ a sharpness parameter approximating the $\max$ operator as $k$ grows. At $k=5$, the operator $\max$ is already well approximated while conserving continuousness in the resulting height field $\height(p) = \smoothmax(\heightSubsid(\p), \heightCoral(\p))$.
 
-The resulting terrain represents a plausible coral reef island, where the volcanic island has subsided, and coral reefs have grown upward to keep pace with the water level. The smooth blending between the subsided terrain and the coral features ensures a natural transition between regions like the island, lagoon, and coral reefs.
-
-One of the key strengths of this method is its flexibility as the subsidence and coral reef growth processes are modeled independently, allowing for a wide range of configurations. Users can generate plausible island terrains with or without coral features, or apply the coral reef growth simulation to existing height fields from other sources.
-
-
-
+The resulting terrain represents a plausible coral reef island, where the volcanic island has subsided, and coral reefs have grown upward to keep pace with the water level (\cref{fig:coral-island_volcano-example}). The smooth blending between the subsided terrain and the coral features ensures a natural transition between regions like the island, lagoon, and coral reefs.
 
 
 
@@ -845,20 +848,25 @@ In this section, we introduce the use of a conditional Generative Adversarial Ne
 
 The creation of the dataset is done through the use of the procedural algorithm for which we alter the input parameters. 
 
-For each generation, the top-view and profile-view sketches use an initial layout. Each outline of the top-view sketch is defined as a centered circle of random radius $\radius_\text{min} \leq \radius^* \leq \radius_\text{max}$. We add another deformation based on Perlin noise such that the final contour is defined as 
+For each generation, the top-view and profile-view sketches use an initial layout. Each outline of the top-view sketch is defined as a centered circle of random radius $\radius_\text{min} \leq \radius^* \leq \radius_\text{max}$. We add another deformation based on fBm noise $\noise$ such that the final contour, profile, and resistances, are defined as 
 \begin{align}
-    \radius(\angl) = \radius^* + \noise(\angl)
+    \radius(\angl) &= \radius^* + \noise_{\text{contours}}(\angl) \nonumber \\
+    \heightProfile(\distRegions) &= \heightProfile^*(\distRegions) \cdot \noise_{\text{profile}}(\distRegions) \nonumber \\
+    \resistance(\distRegions) &= \resistance^*(\distRegions) \cdot \noise_{\text{resistance}}(\distRegions) \nonumber
 \end{align}
+% \begin{align}
+%     \radius(\angl) &= \radius^* + \noise_{\text{contours}}(\angl) \\
+% % \end{align}
 
-On the other hand, we define an initial profile-view sketch by defining $\heightProfile^*(\distRegions)$ the initial height function for which fBm noise is applied to obtain 
-\begin{align}
-    \heightProfile(\distRegions) = \heightProfile^*(\distRegions) \cdot \noise(\distRegions)
-\end{align}
+% % On the other hand, we define an initial profile-view sketch by defining $\heightProfile^*(\distRegions)$ the initial height function for which fBm noise is applied to obtain 
+% % \begin{align}
+%     \heightProfile(\distRegions) &= \heightProfile^*(\distRegions) \cdot \noise_{\text{profile}}(\distRegions) \\
+% % \end{align}
 
-An identical process is done for the resistance function:
-\begin{align}
-    \resistance(\distRegions) = \resistance^*(\distRegions) \cdot \noise(\distRegions)
-\end{align}
+% % An identical process is done for the resistance function:
+% % \begin{align}
+%     \resistance(\distRegions) &= \resistance^*(\distRegions) \cdot \noise_{\text{resistance}}(\distRegions) 
+% \end{align}
 
 Finally, we need to generate a random wind field. The realistic nature of wind is ignored for the generation of the wind strokes in order to provide complexity and variety in the results. 
 We generate a random number $n$ of strokes and their path by a uniformly sampling a random number $m$ of points. The spread and intensity of each stroke is also random.
@@ -867,11 +875,11 @@ Once all inputs are set, we generate an example for multiple level of subsidence
 
 The Pix2pix model was originally pretrained using RGB images. In this training phase, the images were label using the HSV (Hue, Saturation, Value) color space, where the Hue component specifically carried the label information. Both the Saturation and Value components were kept neutral, meaning they did not convey any significant label-related data. The target images, the ones the model aimed to reproduce, were formatted in RGB.
 
-For the purpose of fine-tuning the model, we retained the use of the Hue component to encode the labels from the label map. We introduced a new dimension to the model's learning capabilities by incorporating the subsidence rate, denoted as $\subsidRate$, into the Value component. This addition not only utilizes the model's existing capability to interpret the HSV format but also enriches the input data, which now carries additional, valuable environmental information.
+For the purpose of fine-tuning the model, we retained the use of the Hue component to encode the labels  directly from the parametric distance $H = \floor{\distRegions}$. We introduced a new dimension to the model's learning capabilities by incorporating the subsidence rate into the Value component $V =\subsidRate$. This addition not only utilizes the model's existing capability to interpret the HSV format but also enriches the input data, which now carries additional, valuable environmental information.
 
 Moreover, we purposefully left the Saturation component unchanged at this stage, reserving space for potentially including another parameter in the future, which would allow us to expand the model's utility without altering the foundational HSV encoding scheme established during its initial training. By adhering to this encoding format, we ensure continuity in data representation, which maximizes the efficiency of the pretrained model. This strategic update enhances the model's adaptability and broadens its applicability to tackle new, complex challenges more effectively.
 
-This configuration allows the process to create quickly a large quantity of data, with multiple parameters, of a single island centered in the image. 
+% This configuration allows the process to create quickly a large quantity of data, with multiple parameters, of a single island centered in the image. 
 
 \subsection{Data augmentation}
 \label{sec:coral-island_data-augmentation}
@@ -884,9 +892,9 @@ This configuration allows the process to create quickly a large quantity of data
 
 To enhance the variety of the dataset and improve the model's ability to generalize, we apply several data augmentation techniques:
 \begin{Itemize}
-    % \AltTextImage{
+    \AltTextImage{
         \Item{Translation:} Since the original algorithm always centers the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island_data-augmentation-translation}). This ensures that the cGAN can generate islands in any position within the frame. 
-        % }{translation_example.png}{}{fig:coral-island_data-augmentation-translation}
+        }{translation_example.png}{}{fig:coral-island_data-augmentation-translation}
 
     % \AltTextImage{
         \Item{Directional scaling:} By scaling the terrain in one direction, we create elongated islands that resemble corridors or archipelagos, adding another layer of diversity to the dataset. Such islands are usually found on tectonic plates convergence boundaries, creating island arcs with high density of volcanic centers like the Izu-Bonin-Mariana arc system (\cref{fig:coral-island_data-augmentation-scaling} shows an example of elongated island). 
