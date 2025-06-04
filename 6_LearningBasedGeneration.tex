@@ -1,0 +1,77 @@
+\section{Training the cGAN}
+
+In this section, we introduce the use of a conditional Generative Adversarial Network (cGAN), specifically the pix2pix model, to enhance the island generation process by increasing the variety and flexibility of terrains. While the initial procedural algorithm can create numerous island examples, cGAN provides additional flexibility in generating more complex terrain without the rigid constraints of the procedural algorithm that stem from our initial assumptions based on coral reef formation theory.
+
+\subsection{Dataset generation}
+\label{sec:coral-island_dataset-generation}
+
+
+\begin{figure}
+	\centering
+	\autofitgraphics[]{examples-going-more-complex.pdf} %{placeholder.pdf}
+    \caption{Examples from a dataset with increasing data augmentation.}
+    % \caption{Using a large set of pairs of height field-label map, the training of a deep learning model result in a user-friendly interface requiring solely a hand-drawn label map to produce a 2.5D height field of the desired island.}
+    \label{fig:coral-island_cGAN-examples}
+\end{figure}
+
+
+The creation of the dataset is done through the use of the procedural algorithm for which we alter the input parameters. 
+
+For each generation, the top-view and profile-view sketches use an initial layout. Each outline of the top-view sketch is defined as a centered circle of random radius $\radius_\text{min} \leq \radius^* \leq \radius_\text{max}$. We add another deformation based on fBm noise $\noise$ such that the final contour, profile, and resistances, are defined as 
+\begin{align}
+    \radius(\angl) &= \radius^* + \noise_{\text{contours}}(\angl) \nonumber \\
+    \heightProfile(\distRegions) &= \heightProfile^*(\distRegions) \cdot \noise_{\text{profile}}(\distRegions) \nonumber \\
+    \resistance(\distRegions) &= \resistance^*(\distRegions) \cdot \noise_{\text{resistance}}(\distRegions) \nonumber
+\end{align}
+% \begin{align}
+%     \radius(\angl) &= \radius^* + \noise_{\text{contours}}(\angl) \\
+% % \end{align}
+
+% % On the other hand, we define an initial profile-view sketch by defining $\heightProfile^*(\distRegions)$ the initial height function for which fBm noise is applied to obtain 
+% % \begin{align}
+%     \heightProfile(\distRegions) &= \heightProfile^*(\distRegions) \cdot \noise_{\text{profile}}(\distRegions) \\
+% % \end{align}
+
+% % An identical process is done for the resistance function:
+% % \begin{align}
+%     \resistance(\distRegions) &= \resistance^*(\distRegions) \cdot \noise_{\text{resistance}}(\distRegions) 
+% \end{align}
+
+Finally, we need to generate a random wind field. The realistic nature of wind is ignored for the generation of the wind strokes in order to provide complexity and variety in the results. 
+We generate a random number $n$ of strokes and their path by a uniformly sampling a random number $m$ of points. The spread and intensity of each stroke is also random.
+
+Once all inputs are set, we generate an example for multiple level of subsidence $\subsidRate \in [0, 1]$ to obtain a height field incorporating the coral reef modeling and the associated label map. 
+
+The Pix2pix model was originally pretrained using RGB images. In this training phase, the images were label using the HSV (Hue, Saturation, Value) color space, where the Hue component specifically carried the label information. Both the Saturation and Value components were kept neutral, meaning they did not convey any significant label-related data. The target images, the ones the model aimed to reproduce, were formatted in RGB.
+
+For the purpose of fine-tuning the model, we retained the use of the Hue component to encode the labels  directly from the parametric distance $H = \floor{\distRegions}$. We introduced a new dimension to the model's learning capabilities by incorporating the subsidence rate into the Value component $V =\subsidRate$. This addition not only utilizes the model's existing capability to interpret the HSV format but also enriches the input data, which now carries additional, valuable environmental information.
+
+Moreover, we purposefully left the Saturation component unchanged at this stage, reserving space for potentially including another parameter in the future, which would allow us to expand the model's utility without altering the foundational HSV encoding scheme established during its initial training. By adhering to this encoding format, we ensure continuity in data representation, which maximizes the efficiency of the pretrained model. This strategic update enhances the model's adaptability and broadens its applicability to tackle new, complex challenges more effectively.
+
+% This configuration allows the process to create quickly a large quantity of data, with multiple parameters, of a single island centered in the image. 
+
+\subsection{Data augmentation}
+\label{sec:coral-island_data-augmentation}
+
+% \begin{figure}
+%     \autofitgraphics[]{6_features.png, 6_heightmaps.png, 6_results.png}
+%     \caption{By applying our three data augmentation functions, the deep learning model learns to overcome some constraints previously set by the initial algorithm: (A) the translation removes the constraint to have an island ultimately at the center of the map, (B) the directional scaling, typical from image processing, reduces the symmety constraint on the results and (C) the copy-paste unlock the possibility to obtain more than one island per map.}
+%     \label{fig:coral-island_data-augmentation-examples}
+% \end{figure}
+
+To enhance the variety of the dataset and improve the model's ability to generalize, we apply several data augmentation techniques in addition of the usual affine transformations (rotation, scaling, and flipping):
+\begin{Itemize}
+    % \AltTextImage{
+        \Item{Translation:} Since the original algorithm always centers the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island_cGAN-examples}, leftmost). This ensures that the cGAN can generate islands in any position within the frame. By wrapping the island on the borders, the model learns that data can appear on the edges on the image.
+        % }{translation_example.png}{}{fig:coral-island_data-augmentation-translation}
+
+    % \AltTextImage{
+        % \Item{Directional scaling:} By scaling the terrain in one direction, we create elongated islands that resemble corridors or archipelagos, adding another layer of diversity to the dataset. Such islands are usually found on tectonic plates convergence boundaries. 
+        % }{Babeldaob_island.png}{Babeldaob Island, in the Caroline Islands.}{fig:coral-island_data-augmentation-scaling}
+
+    % \AltTextImage{
+        \Item{Copy-paste:} In some cases, we combine multiple islands into a single sample, with only a maximum intersection over union (IoU) of 10\%, allowing the abysses to overlap but without obtaining other region types to merge. Height fields blending is done through the smooth maximum function from \cref{eq:coral-island_smoothmax-function}, and the label blending uses the usual $\max$ operator. The regions not covered by any island are assigned the abyss ID, which is very close to the minimal height, meaning that in this case specifically, the subsidence factor (Value channel) is close to irrelevant (\cref{fig:coral-island_cGAN-examples}, rightmost). 
+        % }{copy_paste_example.png}{}{fig:coral-island_data-augmentation-copy-paste}
+\end{Itemize}
+
+All augmentation techniques are applied both to the height field and the label map simultaneously to ensure consistency between the input (the label map) and the output (the height field).

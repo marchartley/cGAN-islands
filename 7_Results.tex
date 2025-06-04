@@ -1,0 +1,99 @@
+\section{Results}
+
+The resulting model for coral island generation enables a high control-level from a user perspective as the unconstraint painting allows for complex scenarios while producing in real-time the resulting height fields. In this chapter we used the software Blender to provide renders directly from the outputed height fields. As our pix2pix model is trained to output $256\times256$ images, the resolution of the 3D models is limited by this architecture.
+
+% \subsection{Control}
+% \label{sec:coral-island_control}
+
+Using deep-learning-based models, most constraints from our initial assumptions are lifted (radial layout, isolated islands, ...). The control over the overall shapes of the islands regions are given through digital painting, here using the GIMP software. Each pixel of the image are encoded in HSV, with the region identifier encoded in the Hue channel. The user may increase or decrease the subsidence level of the island by modifying the Saturation channel over the whole image (see \cref{fig:coral-island_results-subsidence}). 
+
+Since the model is based on statistics over the pixel values instead of hard values, users are not limited to a finite number of region identifiers, meaning that the output is more or less robust to noise (due to image compression, for example) and to the fuzzy values resulting from anti-aliasing of brushes often set by default, or resizing algorithm, by image editors, or even due to compression algorithm. The example displayed in \cref{fig:coral-island_results-fuzzy} presents a sketch for which the outlines of the regions are at the same time blurry and with layouts that are not expected (such as the small red regions inside the southern lagoon region or the adjacency of beach regions directly with the abyssal region) on the top figure and over-saturated on the bottom figure. The learned model does not include inconsistancies and results in plausible 3D models. We can note that the input label map doesn't require to be hand drawn, as a simple Perlin noise can produce it randomly, as shown in the examples of \cref{fig:coral-island_perlin-examples}.
+
+The tolerence over the input values may be used to provide even more control about the transitions between two regions. \cref{fig:coral-island_results_dino} shows an example of input map with regions that are leaking over neighboring regions, and the introduction of new hue values non-existant in the dataset (light green and dark green) but are the interpolated hue value of mountain regions and beach regions.
+
+Since the procedural phase included low randomness, the output of the cGAN is limiting its inpredictibility and the results to a slight change on the input create only slight changes on the output, preventing unexpected results. \cref{fig:coral-island_results-subsidence} shows the result of an input map with only a variation on the subsidence level, the resulting height fields are very similar. Adding the real-time computation of outputs, it becomes possible to construct progressively a landscape and correct small mistakes to intuitively design islands inspired by real-world regions. A creation of an island similar to Mayotte, presented in \cref{fig:coral-island_example-Mayotte} was hand-made in few minutes. 
+
+
+\begin{figure}
+    \autofitgraphics[]{2_features.png, 2_heightmaps.png, 2_results.png}
+    \autofitgraphics[]{1_features.png, 1_heightmaps.png, 1_results.png}
+    \caption{An identical label map yield similar height fields over multiple inferences from the model, even after modifying the subsidence factor (visible in the luminosity of the input image).}
+    \label{fig:coral-island_results-subsidence}
+\end{figure}
+\begin{figure}
+    \autofitgraphics[]{3_features.png, 3_heightmaps.png, 3_results.png}
+    \autofitgraphics[]{4_features.png, 4_heightmaps.png, 4_results.png}
+    \caption{Using a generative neural network allows a higher level of tolerence on the user input. Here the user used an fuzzy brush to draw the label map, resulting in some pixels that are inconsistent with the dataset and unlogical island layouts (some small "abyss" regions [red] are found between "beach" [green], "lagoon" [cyan] and "reef" [blue]). The model ignores the layout inconsistencies, and partially over-saturation as long as the pixel isn't completely white. }
+    \label{fig:coral-island_results-fuzzy}
+\end{figure}
+\begin{figure}
+    \autofitgraphics[]{DinoIsland_features.png, DinoIsland_heightmaps.png, DinoIsland_results.png}
+    \caption{Without constraints on the generation, the user may use unrealistic layout and the neural network will however output a plausible result. Here new colors has been added (pistachio), but the network naturally consider it as a transition from mountain to beach. }
+    \label{fig:coral-island_results_dino}
+\end{figure}
+\begin{figure}
+    \autofitgraphics[]{Mayotte-example.png, 5_features.png, 5_results.png}
+    \caption{Comparison between of real (left, from Google Earth) and synthetic (right) islands of Mayotte. The label map (center) is hand drawn to match approximatively its real-world counterpart. }
+    \label{fig:coral-island_example-Mayotte}
+\end{figure}
+
+
+% \subsection{Performances}
+% \label{sec:coral-island_performances}
+
+The Python script for the initial island dataset generation is poorly optimized and takes about 2.5s per island of size $256 \times 256$ as the parallelization does not take place here. Implementing an optimized C++ version of the initial generation process reduces this execution time to 50ms per generation.
+
+On the other hand, the inference time for a single input image of dimension $256 \times 256$ is constant whatever the complexity of the scene. Using the NVIDIA GeForce GTX 1650 Ti GPU with Python 3.10 and PyTorch version 2.5.1+cu121, the inference time measured is 5ms (std 1.1ms). 
+
+We not only show that using a neural network reduces the constraints on the generation process, but also that the execution time is only dependant on the network architecture, without influence from the dataset generation algorithm. 
+
+
+
+
+
+\paragraph{Limitations} 
+While this approach brings significant advantages, there are also some limitations to consider. The reliance on a synthetic dataset means that the cGAN inherits some biases and limitations of the original procedural algorithm. This could limit the true diversity of the terrains that the model can generate, as the output is confined by the patterns present in the training data. Additionally, the cGAN model's internal logic lacks transparency, offering limited user control over the generation process once the model has been trained. Moreover the training time of the cGAN is far from real-time with the proposed hyper parameters from (\cite{Isola2017}), since after an epoch of 9000 examples, representing about 30 minutes of training, still outputs grid artifacts, visible in \cref{fig:coral-island_first-epoch}. After the second epoch, visual artifacts are rare. 
+
+\begin{figure}
+    \autofitgraphics[]{epoch-1-output.png, epoch-1-render.png, epoch-2-output.png, epoch-2-render.png}
+    \caption{First epoch and second epoch height field (and respective render). On first epoch, grid artifacts, similar to low resolution image, are visible being corrected after a second epoch. }
+    \label{fig:coral-island_first-epoch}
+\end{figure}
+
+\paragraph{Future work}
+Further improvements could be made to the synthetic dataset. Incorporating more complex geological processes, such as wave erosion or tidal influences, could lead to even more realistic terrains. Additionally, refining the way islands are blended in multi-island samples, or adding more diverse input conditions (e.g., different geological settings), could help the model generalize better and produce more varied and dynamic landscapes.  While the current model allows for rapid terrain generation, adding more options for users to interact with the cGAN, such as tweaking parameters like wind strength or island size, could enhance the flexibility of the system. 
+Many other neural networks models could be exploited to increase the possibilities, such as newer variants of cGANs (\cite{Park2019}), or models with style transfer functionalities (\cite{Gatys2015,Zhu2020}) in order to change the overall aspect of a terrain (\cite{Perche2023a,Perche2023b}), use text-to-images models (\cite{Rombach2021,Radford2021}) to generate height fields from a verbal prompt, or super-resolution models (\cite{Dong2014}) to increase the definition of details in the final output (\cite{Guerin2016a}).
+
+
+
+
+% \section{Advantages, limitations, and future works}
+
+
+% One of the main strengths of this approach is its ability to produce a wide variety of island terrains, even in the absence of real-world data. The procedural generation methods allow for high flexibility in designing both the shape and features of the island, while the use of cGAN enables further refinement and the generation of terrains that are not bound by the original constraints of the procedural model. By combining these two methods, we leverage the advantages of both: the structured control of procedural techniques and the pattern-learning capabilities of deep learning.
+
+% A key advantage of this approach is the retention of semantic information about the terrain throughout the generation process. The label map, which serves as the input to the cGAN, can also be used after terrain generation to provide a detailed representation of the different regions of the island (such as the beach, lagoon, coral reef, and island body). This label map can guide post-processing operations, such as applying different textures based on terrain features or adding other environmental elements like vegetation. The preservation of semantic information provides a useful connection to the next stage of terrain manipulation, making the process more versatile and adaptable to different use cases.
+
+% Furthermore, the use of an out-of-the-box cGAN model highlights the feasibility of employing existing neural network architectures with minimal modifications in the field of procedural generation. This is particularly important in domains where real-world data is scarce, such as coral reef islands, allowing synthetic data to be effectively used for training purposes.
+
+\begin{deferredfigure}
+    \autofitgraphics[]{random-input-2.png, random-height-2.png, random-render-2.png}
+    \autofitgraphics[]{random-input-1.png, random-height-1.png, random-render-1.png}
+    \autofitgraphics[]{random-input-3.png, random-height-3.png, random-render-3.png}
+    \autofitgraphics[]{random-input-4.png, random-height-4.png, random-render-4.png}
+    \caption{Starting from random Perlin noise, transformed into a label map, we can generate a large variety of results. }
+    \label{fig:coral-island_perlin-examples}
+\end{deferredfigure}
+
+
+
+
+% While the cGAN model provides increased flexibility and variety in island generation, it does come with certain limitations:
+
+% \begin{Itemize}
+%     \Item{Biases from the synthetic dataset:} Since the cGAN model is trained entirely on a procedurally generated dataset, it inherits the biases present in the initial algorithm. For example, while the model can break free from the radial symmetry constraint and center positioning, it still relies on the synthetic data's structure and patterns. This can limit the true diversity of the generated terrains, as the cGAN cannot generate terrains that deviate too far from the examples in the training set.
+%     \Item{Lack of user control:} Another limitation of using cGAN in this context is the lack of real-time user control during terrain generation. While traditional procedural generation methods allow users to tweak parameters (e.g., island size, beach width) during the generation process, the cGAN model operation is abstracted from the user, providing no mechanism for direct interaction beyond the initial label map. This reduces the level of customization available to the user.
+%     \Item{Data-driven dependence:} The quality of the generated terrain depends entirely on the quality of the training dataset. Since the dataset is synthetically generated, any limitations or biases in the initial dataset directly affect the cGAN's output. This dependence on data quality makes it crucial to design a well-augmented and varied dataset to ensure diverse and realistic outputs.
+% \end{Itemize}
+
+% While this approach brings significant advantages, there are also some limitations to consider. The reliance on a synthetic dataset means that the cGAN inherits some biases and limitations of the original procedural algorithm. This could limit the true diversity of the terrains that the model can generate, as the output is confined by the patterns present in the training data. Additionally, the cGAN model's internal logic lacks transparency, offering limited user control over the generation process once the model has been trained. This contrasts with traditional procedural methods, which typically allow for real-time tweaking of parameters.
