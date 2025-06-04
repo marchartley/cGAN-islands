@@ -229,8 +229,8 @@ To preserve semantic structure across terrain regions, a resistance function $\r
 This warp is applied to both the height field and the label map, ensuring consistent semantic deformation. For example, applying strokes to one side of a circular island creates concave coastlines while leaving high-resistance regions (e.g., the abyss) unaffected, simulating the localized impact of natural erosion (\cref{fig:coral-island_wind-effect-result}, bottom).
 
 \begin{figure}
-    \autofitgraphics[]{result_low_resistance.png, result_high_resistance.png}
-    \caption{(Left) Given a uniform wind velocity field and a resistance function similar as \cref{fig:coral-island_resistance-function}, the coasts are smoothly eroded while the interior of the island is almost unaffected. (Right) Modifying the resistance function to affect a strong resistance to borders simulate the effect of coast reinforcements.}
+    \autofitgraphics[]{result_high_resistance.png, result_low_resistance.png}
+    \caption{(Left) An island defined with a high resistance, under a uniform lateral wind velocity field, and (right) the same island with lower resistance on the reef borders, simulating the effect of coastal erosion.}
     \label{fig:coral-island_resistance-result}
 \end{figure}
 
