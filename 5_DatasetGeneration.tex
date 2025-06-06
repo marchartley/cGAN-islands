@@ -5,7 +5,7 @@
 % \label{sec:coral-island_dataset-generation}
 
 
-\begin{figure}
+\begin{figure}[b]
 	\centering
 	\autofitgraphics[]{examples-going-more-complex.pdf} %{placeholder.pdf}
     \caption{Examples from a dataset with increasing data augmentation.}
@@ -60,9 +60,9 @@ Moreover, we purposefully left the Saturation component unchanged at this stage,
 % \end{figure}
 
 To enhance the variety of the dataset and improve the model's ability to generalize, we apply several data augmentation techniques in addition of the usual affine transformations (rotation, scaling, and flipping):
-\begin{Itemize}
+
     % \AltTextImage{
-        \Item{Translation:} Since the original algorithm always centers the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island_cGAN-examples}, leftmost). This ensures that the cGAN can generate islands in any position within the frame. By wrapping the island on the borders, the model learns that data can appear on the edges on the image.
+        \textit{Translation:} Since the original algorithm always centers the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island_cGAN-examples}, leftmost). This ensures that the cGAN can generate islands in any position within the frame. By wrapping the island on the borders, the model learns that data can appear on the edges on the image.
         % }{translation_example.png}{}{fig:coral-island_data-augmentation-translation}
 
     % \AltTextImage{
@@ -70,8 +70,7 @@ To enhance the variety of the dataset and improve the model's ability to general
         % }{Babeldaob_island.png}{Babeldaob Island, in the Caroline Islands.}{fig:coral-island_data-augmentation-scaling}
 
     % \AltTextImage{
-        \Item{Copy-paste:} In some cases, we combine multiple islands into a single sample, with only a maximum intersection over union (IoU) of 10\%, allowing the abysses to overlap but without obtaining other region types to merge. Height fields blending is done through the smooth maximum function from \cref{eq:coral-island_smoothmax-function}, and the label blending uses the usual $\max$ operator. The regions not covered by any island are assigned the abyss ID, which is very close to the minimal height, meaning that in this case specifically, the subsidence factor (Value channel) is close to irrelevant (\cref{fig:coral-island_cGAN-examples}, rightmost). 
+        \textit{Copy-paste:} In some cases, we combine multiple islands into a single sample, with only a maximum intersection over union (IoU) of 10\%, allowing the abysses to overlap but without obtaining other region types to merge. Height fields blending is done through the smooth maximum function from \cref{eq:coral-island_smoothmax-function}, and the label blending uses the usual $\max$ operator. The regions not covered by any island are assigned the abyss ID, which is very close to the minimal height, meaning that in this case specifically, the subsidence factor (Value channel) is close to irrelevant (\cref{fig:coral-island_cGAN-examples}, rightmost). 
         % }{copy_paste_example.png}{}{fig:coral-island_data-augmentation-copy-paste}
-\end{Itemize}
 
 All augmentation techniques are applied both to the height field and the label map simultaneously to ensure consistency between the input (the label map) and the output (the height field).

@@ -13,7 +13,7 @@ The generation of coral reef island terrains involves a structured process that 
 
 
 
-The generation of coral reef islands in this system begins with two intuitive sketch-based inputs from the user: a top-view sketch and a profile-view sketch, which define the islands horizontal layout and vertical elevation profile. In addition to these sketches, the user can further refine the terrain by applying wind deformation strokes, which simulate the effects of wind and waves on the islands shape. This combination of sketches and wind inputs gives users precise control over both the islands structure and its natural variations, such as irregular coastlines or concave features. We will present the usefulness of these sketches in this section, and describe the technical details in the next section.
+The generation of coral reef islands in our system begins with two intuitive curve-based inputs from the user: a top-view sketch and a profile-view sketch, which define the islands horizontal layout and vertical elevation profile. In addition to these sketches, the user can further refine the terrain by applying wind deformation strokes, which simulate the effects of wind and waves on the islands shape. This combination of sketches and wind inputs gives users precise control over both the islands structure and its natural variations, such as irregular coastlines or concave features. We will present the usefulness of these sketches in this section, and describe the technical details in the next section.
 
 
 
@@ -109,14 +109,19 @@ For any point $\p$ on the terrain, the system computes polar coordinates $(\radi
 
 Each point's height is computed using the profile function $\heightProfile(\distRegions)$. Instead of using the raw radial distance $\radius_\p$, we define a parametric region distance $\distRegions_\p$ that maps each point to a normalized position along the concentric regions (see \cref{fig:coral-island_parametric-distance}). The radial space is divided by user-defined boundaries $\Radius_0, \Radius_1, \dots, \Radius_n$, corresponding to the island center, border, beach, lagoon, and abyss.
 
-
+\begin{figure}[b]
+    \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1.png}
+    \autofitgraphics[]{smooth-input-outline-heights-2.png, smooth-output-heights-2.png, smooth-render-2.png}
+    \autofitgraphics[]{smooth-input-outline-heights-3.png, smooth-output-heights-3.png, smooth-render-3.png}
+    \caption{Providing a smooth function between each region results in islands with plausible reliefs. We fixed the outlines while editing only the height function in order to produce, from top to bottom, a low island, a coral reef island, and finally an identical island without the reef. }
+    \label{fig:coral-island_procedural-smooth-heights}
+    \label{fig:coral-island_procedural-smooth-heights-multiple-examples}
+\end{figure}
 When a point $\p$ lies between two boundaries, say $\Radius_{i}$ and $\Radius_{i+1}$, its parametric distance is
 \begin{align}
     \distRegions_\p = i \;+\; \frac{\radius_\p - \Radius_{i}}{\Radius_{i + 1} - \Radius_{i}},
 \end{align}
-where $i$ is the index of the region containing $\p$ (i.e., $\Radius_i \le \radius_\p < \Radius_{i+1}$). This linear mapping stretches each region's radial span to the interval $[i,\,i+1]$, ensuring smooth interpolation across region boundaries. The final height at point $\p$ is then
-\begin{align}
-    h(\p) = \heightProfile(\distRegions_\p).
+where $i$ is the index of the region containing $\p$ (i.e., $\Radius_i \le \radius_\p < \Radius_{i+1}$). This linear mapping stretches each region's radial span to the interval $[i,\,i+1]$, ensuring smooth interpolation across region boundaries. The final height at point $\p$ is then $h(\p) = \heightProfile(\distRegions_\p)$.
 \end{align}
 
 % \begin{figure}
@@ -128,20 +133,6 @@ where $i$ is the index of the region containing $\p$ (i.e., $\Radius_i \le \radi
 % This approach ensures that the height field accurately follows the elevation profile specified by the user while maintaining smooth transitions between different regions of the island.
 
 % The result is a height field that captures both the radial structure of the island (from the top-view sketch) and the vertical elevation profile (from the profile-view sketch), producing a realistic representation of islands with smooth transitions between the key terrain features.
-
-\begin{figure}
-    \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1.png}
-    \autofitgraphics[]{smooth-input-outline-heights-2.png, smooth-output-heights-2.png, smooth-render-2.png}
-    \autofitgraphics[]{smooth-input-outline-heights-3.png, smooth-output-heights-3.png, smooth-render-3.png}
-    \caption{Providing a smooth function between each region results in islands with plausible reliefs. We fixed the outlines while editing only the height function in order to produce, from top to bottom, a low island, a coral reef island, and finally an identical island without the reef. }
-    \label{fig:coral-island_procedural-smooth-heights}
-    \label{fig:coral-island_procedural-smooth-heights-multiple-examples}
-\end{figure}
-
-
-
-
-
 \subsubsection{Wind deformation}
 \label{sec:coral-island_wind-deformation}
 
@@ -205,19 +196,21 @@ where $i$ is the index of the region containing $\p$ (i.e., $\Radius_i \le \radi
 
 % For instance, consider a simple circular island generated from the initial height field. By applying wind strokes along one side of the island, the deformation process can create concave regions along the coastline, making the shape more irregular and mimicking the effects of real-world wind and wave erosion. The resistance function ensures that while the beach and lagoon areas are deformed, the abyss remains largely unaffected as they are far from the wind and wave effective areas, preserving the island's overall structure.
 
-\begin{figure}
+\begin{figure}[t]
     \autofitgraphics[]{wind-deform-input.png}
     \autofitgraphics[]{wind-deform-output-original.png, wind-deform-render-original.png, wind-deform-output.png, wind-deform-render.png}
-    \caption{Defining a top-view wind vector field from user-provided strokes (top, blue) in association with a resistance function (top, red), a height field is deformed accordingly. Right: original height field and render; Left: altered results. The beach and lagoon regions are defined with low resistance, which is visible by having only these regions deformed in bottom results. }
+    \caption{Defining a top-view wind vector field from user-provided strokes (top, blue) in association with a resistance function (top, red), a height field is deformed accordingly. Left: original height field and render; right: altered results. The beach and lagoon regions are defined with low resistance, which is visible by having only these regions deformed in bottom results. }
     \label{fig:coral-island_wind-effect-result}
 \end{figure}
 
-To break the radial symmetry inherent in sketch-based terrain generation and introduce more organic island shapes, we allow the user to define a wind velocity field via freehand strokes on a 2D canvas. Each stroke is represented as a parametric curve $\curve$, interpreted as a local wind flow with direction $\curve'$, strength $S$, and influence width $\std$. These strokes simulate wind and wave erosion effects on the terrain.
+To break the radial symmetry inherent to our curve-based terrain generation and introduce more organic island shapes, we allow the user to define a wind velocity field via freehand strokes on a 2D canvas. Each stroke is represented as a parametric curve $\curve$, interpreted as a local wind flow with direction $\curve'$, strength $S$, and influence width $\std$. These strokes simulate wind and wave erosion effects on the terrain.
 
-The deformation vector at any terrain point $\p$ is computed as a sum over all strokes, weighted by a Gaussian falloff centered on the closest point $\closestCp$ along each curve (\cref{fig:coral-island_wind-effect-result}, top):
-
+The deformation vector at any terrain point $\p$ is computed as a sum over all strokes:
 \begin{align}
-    \warp(\p) &= \sum_{\curve \in \text{curves}} S \frac{\curve'(\q)}{\| \curve'(\q) \| } \cdot G_\std\left(\| \p - \closestCp \| \right) \\
+    \warp(\p) &= \sum_{\curve \in \text{curves}} S \frac{\curve'(\q)}{\| \curve'(\q) \| } \cdot G_\std\left(\| \p - \closestCp \| \right) 
+\end{align}
+weighted by a Gaussian falloff centered on the closest point $\closestCp$ along each curve (\cref{fig:coral-island_wind-effect-result}, top):
+\begin{align}
     G_\std(x) &= \frac{1}{\std \sqrt{2\pi}} e^{-\frac{x^2}{2 \std^2}}.
 \end{align}
 
@@ -229,7 +222,7 @@ To preserve semantic structure across terrain regions, a resistance function $\r
 
 This warp is applied to both the height field and the label map, ensuring consistent semantic deformation. For example, applying strokes to one side of a circular island creates concave coastlines while leaving high-resistance regions (e.g., the abyss) unaffected, simulating the localized impact of natural erosion (\cref{fig:coral-island_wind-effect-result}, bottom).
 
-\begin{figure}
+\begin{figure}[t]
     \autofitgraphics[]{result_high_resistance.png, result_low_resistance.png}
     \caption{(Left) An island defined with a high resistance, under a uniform lateral wind velocity field, and (right) the same island with lower resistance on the reef borders, simulating the effect of coastal erosion.}
     \label{fig:coral-island_resistance-result}
@@ -255,7 +248,7 @@ Once the terrain has been generated and deformed by the wind, we simulate the lo
 Subsidence is modeled by uniformly scaling the original terrain height downward, simulating the gradual sinking of the volcanic landmass due to tectonic processes. The user specifies a subsidence rate $\subsidRate \in [0, 1]$, which controls how much the island has sunk. The subsided terrain is computed as:
 
 \begin{align}
-    \heightSubsid(\p) = (1 - \subsidRate) \cdot h_0(\p)
+    \heightSubsid(\p) = (1 - \subsidRate) \cdot h_0(\p).
 \end{align}
 
 This factor is applied uniformly across the island, offering a geologically plausible and computationally efficient approximation of large-scale subsidence.
@@ -273,26 +266,26 @@ Coral reef growth is modeled independently from the subsiding terrain. The syste
 
 We define distinct reef zones anchored at specific depths:
 \begin{Itemize}
-    \Item{} Reef crest near sea level: $h_\text{crest} = -2$\,m
-    \Item{} Back reef and lagoon: $h_\text{back} = -20$\,m
-    \Item{} Fore reef sloping to abyss: $h_\text{abyss} = -100$\,m
+    \Item{} Reef crest near sea level: $h_\text{crest} = -2$\,m,
+    \Item{} Back reef and lagoon: $h_\text{back} = -20$\,m,
+    \Item{} Fore reef sloping to abyss: $h_\text{abyss} = -100$\,m.
 \end{Itemize}
 
 Each reef subregion is defined over a parametric domain $x \in [0, 1]$, with $x=0$ the begining of the reef region and $x=1$ its end, directly inputing the parametric distance $x = \distRegions - i_{\text{reef region}}$. For instance:
 \begin{Itemize}
-    \Item{} Back reef: $x_{\text{back,start}} = 0$, $x_{\text{back,end}} = 0.5$
-    \Item{} Reef crest: $x_{\text{crest,start}} = 0.75$, $x_{\text{crest,end}} = 0.8$
-    \Item{} Abyss begins at $x_{\text{abyss,start}} = 1$
+    \Item{} Back reef: $x_{\text{back,start}} = 0$, $x_{\text{back,end}} = 0.5$,
+    \Item{} Reef crest: $x_{\text{crest,start}} = 0.75$, $x_{\text{crest,end}} = 0.8$,
+    \Item{} Abyss begins at $x_{\text{abyss,start}} = 1$.
 \end{Itemize}
 
 We model transition zones between these regions using a smoothstep operator:
 \begin{align}
-    \smooth(x) = 3x^2 - 2x^3
+    \smooth(x) = 3x^2 - 2x^3.
 \end{align}
 
 We denote the interpolating function as:
 \begin{align}
-    S(a, b, x_0, x_1, x) = a + (b-a) \smooth\left(\frac{x - x_0}{x_1 - x_0}\right)
+    S(a, b, x_0, x_1, x) = a + (b-a) \smooth\left(\frac{x - x_0}{x_1 - x_0}\right).
 \end{align}
 
 The complete coral height field, as displayed in \cref{fig:coral-island_reef-function}, is built as a piecewise function:
