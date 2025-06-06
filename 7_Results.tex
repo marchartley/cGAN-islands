@@ -1,10 +1,28 @@
+\begin{figure}[t]
+    \autofitgraphics[]{2_features.png, 2_heightmaps.png, 2_results-corrected.png}
+    \autofitgraphics[]{1_features.png, 1_heightmaps.png, 1_results-corrected.png}
+    \autofitcaptions{Input, Output, Rendered}
+    \caption{An identical label map yield similar height fields over multiple inferences from the model, even after modifying the subsidence factor (visible in the luminosity of the input image).}
+    \label{fig:coral-island_results-subsidence}
+\end{figure}
 \section{Results}
 \label{sec:coral-island_results}
 
 The resulting model for coral island generation enables a high control-level from a user perspective as the unconstraint painting allows for complex scenarios while producing in real-time the resulting height fields. In this paper we used the software Blender to provide renders directly from the outputed height fields. As our pix2pix model is trained to output $256\times256$ images, the resolution of the 3D models is limited by this architecture.
 
-% \subsection{Control}
-% \label{sec:coral-island_control}
+\begin{figure}[t]
+    \autofitgraphics[]{3_features.png, 3_heightmaps.png, 3_results-corrected.png}
+    \autofitgraphics[]{4_features.png, 4_heightmaps.png, 4_results-corrected.png}
+    \autofitcaptions{Input, Output, Rendered}
+    \caption{User applied fuzzy brushes to draw the label map, resulting in some pixels that are inconsistent with the dataset and unlogical island layouts: abyss regions (red) are found between beach (green), lagoon (cyan) and reef regions (blue). The neural model ignores the layout inconsistencies, and partially over-brightness as long as the pixel isn't completely white. }
+    \label{fig:coral-island_results-fuzzy}
+\end{figure}
+\begin{figure}[b]
+    \autofitgraphics[]{DinoIsland_features.png, DinoIsland_heightmaps.png, DinoIsland_results-corrected.png}
+    \autofitcaptions{Input, Output, Rendered}
+    \caption{Without constraints on the generation, the user may use unrealistic layout and the neural network will however output a plausible result. Here new colors has been added (pistachio), but the network naturally consider it as a transition from mountain to beach. }
+    \label{fig:coral-island_results_dino}
+\end{figure}
 
 Using deep-learning-based models, most constraints from our initial assumptions are lifted (radial layout, isolated islands, ...). The control over the overall shapes of the islands regions are given through digital painting, here using the GIMP software. Each pixel of the image are encoded in HSV, with the region identifier encoded in the Hue channel. The user may increase or decrease the subsidence level of the island by modifying the Value channel over the whole image (see \cref{fig:coral-island_results-subsidence}). 
 
@@ -14,33 +32,11 @@ The tolerence over the input values may be used to provide even more control abo
 
 Since the curve-based procedural phase included low randomness, the output of the cGAN is limiting its inpredictibility and the results to a slight change on the input create only slight changes on the output, preventing unexpected results. \cref{fig:coral-island_results-subsidence} shows the result of an input map with only a variation on the subsidence level, the resulting height fields are very similar. Adding the real-time computation of outputs, it becomes possible to construct progressively a landscape and correct small mistakes to intuitively design islands inspired by real-world regions. A creation of an island similar to Mayotte, presented in \cref{fig:coral-island_example-Mayotte} was hand-made in few minutes. 
 
-
-\begin{figure}[tb]
-    \autofitgraphics[]{2_features.png, 2_heightmaps.png, 2_results-corrected.png}
-    \autofitgraphics[]{1_features.png, 1_heightmaps.png, 1_results-corrected.png}
-    \autofitcaptions{Input, Output, Rendered}
-    \caption{An identical label map yield similar height fields over multiple inferences from the model, even after modifying the subsidence factor (visible in the luminosity of the input image).}
-    \label{fig:coral-island_results-subsidence}
-\end{figure}
-\begin{figure}[tb]
-    \autofitgraphics[]{3_features.png, 3_heightmaps.png, 3_results-corrected.png}
-    \autofitgraphics[]{4_features.png, 4_heightmaps.png, 4_results-corrected.png}
-    \autofitcaptions{Input, Output, Rendered}
-    \caption{User applied fuzzy brushes to draw the label map, resulting in some pixels that are inconsistent with the dataset and unlogical island layouts: abyss regions (red) are found between beach (green), lagoon (cyan) and reef regions (blue). The neural model ignores the layout inconsistencies, and partially over-brightness as long as the pixel isn't completely white. }
-    \label{fig:coral-island_results-fuzzy}
-\end{figure}
-\begin{figure}[tb]
-    \autofitgraphics[]{DinoIsland_features.png, DinoIsland_heightmaps.png, DinoIsland_results-corrected.png}
-    \autofitcaptions{Input, Output, Rendered}
-    \caption{Without constraints on the generation, the user may use unrealistic layout and the neural network will however output a plausible result. Here new colors has been added (pistachio), but the network naturally consider it as a transition from mountain to beach. }
-    \label{fig:coral-island_results_dino}
-\end{figure}
-\begin{figure}[tb]
+\begin{figure}[t]
     \autofitgraphics[]{Mayotte-example.png, 5_features.png, 5_results-corrected.png}
     \caption{Comparison between of real (left, from Google Earth) and synthetic (right) islands of Mayotte. The label map (center) is hand drawn to match approximatively its real-world counterpart. }
     \label{fig:coral-island_example-Mayotte}
 \end{figure}
-
 
 % \subsection{Performances}
 % \label{sec:coral-island_performances}
@@ -50,11 +46,6 @@ Since the curve-based procedural phase included low randomness, the output of th
 % On the other hand, the inference time for a single input image of dimension $256 \times 256$ is constant whatever the complexity of the scene. Using the NVIDIA GeForce GTX 1650 Ti GPU with Python 3.10 and PyTorch version 2.5.1+cu121, the inference time measured is 5ms (std 1.1ms). 
 
 % We not only show that using a neural network reduces the constraints on the generation process, but also that the execution time is only dependant on the network architecture, without influence from the dataset generation algorithm. 
-
-
-
-
-
 \paragraph{Limitations} 
 While this approach brings significant advantages, there are also some limitations to consider. The reliance on a synthetic dataset means that the cGAN inherits some biases and limitations of our or initial curve-based algorithm. This could limit the true diversity of the terrains that the model can generate, as the output is confined by the patterns present in the training data. Additionally, the cGAN model's internal logic lacks transparency, offering limited user control over the generation process once the model has been trained. Moreover the training time is far from real-time. %Moreover the training time of the cGAN is far from real-time with the proposed hyper parameters from (\cite{Isola2017}), since after an epoch of 9000 examples, representing about 30 minutes of training, still outputs grid artifacts, visible in \cref{fig:coral-island_first-epoch}. After the second epoch, visual artifacts are rare. 
 
