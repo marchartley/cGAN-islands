@@ -42,24 +42,24 @@ Since the procedural phase included low randomness, the output of the cGAN is li
 % \subsection{Performances}
 % \label{sec:coral-island_performances}
 
-The Python script for the initial island dataset generation is poorly optimized and takes about 2.5s per island of size $256 \times 256$ as the parallelization does not take place here. Implementing an optimized C++ version of the initial generation process reduces this execution time to 50ms per generation.
+% The Python script for the initial island dataset generation is poorly optimized and takes about 2.5s per island of size $256 \times 256$ as the parallelization does not take place here. Implementing an optimized C++ version of the initial generation process reduces this execution time to 50ms per generation.
 
-On the other hand, the inference time for a single input image of dimension $256 \times 256$ is constant whatever the complexity of the scene. Using the NVIDIA GeForce GTX 1650 Ti GPU with Python 3.10 and PyTorch version 2.5.1+cu121, the inference time measured is 5ms (std 1.1ms). 
+% On the other hand, the inference time for a single input image of dimension $256 \times 256$ is constant whatever the complexity of the scene. Using the NVIDIA GeForce GTX 1650 Ti GPU with Python 3.10 and PyTorch version 2.5.1+cu121, the inference time measured is 5ms (std 1.1ms). 
 
-We not only show that using a neural network reduces the constraints on the generation process, but also that the execution time is only dependant on the network architecture, without influence from the dataset generation algorithm. 
+% We not only show that using a neural network reduces the constraints on the generation process, but also that the execution time is only dependant on the network architecture, without influence from the dataset generation algorithm. 
 
 
 
 
 
 \paragraph{Limitations} 
-While this approach brings significant advantages, there are also some limitations to consider. The reliance on a synthetic dataset means that the cGAN inherits some biases and limitations of the original procedural algorithm. This could limit the true diversity of the terrains that the model can generate, as the output is confined by the patterns present in the training data. Additionally, the cGAN model's internal logic lacks transparency, offering limited user control over the generation process once the model has been trained. Moreover the training time of the cGAN is far from real-time with the proposed hyper parameters from (\cite{Isola2017}), since after an epoch of 9000 examples, representing about 30 minutes of training, still outputs grid artifacts, visible in \cref{fig:coral-island_first-epoch}. After the second epoch, visual artifacts are rare. 
+While this approach brings significant advantages, there are also some limitations to consider. The reliance on a synthetic dataset means that the cGAN inherits some biases and limitations of the original procedural algorithm. This could limit the true diversity of the terrains that the model can generate, as the output is confined by the patterns present in the training data. Additionally, the cGAN model's internal logic lacks transparency, offering limited user control over the generation process once the model has been trained. Moreover the training time is far from real-time. %Moreover the training time of the cGAN is far from real-time with the proposed hyper parameters from (\cite{Isola2017}), since after an epoch of 9000 examples, representing about 30 minutes of training, still outputs grid artifacts, visible in \cref{fig:coral-island_first-epoch}. After the second epoch, visual artifacts are rare. 
 
-\begin{figure}
-    \autofitgraphics[]{epoch-1-output.png, epoch-1-render.png, epoch-2-output.png, epoch-2-render.png}
-    \caption{First epoch and second epoch height field (and respective render). On first epoch, grid artifacts, similar to low resolution image, are visible being corrected after a second epoch. }
-    \label{fig:coral-island_first-epoch}
-\end{figure}
+% \begin{figure}
+%     \autofitgraphics[]{epoch-1-output.png, epoch-1-render.png, epoch-2-output.png, epoch-2-render.png}
+%     \caption{First epoch and second epoch height field (and respective render). On first epoch, grid artifacts, similar to low resolution image, are visible being corrected after a second epoch. }
+%     \label{fig:coral-island_first-epoch}
+% \end{figure}
 
 \paragraph{Future work}
 Further improvements could be made to the synthetic dataset. Incorporating more complex geological processes, such as wave erosion or tidal influences, could lead to even more realistic terrains. Additionally, refining the way islands are blended in multi-island samples, or adding more diverse input conditions (e.g., different geological settings), could help the model generalize better and produce more varied and dynamic landscapes.  While the current model allows for rapid terrain generation, adding more options for users to interact with the cGAN, such as tweaking parameters like wind strength or island size, could enhance the flexibility of the system. 
