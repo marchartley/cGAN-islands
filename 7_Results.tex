@@ -12,27 +12,27 @@ Since the model is based on statistics over the pixel values instead of hard val
 
 The tolerence over the input values may be used to provide even more control about the transitions between two regions. \cref{fig:coral-island_results_dino} shows an example of input map with regions that are leaking over neighboring regions, and the introduction of new hue values non-existant in the dataset (light green and dark green) but are the interpolated hue value of mountain regions and beach regions.
 
-Since the procedural phase included low randomness, the output of the cGAN is limiting its inpredictibility and the results to a slight change on the input create only slight changes on the output, preventing unexpected results. \cref{fig:coral-island_results-subsidence} shows the result of an input map with only a variation on the subsidence level, the resulting height fields are very similar. Adding the real-time computation of outputs, it becomes possible to construct progressively a landscape and correct small mistakes to intuitively design islands inspired by real-world regions. A creation of an island similar to Mayotte, presented in \cref{fig:coral-island_example-Mayotte} was hand-made in few minutes. 
+Since the curve-based procedural phase included low randomness, the output of the cGAN is limiting its inpredictibility and the results to a slight change on the input create only slight changes on the output, preventing unexpected results. \cref{fig:coral-island_results-subsidence} shows the result of an input map with only a variation on the subsidence level, the resulting height fields are very similar. Adding the real-time computation of outputs, it becomes possible to construct progressively a landscape and correct small mistakes to intuitively design islands inspired by real-world regions. A creation of an island similar to Mayotte, presented in \cref{fig:coral-island_example-Mayotte} was hand-made in few minutes. 
 
 
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{2_features.png, 2_heightmaps.png, 2_results.png}
     \autofitgraphics[]{1_features.png, 1_heightmaps.png, 1_results.png}
     \caption{An identical label map yield similar height fields over multiple inferences from the model, even after modifying the subsidence factor (visible in the luminosity of the input image).}
     \label{fig:coral-island_results-subsidence}
 \end{figure}
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{3_features.png, 3_heightmaps.png, 3_results.png}
     \autofitgraphics[]{4_features.png, 4_heightmaps.png, 4_results.png}
-    \caption{Using a generative neural network allows a higher level of tolerence on the user input. Here the user used an fuzzy brush to draw the label map, resulting in some pixels that are inconsistent with the dataset and unlogical island layouts (some small "abyss" regions [red] are found between "beach" [green], "lagoon" [cyan] and "reef" [blue]). The model ignores the layout inconsistencies, and partially over-saturation as long as the pixel isn't completely white. }
+    \caption{User applied fuzzy brushes to draw the label map, resulting in some pixels that are inconsistent with the dataset and unlogical island layouts: abyss regions (red) are found between beach (green), lagoon (cyan) and reef regions (blue). The neural model ignores the layout inconsistencies, and partially over-saturation as long as the pixel isn't completely white. }
     \label{fig:coral-island_results-fuzzy}
 \end{figure}
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{DinoIsland_features.png, DinoIsland_heightmaps.png, DinoIsland_results.png}
     \caption{Without constraints on the generation, the user may use unrealistic layout and the neural network will however output a plausible result. Here new colors has been added (pistachio), but the network naturally consider it as a transition from mountain to beach. }
     \label{fig:coral-island_results_dino}
 \end{figure}
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{Mayotte-example.png, 5_features.png, 5_results.png}
     \caption{Comparison between of real (left, from Google Earth) and synthetic (right) islands of Mayotte. The label map (center) is hand drawn to match approximatively its real-world counterpart. }
     \label{fig:coral-island_example-Mayotte}
@@ -53,7 +53,7 @@ Since the procedural phase included low randomness, the output of the cGAN is li
 
 
 \paragraph{Limitations} 
-While this approach brings significant advantages, there are also some limitations to consider. The reliance on a synthetic dataset means that the cGAN inherits some biases and limitations of the original procedural algorithm. This could limit the true diversity of the terrains that the model can generate, as the output is confined by the patterns present in the training data. Additionally, the cGAN model's internal logic lacks transparency, offering limited user control over the generation process once the model has been trained. Moreover the training time is far from real-time. %Moreover the training time of the cGAN is far from real-time with the proposed hyper parameters from (\cite{Isola2017}), since after an epoch of 9000 examples, representing about 30 minutes of training, still outputs grid artifacts, visible in \cref{fig:coral-island_first-epoch}. After the second epoch, visual artifacts are rare. 
+While this approach brings significant advantages, there are also some limitations to consider. The reliance on a synthetic dataset means that the cGAN inherits some biases and limitations of our or initial curve-based algorithm. This could limit the true diversity of the terrains that the model can generate, as the output is confined by the patterns present in the training data. Additionally, the cGAN model's internal logic lacks transparency, offering limited user control over the generation process once the model has been trained. Moreover the training time is far from real-time. %Moreover the training time of the cGAN is far from real-time with the proposed hyper parameters from (\cite{Isola2017}), since after an epoch of 9000 examples, representing about 30 minutes of training, still outputs grid artifacts, visible in \cref{fig:coral-island_first-epoch}. After the second epoch, visual artifacts are rare. 
 
 % \begin{figure}
 %     \autofitgraphics[]{epoch-1-output.png, epoch-1-render.png, epoch-2-output.png, epoch-2-render.png}
@@ -77,14 +77,14 @@ Many other neural networks models could be exploited to increase the possibiliti
 
 % Furthermore, the use of an out-of-the-box cGAN model highlights the feasibility of employing existing neural network architectures with minimal modifications in the field of procedural generation. This is particularly important in domains where real-world data is scarce, such as coral reef islands, allowing synthetic data to be effectively used for training purposes.
 
-\begin{deferredfigure}
-    \autofitgraphics[]{random-input-2.png, random-height-2.png, random-render-2.png}
-    \autofitgraphics[]{random-input-1.png, random-height-1.png, random-render-1.png}
-    \autofitgraphics[]{random-input-3.png, random-height-3.png, random-render-3.png}
-    \autofitgraphics[]{random-input-4.png, random-height-4.png, random-render-4.png}
-    \caption{Starting from random Perlin noise, transformed into a label map, we can generate a large variety of results. }
-    \label{fig:coral-island_perlin-examples}
-\end{deferredfigure}
+% \begin{deferredfigure}
+%     \autofitgraphics[]{random-input-2.png, random-height-2.png, random-render-2.png}
+%     \autofitgraphics[]{random-input-1.png, random-height-1.png, random-render-1.png}
+%     \autofitgraphics[]{random-input-3.png, random-height-3.png, random-render-3.png}
+%     \autofitgraphics[]{random-input-4.png, random-height-4.png, random-render-4.png}
+%     \caption{Starting from random Perlin noise, transformed into a label map, we can generate a large variety of results. }
+%     \label{fig:coral-island_perlin-examples}
+% \end{deferredfigure}
 
 
 

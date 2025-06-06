@@ -119,23 +119,24 @@ where $i$ is the index of the region containing $\p$ (i.e., $\Radius_i \le \radi
     h(\p) = \heightProfile(\distRegions_\p).
 \end{align}
 
-\begin{figure}
-    \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1.png}
-    \caption{Given top-view and side-view outlines, the 3D result is obtained by revolution. }
-    \label{fig:coral-island_procedural-smooth-heights}
-\end{figure}
+% \begin{figure}
+%     \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1.png}
+%     \caption{Given top-view and side-view outlines, the 3D result is obtained by revolution. }
+%     \label{fig:coral-island_procedural-smooth-heights}
+% \end{figure}
 
 % This approach ensures that the height field accurately follows the elevation profile specified by the user while maintaining smooth transitions between different regions of the island.
 
 % The result is a height field that captures both the radial structure of the island (from the top-view sketch) and the vertical elevation profile (from the profile-view sketch), producing a realistic representation of islands with smooth transitions between the key terrain features.
 
-\begin{deferredfigure}
+\begin{figure}
     \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1.png}
     \autofitgraphics[]{smooth-input-outline-heights-2.png, smooth-output-heights-2.png, smooth-render-2.png}
     \autofitgraphics[]{smooth-input-outline-heights-3.png, smooth-output-heights-3.png, smooth-render-3.png}
     \caption{Providing a smooth function between each region results in islands with plausible reliefs. We fixed the outlines while editing only the height function in order to produce, from top to bottom, a low island, a coral reef island, and finally an identical island without the reef. }
+    \label{fig:coral-island_procedural-smooth-heights}
     \label{fig:coral-island_procedural-smooth-heights-multiple-examples}
-\end{deferredfigure}
+\end{figure}
 
 
 
