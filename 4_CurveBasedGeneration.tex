@@ -94,7 +94,8 @@ The generation of coral reef islands in our system begins with two intuitive cur
 The top-view sketch defines the island's outline as seen from above. Using a simple drawing interface, the user delineates concentric boundaries for key regions such as the island itself, the beaches, the lagoon, and the surrounding abyss, around the canvas center. Each boundary is represented in polar coordinates, where $\radius_\p$ is the radial distance from the island's center and $\angl_\p$ is the angular position. Allowing $\radius$ to vary with $\angl$ introduces irregular, natural shapes rather than perfect circles (\cref{fig:coral-island_procedural-height-only}).
 
 \begin{figure}
-    \autofitgraphics[]{binary-heights-input-only-outlines-2.png, binary-heights-output-only-heightmap-2.png, binary-heights-render-2.png}
+    \autofitgraphics[]{binary-heights-input-only-outlines-2.png, binary-heights-output-only-heightmap-2.png, binary-heights-render-2-corrected.png}
+    % \autofitcaptions{User sketch , Height field , Rendered result }
     \caption{Using only the outlines from the top-view sketch, each point in the field is assigned a region (island, beach, lagoon, abyss), which later guides its height assignment.}
     \label{fig:coral-island_procedural-height-only}
 \end{figure}
@@ -110,9 +111,10 @@ For any point $\p$ on the terrain, the system computes polar coordinates $(\radi
 Each point's height is computed using the profile function $\heightProfile(\distRegions)$. Instead of using the raw radial distance $\radius_\p$, we define a parametric region distance $\distRegions_\p$ that maps each point to a normalized position along the concentric regions (see \cref{fig:coral-island_parametric-distance}). The radial space is divided by user-defined boundaries $\Radius_0, \Radius_1, \dots, \Radius_n$, corresponding to the island center, border, beach, lagoon, and abyss.
 
 \begin{figure}[b]
-    \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1.png}
-    \autofitgraphics[]{smooth-input-outline-heights-2.png, smooth-output-heights-2.png, smooth-render-2.png}
-    \autofitgraphics[]{smooth-input-outline-heights-3.png, smooth-output-heights-3.png, smooth-render-3.png}
+    \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1-corrected.png}
+    \autofitgraphics[]{smooth-input-outline-heights-2.png, smooth-output-heights-2.png, smooth-render-2-corrected.png}
+    \autofitgraphics[]{smooth-input-outline-heights-3.png, smooth-output-heights-3.png, smooth-render-3-corrected.png}
+    % \autofitcaptions{User outlines and profile, Height field, Rendered result}
     \caption{Providing a smooth function between each region results in islands with plausible reliefs. We fixed the outlines while editing only the height function in order to produce, from top to bottom, a low island, a coral reef island, and finally an identical island without the reef. }
     \label{fig:coral-island_procedural-smooth-heights}
     \label{fig:coral-island_procedural-smooth-heights-multiple-examples}
@@ -198,7 +200,7 @@ where $i$ is the index of the region containing $\p$ (i.e., $\Radius_i \le \radi
 
 \begin{figure}[t]
     \autofitgraphics[]{wind-deform-input.png}
-    \autofitgraphics[]{wind-deform-output-original.png, wind-deform-render-original.png, wind-deform-output.png, wind-deform-render.png}
+    \autofitgraphics[]{wind-deform-output-original.png, wind-deform-render-original-corrected.png, wind-deform-output.png, wind-deform-render.png}
     \caption{Defining a top-view wind vector field from user-provided strokes (top, blue) in association with a resistance function (top, red), a height field is deformed accordingly. Left: original height field and render; right: altered results. The beach and lagoon regions are defined with low resistance, which is visible by having only these regions deformed in bottom results. }
     \label{fig:coral-island_wind-effect-result}
 \end{figure}
@@ -224,6 +226,7 @@ This warp is applied to both the height field and the label map, ensuring consis
 
 \begin{figure}[t]
     \autofitgraphics[]{result_high_resistance.png, result_low_resistance.png}
+    \autofitcaptions{High resistance, Low resistance}
     \caption{(Left) An island defined with a high resistance, under a uniform lateral wind velocity field, and (right) the same island with lower resistance on the reef borders, simulating the effect of coastal erosion.}
     \label{fig:coral-island_resistance-result}
 \end{figure}
@@ -352,9 +355,10 @@ The complete coral height field, as displayed in \cref{fig:coral-island_reef-fun
 \label{sec:coral-island_procedural-output}
 
 \begin{figure}
-    \autofitgraphics[]{volcano-input.png, volcano-render.png}
+    \autofitgraphics[]{volcano-input.png, volcano-render-corrected.png}
     \autofitgraphics[]{volcano-heightmap.png, volcano-corals.png, volcano-output.png}
-    \caption{Volcano with single vent. (Bottom right) The initial height field is computed directly from the user input, (bottom center) the reef height field is outputed from \cref{eq:coral-island_full-reef-function}, and finally, (bottom left) we blend the two results with \cref{eq:coral-island_smoothmax-function}.}
+    \autofitcaptions{Initial height field, Reef only, Blended height field}
+    \caption{Volcano with single vent. (Bottom left) The initial height field is computed directly from the user input, (bottom center) the reef height field is outputed from \cref{eq:coral-island_full-reef-function}, and finally, (bottom right) we blend the two results with \cref{eq:coral-island_smoothmax-function}.}
     \label{fig:coral-island_volcano-example}
 \end{figure}
 

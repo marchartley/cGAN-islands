@@ -645,12 +645,31 @@
   \renewcommand{\do}[1]{%
     \stepcounter{fitImgIndex}%
     \pgfmathsetmacro{\relwidth}{\csname fitRatio\thefitImgIndex\endcsname / \fitTotalRatio}%
-    \expandafter\includegraphics\expandafter[\fitimageoptions, width=\relwidth\linewidth]{##1}%
+    \xdef\fitWidth{\relwidth}%
+    \expandafter\xdef\csname fitWidth\thefitImgIndex\endcsname{\fitWidth}%
+    \expandafter\includegraphics\expandafter[\fitimageoptions, width=\fitWidth\linewidth]{##1}%
+
   }%
   \docsvlist{#1}%
   \end{adjustbox}%
   \endgroup
 }
+\newcounter{fitCapIndex}
+\NewDocumentCommand{\autofitcaptions}{O{2ex} m}{%
+  \setcounter{fitCapIndex}{0}%
+  \begin{adjustbox}{width=\fitrowwidth}%
+  \renewcommand{\do}[1]{%
+    \stepcounter{fitCapIndex}%
+    \pgfmathsetmacro{\relwidth}{\csname fitRatio\thefitCapIndex\endcsname / \fitTotalRatio}%
+    \raisebox{#1}{\parbox[t]{\relwidth\linewidth}{\centering ##1}}%
+    }%
+    \docsvlist{#2}%
+  \end{adjustbox}%
+  \vspace{-#1}\vspace{-#1}
+}
+
+
+
 
 % \delete{text_to_remove}
 \zzcommand{\delete}[1]

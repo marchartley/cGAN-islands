@@ -16,24 +16,27 @@ Since the curve-based procedural phase included low randomness, the output of th
 
 
 \begin{figure}[tb]
-    \autofitgraphics[]{2_features.png, 2_heightmaps.png, 2_results.png}
-    \autofitgraphics[]{1_features.png, 1_heightmaps.png, 1_results.png}
+    \autofitgraphics[]{2_features.png, 2_heightmaps.png, 2_results-corrected.png}
+    \autofitgraphics[]{1_features.png, 1_heightmaps.png, 1_results-corrected.png}
+    \autofitcaptions{Input, Output, Rendered}
     \caption{An identical label map yield similar height fields over multiple inferences from the model, even after modifying the subsidence factor (visible in the luminosity of the input image).}
     \label{fig:coral-island_results-subsidence}
 \end{figure}
 \begin{figure}[tb]
-    \autofitgraphics[]{3_features.png, 3_heightmaps.png, 3_results.png}
-    \autofitgraphics[]{4_features.png, 4_heightmaps.png, 4_results.png}
+    \autofitgraphics[]{3_features.png, 3_heightmaps.png, 3_results-corrected.png}
+    \autofitgraphics[]{4_features.png, 4_heightmaps.png, 4_results-corrected.png}
+    \autofitcaptions{Input, Output, Rendered}
     \caption{User applied fuzzy brushes to draw the label map, resulting in some pixels that are inconsistent with the dataset and unlogical island layouts: abyss regions (red) are found between beach (green), lagoon (cyan) and reef regions (blue). The neural model ignores the layout inconsistencies, and partially over-brightness as long as the pixel isn't completely white. }
     \label{fig:coral-island_results-fuzzy}
 \end{figure}
 \begin{figure}[tb]
-    \autofitgraphics[]{DinoIsland_features.png, DinoIsland_heightmaps.png, DinoIsland_results.png}
+    \autofitgraphics[]{DinoIsland_features.png, DinoIsland_heightmaps.png, DinoIsland_results-corrected.png}
+    \autofitcaptions{Input, Output, Rendered}
     \caption{Without constraints on the generation, the user may use unrealistic layout and the neural network will however output a plausible result. Here new colors has been added (pistachio), but the network naturally consider it as a transition from mountain to beach. }
     \label{fig:coral-island_results_dino}
 \end{figure}
 \begin{figure}[tb]
-    \autofitgraphics[]{Mayotte-example.png, 5_features.png, 5_results.png}
+    \autofitgraphics[]{Mayotte-example.png, 5_features.png, 5_results-corrected.png}
     \caption{Comparison between of real (left, from Google Earth) and synthetic (right) islands of Mayotte. The label map (center) is hand drawn to match approximatively its real-world counterpart. }
     \label{fig:coral-island_example-Mayotte}
 \end{figure}
