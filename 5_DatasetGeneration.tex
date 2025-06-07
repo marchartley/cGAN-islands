@@ -14,7 +14,7 @@
 \end{figure}
 
 
-The creation of the dataset is done through the use of the procedural curve-based modeling algorithm for which we alter the input parameters. For each generation, the top-view and profile-view sketches use an initial layout. Each outline of the top-view sketch is defined as a centered circle of random radius $\radius_\text{min} \leq \radius^* \leq \radius_\text{max}$. We add another deformation based on fBm noise $\noise$ such that the final contour, profile, and resistances, are defined as 
+The dataset is created using the procedural curve-based modeling algorithm, with altered input parameters. For each generation, the top-view and profile-view sketches use an initial layout. Each outline of the top-view sketch is defined as a centered circle of random radius $\radius_\text{min} \leq \radius^* \leq \radius_\text{max}$. We add another deformation based on fBm noise $\noise$ such that the final contour, profile, and resistances, are defined as 
 \begin{align}
     \radius(\angl) &= \radius^* + \noise_{\text{contours}}(\angl) \nonumber \\
     \heightProfile(\distRegions) &= \heightProfile^*(\distRegions) \cdot \noise_{\text{profile}}(\distRegions) \nonumber \\
@@ -35,13 +35,13 @@ The creation of the dataset is done through the use of the procedural curve-base
 % \end{align}
 
 Finally, a wind velocity field is randomly generated as a final input for the curve-based modeling algorithm, introducing deformations on the resulting islands. The realistic nature of wind is ignored for the generation of the wind strokes in order to provide complexity and variety in the results. 
-We generate a random number $n$ of strokes and their path by a uniformly sampling a random number $m$ of points. The spread and intensity of each stroke is also random.
+We generate a random number $n$ of strokes and their path by uniformly sampling a random number $m$ of points. The spread and intensity of each stroke is also random.
 
-Once all inputs are set, we generate an example for multiple level of subsidence $\subsidRate \in [0, 1]$ to obtain a height field incorporating the coral reef modeling and the associated label map. % For each pixel of the label map, the region label is encoded in the Hue channel of the image. The level of subsidence is applied globally on the Value channel.
+Once all inputs are set, we generate an example for multiple levels of subsidence $\subsidRate \in [0, 1]$ to obtain a height field incorporating the coral reef modeling and the associated label map. % For each pixel of the label map, the region label is encoded in the Hue channel of the image. The level of subsidence is applied globally on the Value channel.
 
 % The Pix2pix model was originally pretrained using RGB images. In this training phase, the images were label using the HSV (Hue, Saturation, Value) color space, where the Hue component specifically carried the label information. Both the Saturation and Value components were kept neutral, meaning they did not convey any significant label-related data. The target images, the ones the model aimed to reproduce, were formatted in RGB.
 
-We use of the Hue component to encode the labels directly from the parametric distance $H = \floor{\distRegions}$ while the subsidence rate into the Value component $V =\subsidRate$. %This addition not only utilizes the model's existing capability to interpret the HSV format but also enriches the input data, which now carries additional, valuable environmental information.
+We use the Hue component to encode the labels directly from the parametric distance $H = \floor{\distRegions}$ and encode the subsidence rate into the Value component $V =\subsidRate$. %This addition not only utilizes the model's existing capability to interpret the HSV format but also enriches the input data, which now carries additional, valuable environmental information.
 %
 Moreover, we purposefully left the Saturation component unchanged at this stage, reserving space for potentially including another parameter in the future. %, which would allow us to expand the model's utility without altering the foundational HSV encoding scheme established during its initial training. By adhering to this encoding format, we ensure continuity in data representation, which maximizes the efficiency of the pretrained model. This strategic update enhances the model's adaptability and broadens its applicability to tackle new, complex challenges more effectively.
 
@@ -57,7 +57,7 @@ Moreover, we purposefully left the Saturation component unchanged at this stage,
 %     \label{fig:coral-island_data-augmentation-examples}
 % \end{figure}
 
-To enhance the variety of the dataset and improve the model's ability to generalize, we apply several data augmentation techniques in addition of the usual affine transformations (rotation, scaling, and flipping):
+To enhance the variety of the dataset and improve the model's ability to generalize, we apply several data augmentation techniques in addition to the usual affine transformations (rotation, scaling, and flipping):
 
     % \AltTextImage{
         \textit{Translation:} Since the original algorithm always centers the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island_cGAN-examples}, leftmost). This ensures that the cGAN can generate islands in any position within the frame. By wrapping the island on the borders, the model learns that data can appear on the edges on the image.
