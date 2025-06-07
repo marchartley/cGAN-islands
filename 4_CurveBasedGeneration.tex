@@ -93,7 +93,7 @@ The generation of coral reef islands in our system begins with two intuitive cur
 % \end{align}
 The top-view sketch defines the island's outline as seen from above. Using a simple drawing interface, the user delineates concentric boundaries for key regions such as the island itself, the beaches, the lagoon, and the surrounding abyss, around the canvas center. Each boundary is represented in polar coordinates, where $\radius_\p$ is the radial distance from the island's center and $\angl_\p$ is the angular position. Allowing $\radius$ to vary with $\angl$ introduces irregular, natural shapes rather than perfect circles (\cref{fig:coral-island_procedural-height-only}).
 
-\begin{figure}[t]
+\begin{figure}
     \autofitgraphics[]{binary-heights-input-only-outlines-2.png, binary-heights-output-only-heightmap-2.png, binary-heights-render-2-corrected.png}
     % \autofitcaptions{User sketch , Height field , Rendered result }
     \caption{Using only the outlines from the top-view sketch, each point in the field is assigned a region (island, beach, lagoon, abyss), which later guides its height assignment.}
@@ -224,7 +224,7 @@ To preserve semantic structure across terrain regions, a resistance function $\r
 
 This warp is applied to both the height field and the label map, ensuring consistent semantic deformation. For example, applying strokes to one side of a circular island creates concave coastlines while leaving high-resistance regions (e.g., the abyss) unaffected, simulating the localized impact of natural erosion (\cref{fig:coral-island_wind-effect-result}, bottom).
 
-\begin{figure}[b]
+\begin{figure}
     \autofitgraphics[]{result_high_resistance.png, result_low_resistance.png}
     \autofitcaptions{High resistance, Low resistance}
     \caption{(Left) An island defined with a high resistance, under a uniform lateral wind velocity field, and (right) the same island with lower resistance on the reef borders, simulating the effect of coastal erosion.}
@@ -261,7 +261,7 @@ This factor is applied uniformly across the island, offering a geologically plau
 
 Coral reef growth is modeled independently from the subsiding terrain. The system generates a coral-specific height field $\heightCoral(\p)$ that remains near the sea surface regardless of the island's vertical shift, reflecting coral growth in biologically viable depth ranges (typically 0-30 meters below sea level).
 
-\begin{figure}[t]
+\begin{figure}
     \includegraphics[width=0.7\linewidth]{Reef_function.png}
     \caption{The modeling of the reef growth in our model is described by a piecewise function $\heightCoral$ which is flat in the lagoon, the crest and abyss, and follows a smoothstep function as transitions for the backreef and fore reef regions. Zones' anchor heights are represented by horizontal dashed lines; zones' limits are dotted vertical lines. }
     \label{fig:coral-island_reef-function}
@@ -354,7 +354,7 @@ The complete coral height field, as displayed in \cref{fig:coral-island_reef-fun
 \subsubsection{Output}
 \label{sec:coral-island_procedural-output}
 
-\begin{figure}[t]
+\begin{figure}
     \autofitgraphics[]{volcano-input.png, volcano-render-corrected.png}
     \autofitgraphics[]{volcano-heightmap.png, volcano-corals.png, volcano-output.png}
     \autofitcaptions{Initial height field, Reef only, Blended height field}

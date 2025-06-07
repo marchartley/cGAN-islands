@@ -1,5 +1,5 @@
-\clearpage
-\deferredfloats
+% \clearpage
+% \deferredfloats
 \begin{figure*}
     \autofitgraphics[]{random-input-2.png, random-height-2.png, random-render-2-corrected.png}
     \autofitgraphics[]{random_input-23.png, random_heightmap-23.png, random_render-23.png}
@@ -9,4 +9,16 @@
     \autofitcaptions{Input, Output, Render}
     \caption{Starting from random Perlin noise, transformed into label maps with increasing subsidence, we can generate a large variety of results. }
     \label{fig:coral-island_perlin-examples}
+\end{figure*}
+
+\begin{figure*}
+    \autofitgraphics[]{wind-deform-render-original-corrected.png, wind-deform-render.png}
+    \autofitcaptions{\cref{fig:coral-island_wind-effect-result} (without deformation), \cref{fig:coral-island_wind-effect-result} (with deformation)}
+    \autofitgraphics[]{1_results-corrected.png, 2_results-corrected.png}
+    \autofitcaptions{\cref{fig:coral-island_results-subsidence} (no subsidence), \cref{fig:coral-island_results-subsidence} (with subsidence)}
+    \autofitgraphics[]{3_results-corrected.png, 4_results-corrected.png}
+    \autofitcaptions{\cref{fig:coral-island_results-fuzzy} (fuzzy brushes), \cref{fig:coral-island_results-fuzzy} (failure case with highlight clipping)}
+    \autofitgraphics[]{DinoIsland_results-corrected.png, 5_results-corrected.png}
+    \autofitcaptions{\cref{fig:coral-island_results_dino}, \cref{fig:coral-island_example-Mayotte}}
+    \caption{High-resolution version of figures found in this paper.}
 \end{figure*}

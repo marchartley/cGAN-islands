@@ -125,10 +125,11 @@
 \let\endorigfigure\endfigure
 
 \renewenvironment{figure}[1][tbph]{%
-    \origfigure[#1]%
-    \centering
+  \origfigure[#1]%
+  \centering
 }{%
-    \endorigfigure
+  \vspace{-0.5em}
+  \endorigfigure
 }
 
 % Non-EG submissions:
