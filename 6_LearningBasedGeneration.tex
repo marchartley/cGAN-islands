@@ -4,7 +4,7 @@
 
 In this section, we introduce the use of a conditional Generative Adversarial Network (cGAN), specifically the pix2pix model proposed by \cite{Isola2017}, to enhance the island generation process by increasing the variety and flexibility of terrains. While the curve-based modeling algorithm can create numerous island examples, cGAN provides additional flexibility in generating more complex terrain without the rigid constraints of the curve-based algorithm that stem from our initial assumptions based on coral reef formation theory. 
 
-% The pix2pix model was originally pretrained using RGB images. In this training phase, the images were labeled using the HSV (Hue, Saturation, Value) color space, where the Hue component specifically carried the label information. Both the Saturation and Value components were kept neutral, meaning they did not convey any significant label-related data. 
+% The pix2pix model was originally pretrained using RGB images. In this training phase, the images were labelled using the HSV (Hue, Saturation, Value) color space, where the Hue component specifically carried the label information. Both the Saturation and Value components were kept neutral, meaning they did not convey any significant label-related data. 
 % 
 % For the purpose of fine-tuning the model, we retained the use of the Hue component to encode the labels  directly from the parametric distance $H = \floor{\distRegions}$. We introduced a new dimension to the model's learning capabilities by incorporating the subsidence rate into the Value component $V =\subsidRate$. This addition not only utilizes the model's existing capability to interpret the HSV format but also enriches the input data, which now carries additional, valuable environmental information.
 
