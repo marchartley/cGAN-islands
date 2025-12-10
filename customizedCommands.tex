@@ -1,14 +1,54 @@
+\makeatletter
 \hbadness = 99999
+\binoppenalty=\maxdimen
+\relpenalty=\maxdimen
 
-% Non-EG documents:
-% \captionsetup{width=\linewidth}
-
-
-% All documents:
-
-
-% Define \zzcommand for conditional commands
+% \zzcommand{commandName}
 \def\zzcommand#1{\let#1\undefined\newcommand#1}
+
+\DeclareCaptionFormat{capformat}{\fontsize{11pt}{13pt}\selectfont#1#2#3}
+\captionsetup[figure]{textfont=it, labelfont=bf, format=capformat}
+\renewcommand{\floatpagefraction}{.8}
+\renewcommand{\topfraction}{.9}
+\renewcommand{\bottomfraction}{.8}
+\renewcommand{\textfraction}{.1}
+\setcounter{totalnumber}{5}
+\setcounter{topnumber}{5}
+\setcounter{bottomnumber}{5}
+
+% \setcounter{secnumdepth}{3}
+
+
+\SetKwRepeat{DoWhile}{do}{while}
+
+
+% % \IfPackageLoadedTF{refcheck}{
+%   
+%   \newcommand{\refcheckize}[1]{%
+%     \expandafter\let\csname rc@orig@\string#1\endcsname#1%
+%     \expandafter\DeclareRobustCommand\csname rc@wrap@\string#1\endcsname[1]{%
+%       \csname rc@orig@\string#1\endcsname{##1}%
+%       \@for\rc@tmp:=##1\do{\wrtusdrf{\rc@tmp}\wrtusdrf{{\rc@tmp}}}%
+%     }%
+%     \expandafter\let\expandafter#1\csname rc@wrap@\string#1\endcsname
+%   }
+%   \newcommand{\refcheckizetwo}[1]{%
+%     \expandafter\let\csname rc@orig@\string#1\endcsname#1%
+%     \expandafter\DeclareRobustCommand\csname rc@wrap@\string#1\endcsname[2]{%
+%       \csname rc@orig@\string#1\endcsname{##1}{##2}%
+%       \wrtusdrf{##1}\wrtusdrf{{##1}}\wrtusdrf{##2}\wrtusdrf{{##2}}%
+%     }%
+%     \expandafter\let\expandafter#1\csname rc@wrap@\string#1\endcsname
+%   }
+%   
+%   \refcheckize{\cref}
+%   \refcheckize{\Cref}
+%   \refcheckizetwo{\crefrange}
+%   \refcheckizetwo{\Crefrange}
+%   % --------------------------------
+% % }{}
+
+
 
 % Macros to hold current titles
 % \currentsection
@@ -17,14 +57,14 @@
 \zzcommand{\currentsubsection}{}
 % \currentsubsubsection
 \zzcommand{\currentsubsubsection}{}
-\makeatletter
+
 
 % Save original commands
 \let\oldsection\section
 \let\oldsubsection\subsection
 \let\oldsubsubsection\subsubsection
 
-\makeatletter
+
 \gdef\currentsection{}
 \gdef\currentsubsection{}
 \gdef\currentsubsubsection{}
@@ -74,35 +114,8 @@
   \gdef\currentsubsubsection{#1}%
   \oldsubsubsection*{#1}%
 }
-\makeatother
-
-% \tensor{expression}
-\zzcommand{\tensor}[1]{\mathbf{#1}}
-% \mtrx{matrix_name}
-\zzcommand{\mtrx}[1]{\mathbf{#1}}
-% \field{field_name}
-\zzcommand{\field}[1]{\mathbf{#1}}
 
 
-% \WarningFilter{hyperref}{Token not allowed in a PDF string} % Remove the warnings about \gls in titles or math functions in titles.
-
-\LetLtxMacro{\OldTilde}{\Tilde}
-\zzcommand{\Tilde}[1]{
-  \StrLen{#1}[\temp]%
-  \ifnum\temp>1
-    \ThisStyle{%
-      \setbox0=\hbox{$\SavedStyle#1$}%
-      \stackengine{-.1\LMpt}{$\SavedStyle#1$}{%
-        \stretchto{\scaleto{\SavedStyle\mkern.2mu\AC}{.5150\wd0}}{.6\ht0}%
-      }{O}{c}{F}{T}{S}%
-    }
-  \else 
-    \OldTilde{#1}
-  \fi
-}
-
-% \Bar{expression}
-\zzcommand{\Bar}[1]{\overline{#1}}
 
 
 \LetLtxMacro{\Oldincludegraphics}{\includegraphics}
@@ -124,30 +137,29 @@
 \let\origfigure\figure
 \let\endorigfigure\endfigure
 
-\renewenvironment{figure}[1][tbph]{%
-  \origfigure[#1]%
-  \centering
+\renewenvironment{figure}[1][tbp]{%
+    \captionsetup{width=\linewidth}
+    \origfigure[#1]%
+    \centering
 }{%
-  \vspace{-0.5em}
-  \endorigfigure
+    \endorigfigure
 }
 
-% Non-EG submissions:
-% % \teaser{/* Inside commands of the figure* environment */}
-% \zzcommand{\teaser}[1]{
-%     \begin{figure*}[ht]
-%         \centering
-%         #1
-%     \end{figure*}
-% }
+% \teaser{/* Inside commands of the figure* environment */}
+\zzcommand{\teaser}[1]{
+  \begin{figure}[ht]
+    \centering
+        #1
+    \end{figure}
+}
 
 % \minitoc
 \def\minitoc{
 	\etocsettocstyle{\section*{\contentsname}}{}
 	\localtableofcontents
-	\noindent\textbf{\hyperlink{tocpage}{$\uparrow$ Back to summary}}
+	% \noindent\textbf{\hyperlink{tocpage}{$\uparrow$ Back to summary}}
 }
-% \makeatletter\@addtoreset{chapter}{part}\makeatother%
+% \@addtoreset{chapter}{part}%
 
 \sisetup{product-units=repeat}
 
@@ -156,11 +168,12 @@
 \zzcommand{\cellalign}{cl}
 \newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
 
-% Non-EG submissions:
+
+% % "Old" citation style
 % \DeclareCiteCommand{\cite}[\mkbibparens]
 %   {\usebibmacro{prenote}\usebibmacro{cite:init}}%
 %   {\usebibmacro{citeindex}\usebibmacro{countcite}{\thefield{entrykey}}%
-%   \printtext[bibhyperref]{\usebibmacro{cite}}}%
+%   \printtext[bibhyperref]{[\printfield{labelalpha}]}}%  \printtext[bibhyperref]{\usebibmacro{cite}}}%
 %   {\multicitedelim}%
 %   {\usebibmacro{postnote}}
 
@@ -184,182 +197,333 @@
 %   {\multicitedelim}
 %   {\usebibmacro{postnote}}
 
-% \AtEveryBibitem{\clearfield{url}}
-% \AtEveryBibitem{\clearfield{doi}}
-% \AtEveryBibitem{\clearfield{note}} % Notes from Mendeley
-% \newtotcounter{citenum}
-% \AtEveryBibitem{\stepcounter{citenum}}
+% "New" citation style
+\DeclareCiteCommand{\cite}[]
+  {\usebibmacro{prenote}\bibopenbracket}%
+  {\usebibmacro{citeindex}\usebibmacro{countcite}{\thefield{entrykey}}%
+  \printtext[bibhyperref]{\printfield{labelalpha}}}%  \printtext[bibhyperref]{\usebibmacro{cite}}}%
+  {\multicitedelim}%
+  {\bibclosebracket\usebibmacro{postnote}}
+
+\newbibmacro*{citefullbody}{%
+  \printnames{labelname}%
+  \setunit{\addcomma\space}%
+  \textit{\printfield[]{title}}~(\printfield{year})%
+}
+
+\DeclareCiteCommand{\citep}
+{\usebibmacro{prenote}}%
+{\usebibmacro{citeindex}\usebibmacro{countcite}{\thefield{entrykey}}%
+\printtext[bibhyperref]{\usebibmacro{citefullbody}}}%
+{\multicitedelim}%
+{\usebibmacro{postnote}}
 
 
-% \renewbibmacro*{title}{%
-% {}
-% {\printtext[title]{\mkbibbold{\printfield[title]{title}}}\newunit}}
+% Only print prefix (von/de/van…) + family; enable "et al."
+\DeclareNameFormat{onlyfamily}{%
+  \nameparts{#1}%
+  % ← This is the crucial line: allow biblatex to insert name list delimiters
+  \usebibmacro{name:delim}{\namepartfamily}%
+  % print prefix (if any) and family
+  \ifdefvoid{\namepartprefix}{}{\namepartprefix\space}%
+  \namepartfamily%
+  % allow truncation to print "et al."
+  \usebibmacro{name:andothers}%
+}
 
-% \DefineBibliographyStrings{english}{
-%   backrefpage = {Cited on page},
-%   backrefpages = {Cited on pages},
+% Use that format for the labelname list (author or editor fallback)
+\DeclareNameAlias{labelname}{onlyfamily}
+
+% Delimiters BETWEEN names (global)
+\DeclareDelimFormat{finalnamedelim}{\addspace\bibstring{and}\space}
+\DeclareDelimFormat{multinamedelim}{\addcomma\space}
+\DeclareDelimFormat{andothersdelim}{\addspace}
+
+% Plain-text cite command
+\DeclareCiteCommand{\citeName}
+  {%
+    \usebibmacro{prenote}%
+    \defcounter{minnames}{1}%
+    \defcounter{maxnames}{2}% 1 author → 1; 2 authors → both; ≥3 → "et al."
+  }
+  {%
+    \usebibmacro{citeindex}%
+    \printnames{labelname}%
+  }
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+
+% \DeclareCiteCommand{\citeName}
+% {\usebibmacro{prenote}}%
+% {\AtNextCite{\defcounter{maxnames}{2}}\usebibmacro{citeindex}\usebibmacro{countcite}{\thefield{entrykey}}%
+% \printtext[bibhyperref]{\printlastnames{author} vucvzutczc}}%
+% {\multicitedelim}%
+% {\usebibmacro{postnote}}
+
+% \zzcommand{\citeProgram}[1]{
+%   \footcite{#1}
 % }
-% \setlength\bibitemsep{1.2\itemsep}
+\DeclareCiteCommand{\citeProgram}[]
+  {\usebibmacro{prenote}}
+  % {\usebibmacro{citeindex}\usebibmacro{countcite}{\thefield{entrykey}}\printtext[bibhyperref]{\mkbibemph{\printfield{title}},~\printdate}}
+  {\usebibmacro{citeindex}\usebibmacro{countcite}{\thefield{entrykey}}
+  % \printtext[bibhyperref]{\printfield{title}~(\printdate)}}
+  \printtext[bibhyperref]{\printfield{title}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+% \AtEveryBibitem{\clearfield{url}}
+\AtEveryBibitem{\clearfield{abstract}}
+\AtEveryBibitem{\clearfield{doi}}
+\AtEveryBibitem{\clearfield{note}} % Notes from Mendeley
+\newtotcounter{citenum}
+\AtEveryBibitem{\stepcounter{citenum}}
+
+
+\renewbibmacro*{title}{%
+{}
+{\printtext[title]{\mkbibbold{\printfield[title]{title}}}\newunit}}
+
+\DefineBibliographyStrings{english}{
+  backrefpage = {Cited on page},
+  backrefpages = {Cited on pages},
+}
+
+
+
+\setlength\bibitemsep{1.2\itemsep}
 
 \newcounter{AltTextImageCurrentSide}
+\newcounter{ItemizeDepthCounter}
+\newlength{\ItemizeLeftMargin}
+\newlength{\ItemizeIndentPerLevel}
+\newlength{\ItemizeExtraIndent}
+\setlength{\ItemizeIndentPerLevel}{1em}
 
 % \begin{Itemize}
-%     \Item{$1} $2
+%     \Item{} \textbf{$1} $2
 % \end{Itemize}
-% \length{\parindent}{0}
 \newenvironment{Itemize}
-{    
+{%
   \setcounter{AltTextImageCurrentSide}{0}
-  \begin{itemize}[label={}, leftmargin=\parindent, itemindent=1.0em, itemsep=0em, topsep=0em] %, left=2em, itemsep=0.5em]} % Custom settings
+  \stepcounter{ItemizeDepthCounter}
+  \setlength{\ItemizeLeftMargin}{0pt}
+  \setlength{\ItemizeExtraIndent}{\ItemizeIndentPerLevel}
+  \multiply\ItemizeExtraIndent by \numexpr\value{ItemizeDepthCounter}-1\relax
+  \addtolength{\ItemizeLeftMargin}{\ItemizeExtraIndent}
+  \begin{itemize}[
+    label={}, 
+    leftmargin=\ItemizeLeftMargin,
+    itemindent=1em,
+    itemsep=0em,
+    topsep=0em
+  ]
 }
-{\end{itemize}\bigbreak}
+{%
+  \end{itemize}
+  \addtocounter{ItemizeDepthCounter}{-1}
+  \ifthenelse{\value{ItemizeDepthCounter} > 0}{}{\bigbreak}
+}
+
+
+\newcounter{alttextimage@saved@equation}
+\newcommand{\ATI@suspend}{%
+  % save equation counter
+  \setcounter{alttextimage@saved@equation}{\value{equation}}%
+  % (optional) silence labels during the dry run to avoid aux churn
+  \let\ATI@orig@label\label
+  \let\label\@gobble
+  % (optional) if you have a custom \eqlabel, silence it too
+  \@ifundefined{eqlabel}{}{%
+    \let\ATI@orig@eqlabel\eqlabel
+    \renewcommand{\eqlabel}[2]{##2}% just typeset title text if any
+  }%
+}
+\newcommand{\ATI@resume}{%
+  % restore equation counter
+  \setcounter{equation}{\value{alttextimage@saved@equation}}%
+  % restore labeling
+  \let\label\ATI@orig@label
+  \@ifundefined{ATI@orig@eqlabel}{}{%
+    \let\eqlabel\ATI@orig@eqlabel
+  }%
+}
+
 
 % Define new command \Itemthat applies italics to the title only
-% \Item{text}
+% \Item{} \textbf{text}
 \zzcommand{\Item}[1]{%
   \ifblank{#1}%
     {\item $\bullet$ }% Case when #1 is empty
-    {\item \textit{#1}}% Case when #1 is not empty
+    {\item \textbf{#1}}% Case when #1 is not empty
 }
 
 \newlength{\currentparindent}
+\newlength{\currentparskip}
 \newlength{\contentheightofalttextimage}
+\newlength{\contentheightofalttextimagecaption}
 \newsavebox{\alttextbox}
 
-
-
-% Non-EG Only:
-% \ExplSyntaxOn
-% % \AltTextImageR{item_content}{placeholder.pdf}{caption}{label}
-% \zzcommand{\AltTextImageR}[4]{% 
-%   \setcounter{AltTextImageCurrentSide}{1}
-%   \setlength{\currentparindent}{\parindent}%
-%   % \newsavebox{\alttextbox}
-%     \sbox{\alttextbox}{\vbox{\hsize=0.65\linewidth #1}}%
-%     \setlength{\contentheightofalttextimage}{\ht\alttextbox}%
-%   \noindent
-%   \begin{minipage}[t]{0.65\linewidth}
-%     \setlength{\parindent}{\currentparindent}
-%     #1
-%   \end{minipage}%
-%   \hfill % Add horizontal space between text and image
-%   \begin{minipage}[t]{0.30\linewidth}    
-%     \centering
-%     % Parse comma-separated images and stack them
-%     \seq_set_split:Nnn \l_tmpa_seq { , } { #2 }%
-%     \int_set:Nn \l_tmpa_int { \seq_count:N \l_tmpa_seq }%
-%     \dim_set:Nn \l_tmpa_dim { \contentheightofalttextimage / \l_tmpa_int }%
-%     \seq_map_inline:Nn \l_tmpa_seq {%
-%       \includegraphics[width=\linewidth, height=\l_tmpa_dim, keepaspectratio, valign=t]{##1}\\%
-%     }%
-%     % \includegraphics[width=\linewidth, height=\contentheightofalttextimage, keepaspectratio, valign=t]{#2}
-%     \captionsetup{font=footnotesize} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     \captionsetup{width=\linewidth} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     \captionof{figure}{#3} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     % \caption{#3}
-%     \label{#4}
-%   \end{minipage}%
-% }
-% % \AltTextImageL{item_content}{placeholder.pdf}{caption}{label}
-% \zzcommand{\AltTextImageL}[4]{% 
-%   \setcounter{AltTextImageCurrentSide}{0}
-%   \setlength{\currentparindent}{\parindent}%
-%     \sbox{\alttextbox}{\vbox{\hsize=0.65\linewidth #1}}%
-%     \setlength{\contentheightofalttextimage}{\ht\alttextbox}%
-%   \noindent
-%   \begin{minipage}[t]{0.30\linewidth}
-%     \centering
-%     % Parse comma-separated images and stack them
-%     \seq_set_split:Nnn \l_tmpa_seq { , } { #2 }%
-%     \int_set:Nn \l_tmpa_int { \seq_count:N \l_tmpa_seq }%
-%     \dim_set:Nn \l_tmpa_dim { \contentheightofalttextimage / \l_tmpa_int }%
-%     \seq_map_inline:Nn \l_tmpa_seq {%
-%       \includegraphics[width=\linewidth, height=\l_tmpa_dim, keepaspectratio, valign=t]{##1}\\%
-%     }%
-%     % \includegraphics[width=\linewidth, height=\contentheightofalttextimage, keepaspectratio, valign=t]{#2}
-%     \captionsetup{font=footnotesize} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     \captionsetup{width=\linewidth} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     \captionof{figure}{#3} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     % \caption{#3}
-%     \label{#4}
-%   \end{minipage}%
-%   \hfill % Add horizontal space between text and image
-%   \begin{minipage}[t]{0.65\linewidth}
-%     \setlength{\parindent}{\currentparindent}
-%     #1
-%   \end{minipage}%
-% }
-% \ExplSyntaxOff
-
-
-% EG only:
 \ExplSyntaxOn
-% \AltTextImageR{item_content}{placeholder.pdf}{caption}{label}
-\zzcommand{\AltTextImageR}[4]{% 
+\newdimen\l_tmpa_img_width
+\newdimen\l_tmpa_img_height
+\newdimen\l_tmpa_ratio
+\newdimen\l_tmpa_min_height
+\newdimen\l_tmpa_final_height
+\ExplSyntaxOff
+
+\ExplSyntaxOn
+% \AltTextImageR{item_content}{placeholder.pdf}{caption}{label}{alt_caption}
+\zzcommand{\AltTextImageR}[5]{% 
+  \ATI@suspend%
   \setcounter{AltTextImageCurrentSide}{1}%
-    #1%
-  \begin{figure}[tbh]%
-    \centering%
-    % Parse comma-separated images and stack them
-    \seq_set_split:Nnn \l_tmpa_seq { , } { #2 }%
-    \int_set:Nn \l_tmpa_int { \seq_count:N \l_tmpa_seq }%
-    \dim_set:Nn \l_tmpa_dim { \contentheightofalttextimage / \l_tmpa_int }%
-    \seq_map_inline:Nn \l_tmpa_seq {%
-      \includegraphics[width=\linewidth]{##1}%
-    }%
-    \caption{#3}%
-    \label{#4}%
-  \end{figure}%
+  \setlength{\currentparindent}{\parindent}%
+  \setlength{\currentparskip}{\parskip}%
+  \sbox{\alttextbox}{\vbox{\hsize=\dimexpr 0.55\linewidth\relax #1}}%
+  \setlength{\contentheightofalttextimage}{\ht\alttextbox}%
+  \sbox{\alttextbox}{\vbox{\hsize=\dimexpr 0.4\linewidth\relax #3\quad}}%
+  \setlength{\contentheightofalttextimagecaption}{\ht\alttextbox}%
+  \ATI@resume%
+  \noindent
+  \begin{minipage}[]{0.55\linewidth}
+    \setlength{\parindent}{\currentparindent}
+    \setlength{\parskip}{\currentparskip}
+    #1
+  \end{minipage}%
+  \hfill
+  % \begin{adjustbox}{width=0.40\linewidth, height=\contentheightofalttextimage, keepaspectratio}
+  \begin{minipage}[]{0.40\linewidth} 
+      \centering
+      \seq_set_split:Nnn \l_tmpa_seq { , } { #2 }%
+      \int_set:Nn \l_tmpa_int { \seq_count:N \l_tmpa_seq }%
+      \dim_set:Nn \l_tmpa_dim
+      {\dim_eval:n{
+            \dim_max:nn{.5\contentheightofalttextimage - .5\contentheightofalttextimagecaption}
+              {(\contentheightofalttextimage - \contentheightofalttextimagecaption) / \l_tmpa_int}
+          }
+      }
+      % \begin{mdframed}[leftline=true, rightline=false, topline=false, bottomline=false, linecolor=gray]
+      \seq_map_inline:Nn \l_tmpa_seq {%
+        \includegraphics[width=\linewidth, height=\l_tmpa_dim, keepaspectratio, valign=c]{##1}\\%
+      }
+      \ifblank{#3}{}{
+        \captionsetup{width=\linewidth}
+        \captionsetup{justification=RaggedRight}
+        \captionof{figure}[#5]{#3}
+      }
+      % \end{mdframed}
+      \label{#4}
+    \end{minipage}%
+  % \end{adjustbox}
+  \captionsetup{width=\linewidth}
+  \smallskip
 }
-% \AltTextImageL{item_content}{placeholder.pdf}{caption}{label}
-\zzcommand{\AltTextImageL}[4]{% 
-  \AltTextImageR{#1}{#2}{#3}{#4}%
+% \AltTextImageL{item_content}{placeholder.pdf}{caption}{label}{alt_caption}
+\zzcommand{\AltTextImageL}[5]{%
+  \ATI@suspend%
+  \setcounter{AltTextImageCurrentSide}{0}
+  \setlength{\currentparindent}{\parindent}%
+  \setlength{\currentparskip}{\parskip}%
+    \sbox{\alttextbox}{\vbox{\hsize=\dimexpr 0.55\linewidth\relax #1}}%
+    \setlength{\contentheightofalttextimage}{\ht\alttextbox}%
+
+    \sbox{\alttextbox}{\vbox{\hsize=\dimexpr 0.4\linewidth\relax #3\quad}}%
+    \setlength{\contentheightofalttextimagecaption}{\ht\alttextbox}%
+  \ATI@resume%
+  \noindent
+  \begin{minipage}[]{0.40\linewidth}
+    % \begin{adjustbox}{max height=\contentheightofalttextimagecaption}
+    % \fbox{
+      % \strut\vspace*{-\baselineskip}\newline
+      \centering
+      % Size: \the\contentheightofalttextimagecaption
+      % Parse comma-separated images and stack them
+      \seq_set_split:Nnn \l_tmpa_seq { , } { #2 }%
+      \int_set:Nn \l_tmpa_int { \seq_count:N \l_tmpa_seq }%
+      \dim_set:Nn \l_tmpa_dim {
+        \dim_max:nn {
+          .5 \contentheightofalttextimage  - (\contentheightofalttextimagecaption / 2)
+        }{
+          (\contentheightofalttextimage / \l_tmpa_int) - (\contentheightofalttextimagecaption / 2)
+        }
+      }
+      % \dim_set:Nn \l_tmpa_dim { (\contentheightofalttextimage / \l_tmpa_int)  - (\contentheightofalttextimagecaption / 2) }%
+      % \begin{mdframed}[leftline=false, rightline=false, topline=false, bottomline=false, linecolor=gray]
+      \seq_map_inline:Nn \l_tmpa_seq {%
+        \includegraphics[width=\linewidth, height=\l_tmpa_dim, keepaspectratio, valign=c]{##1}\\%
+      }%
+      % \includegraphics[width=\linewidth, height=\contentheightofalttextimage, keepaspectratio, valign=t]{#2}
+      \ifblank{#3}{}{
+        % \captionsetup{font=footnotesize}
+        \captionsetup{width=\linewidth}
+        \captionsetup{justification=RaggedRight}
+        \captionof{figure}[#5]{#3}
+      }
+      % \end{mdframed}
+      \label{#4}
+    % }
+    % \end{adjustbox}
+  \end{minipage}%
+  \hfill % Add horizontal space between text and image
+  \begin{minipage}[]{0.55\linewidth}
+    \setlength{\parindent}{\currentparindent}
+    \setlength{\parskip}{\currentparskip}
+    #1
+  \end{minipage}%
+  \captionsetup{width=\linewidth}
+  \smallskip
 }
 \ExplSyntaxOff
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% \AltTextImage{item_content}{placeholder.pdf}{caption}{label}
-\zzcommand{\AltTextImage}[4]
+% \AltTextImage{item_content}{placeholder.pdf}{caption}{label}{alt_caption}
+\zzcommand{\AltTextImage}[5]
 {
   \stepcounter{AltTextImageCurrentSide}  % Increment the counter
   \ifodd\value{AltTextImageCurrentSide}  % Check if the counter is odd
-      \AltTextImageR{#1}{#2}{#3}{#4}
+      \AltTextImageR{#1}{#2}{#3}{#4}{#5}
   \else%
-      \AltTextImageL{#1}{#2}{#3}{#4}
+      \AltTextImageL{#1}{#2}{#3}{#4}{#5}
   \fi
 }
 \ExplSyntaxOff
 
-% \AltTextImage{item_content}{placeholder.pdf}{caption}{label}
-\zzcommand{\AltTextImage}[4]
+% \AltTextImage{item_content}{placeholder.pdf}{caption}{label}{alt_caption}
+\zzcommand{\AltTextImage}[5]
 {
   \stepcounter{AltTextImageCurrentSide}  % Increment the counter
   \ifodd\value{AltTextImageCurrentSide}  % Check if the counter is odd
-      \AltTextImageR{#1}{#2}{#3}{#4}
+      \AltTextImageR{#1}{#2}{#3}{#4}{#5}
   \else%
-      \AltTextImageL{#1}{#2}{#3}{#4}
+      \AltTextImageL{#1}{#2}{#3}{#4}{#5}
   \fi
+}
+
+% \AltTextImageCancelled{item_content}{placeholder.pdf}{caption}{label}{alt_caption}
+\zzcommand{\AltTextImageCancelled}[5] {
+  \begin{figure}
+    \autofitgraphics[]{#2}
+    \caption[#5]{#3}
+    \label{#4}
+  \end{figure}
+  #1
+}
+% \AltTextImageTop{item_content}{placeholder.pdf}{caption}{label}{alt_caption}
+\zzcommand{\AltTextImageTop}[5] {
+  \begin{figure}[H]
+    \autofitgraphics[]{#2}
+    \caption[#5]{#3}
+    \label{#4}
+  \end{figure}
+  #1
+}
+% \AltTextImageBottom{item_content}{placeholder.pdf}{caption}{label}{alt_caption}
+\zzcommand{\AltTextImageBottom}[5] {
+  #1
+  \begin{figure}[H]
+    \autofitgraphics[]{#2}
+    \caption[#5]{#3}
+    \label{#4}
+  \end{figure}
 }
 
 \lstset {
@@ -399,41 +563,41 @@
 \zzcommand{\Glosses}[1]{\ifglsentryexists{gls-#1}{\Glsentrylongpl{gls-#1}\ifcsdef{inheading}{}{{\glsadd{gls-#1}}}}{[XXXX]}}
 \zzcommand{\glsnamefont}[1]{\makefirstuc{#1}}
 
-% \eqref{label}
-\zzcommand{\eqref}[1]{\cref{#1}}
-% \to 
-\zzcommand{\to}{\mapsto}
+
+% \crefAnnex{label}
+\zzcommand{\crefAnnex}[1]{%
+  \begingroup
+  \crefname{chapter}{Annex}{Annexes}%
+  \Crefname{chapter}{Annex}{Annexes}%
+  \cref{#1}%
+  \endgroup
+}
 
 
 % \subsubsubsection{title}
 \zzcommand{\subsubsubsection}[1]{\bigskip\noindent\textit{#1}\nopagebreak\par}
 % \subsubsubsubsection{title}
 \zzcommand{\subsubsubsubsection}[1]{\bigskip\noindent\textbf{#1}~}
+% % \subsubsubsubsubsection{title}
+% \zzcommand{\subsubsubsubsubsection}[1]{\bigskip\noindent\textit{#1}~}
 
 % \wrapFig{img_path}{width}{label}{caption}
 \zzcommand{\wrapFig}[4]{
   \wrapFigL{#1}{#2}{#3}{#4}
 }
 
-\newlength{\prevColumnsep}
 % \wrapFigLR{img_path}{width}{label}{caption}{|L,R|}
 \zzcommand{\wrapFigLR}[5]{
-  % \begingroup
-  % \setlength{\prevColumnsep}{\columnsep}
-  \setlength{\columnsep}{1em}
   \def\tempwidth{#2}%
   \ifx\tempwidth\empty
     \def\tempwidth{0.25}%
   \fi
   \begin{wrapfigure}{#5}{\tempwidth \linewidth}
-    \centering
     \includegraphics[width=\linewidth]{#1}
     \expandafter\ifx\expandafter\relax\detokenize{#4}\relax\else\caption{#4}\fi
     \expandafter\ifx\expandafter\relax\detokenize{#3}\relax\else\label{#3}\fi
-    % \vspace{-1 \baselineskip}
+    \vspace{-1 \baselineskip}
   \end{wrapfigure}
-  % \setlength{\columnsep}{\prevColumnsep}
-  % \endgroup
 }
 
 % \wrapFigL{img_path}{width}{label}{caption}
@@ -445,27 +609,42 @@
   \wrapFigLR{#1}{#2}{#3}{#4}{R}
 }
 
-% \zzcommand{\abstract}
-% {
-%     \section*{Abstract}
-% }
+\zzcommand{\abstract}
+{
+    \section*{Abstract}
+}
 
-% % \shortAbstract{text}
-% \zzcommand{\shortAbstract}[1]
-% {
-%   \noindent
-%   \textit{#1}
-%   \bigskip
-% }
+% \shortAbstract{text}
+\zzcommand{\shortAbstract}[1]
+{
+  \noindent
+  \textit{#1}
+  \bigskip
+}
 
+\zzcommand{\bridge}[1]
+{
+  \subsubsubsection{#1}
+}
 \zzcommand{\smallConclusion}
 {
+  \bigskip
   \bigskip
 }
   
 \zzcommand{\midConclusion}
 {
-  \bigskip\bigskip\bigskip
+  % \bigskip
+  % \noindent\textit{Conclusion}
+  % \smallskip
+  \subsubsection*{Conclusion}
+}
+  
+\zzcommand{\bigConclusion}
+{
+  \par\bigskip
+  \begin{center}\rule{0.4\linewidth}{0.4pt}\end{center}
+  \bigskip\par
 }
 
 \ExplSyntaxOn
@@ -570,64 +749,96 @@
   }{}}{}%
 }
 
-\pretocmd{\section}{\showsubsubsectioncites\showsubsectioncites\showsectioncites\resetsectioncites}{}{}
-\pretocmd{\subsection}{\showsubsubsectioncites\showsubsectioncites\resetsubsectioncites}{}{}
-\pretocmd{\subsubsection}{\showsubsubsectioncites\resetsubsubsectioncites}{}{}
+% \pretocmd{\section}{\showsubsubsectioncites\showsubsectioncites\showsectioncites\resetsectioncites}{}{}
+% \pretocmd{\subsection}{\showsubsubsectioncites\showsubsectioncites\resetsubsectioncites}{}{}
+% \pretocmd{\subsubsection}{\showsubsubsectioncites\resetsubsubsectioncites}{}{}
+
+\pretocmd{\chapter}{\setcounter{AltTextImageCurrentSide}{0}}{}{}
+\pretocmd{\section}{\resetsectioncites}{}{}
+\pretocmd{\subsection}{\resetsubsectioncites}{}{}
+\pretocmd{\subsubsection}{\resetsubsubsectioncites}{}{}
+
+
+
+\renewcommand\theadfont{\bfseries}
 
 
 
 
 
 
-
-
-
-% === User-facing macro ===
 % Holds user-defined row width
 \newcommand{\fitrowwidth}{\linewidth}
 \newcommand{\fitimageoptions}{}
 
 % autofitgraphics with [options]{img1,img2,...}
-\makeatletter
+
 \NewDocumentCommand{\autofitgraphics}{O{} m}{%
   \renewcommand{\fitrowwidth}{\linewidth}%
   \def\fitimageoptions{}%
   \def\cleanopts{}%
-
   \def\tempa{#1}%
   \@for\opt:=\tempa\do{%
     \IfBeginWith{\opt}{width=}%
       {\StrBehind{\opt}{=}[{\tempwidth}]\renewcommand{\fitrowwidth}{\tempwidth}}%
-      {\ifx\cleanopts\@empty
+      {\ifx\cleanopts\@empty%
          \edef\cleanopts{\opt}%
-       \else
+       \else%
          \edef\cleanopts{\cleanopts,\opt}%
-       \fi
+       \fi%
       }%
   }%
   \edef\fitimageoptions{\cleanopts}%
+  % \fbox{%
   \fitNimages{#2}%
+  % }%
 }
-\makeatother
+
+
+\NewDocumentCommand{\labelledautofitgraphics}{O{} m m}{%
+  \renewcommand{\fitrowwidth}{\linewidth}%
+  \def\fitimageoptions{}%
+  \def\cleanopts{}%
+  \def\tempa{#1}%
+  \@for\opt:=\tempa\do{%
+    \IfBeginWith{\opt}{width=}%
+      {\StrBehind{\opt}{=}[{\tempwidth}]\renewcommand{\fitrowwidth}{\tempwidth}}%
+      {\ifx\cleanopts\@empty%
+         \edef\cleanopts{\opt}%
+       \else%
+         \edef\cleanopts{\cleanopts,\opt}%
+       \fi%
+      }%
+  }%
+  \edef\fitimageoptions{\cleanopts}%
+  \fitNimagesWithoutPrinting{#3}%
+  \addVerticalLabel{#2}%
+}
 
 \newcounter{fitImgCount}%
 \newcounter{fitImgIndex}%
-\newcommand{\fitNimages}[1]{%
-  \setcounter{fitImgCount}{0}
-  \setcounter{fitImgIndex}{0}
-  \begingroup
-  
-  \def\fitTotalRatio{0}%
-  \global\let\fitWidths\empty
-  \def\fitImgList{}%
+% --- new: storage for the most-recent row ---
+\newsavebox{\fitRowBox}
 
+% --- new: label sizing / styling knobs (tweak as you like) ---
+\newlength{\fitLabelWidth}   \setlength{\fitLabelWidth}{1.2em} % column reserved for vertical label
+\newlength{\fitLabelPad}     \setlength{\fitLabelPad}{0mm}     % gap between label and images
+\newcommand{\fitLabelfont}{\footnotesize}    % label font
+
+
+\zzcommand{\fitNimages}[1]{%
+  \setcounter{fitImgCount}{0}%
+  \setcounter{fitImgIndex}{0}%
+  \begingroup%
+  \def\fitTotalRatio{0}%
+  \global\let\fitWidths\empty%
+  \def\fitImgList{}%
   % Copy input to a clean list for repeated processing
   \renewcommand{\do}[1]{%
     \edef\fitImgList{\fitImgList,##1}%
   }%
   \docsvlist{#1}%
-
-  % First pass: calculate total aspect ratio and store individual ratios
+  % First pass: measure ratios
   \renewcommand{\do}[1]{%
     \stepcounter{fitImgCount}%
     \sbox0{\includegraphics{##1}}%
@@ -639,38 +850,158 @@
     \expandafter\xdef\csname fitRatio\thefitImgCount\endcsname{\imgRatio}%
   }%
   \docsvlist{#1}%
-
-  % Second pass: output images with proportional widths
+  % Second pass: build the row box (width = \fitrowwidth)
   \setcounter{fitImgIndex}{0}%
-  \begin{adjustbox}{width=\fitrowwidth}%
-  \renewcommand{\do}[1]{%
-    \stepcounter{fitImgIndex}%
-    \pgfmathsetmacro{\relwidth}{\csname fitRatio\thefitImgIndex\endcsname / \fitTotalRatio}%
-    \xdef\fitWidth{\relwidth}%
-    \expandafter\xdef\csname fitWidth\thefitImgIndex\endcsname{\fitWidth}%
-    \expandafter\includegraphics\expandafter[\fitimageoptions, width=\fitWidth\linewidth]{##1}%
+  % \global\setbox\fitRowBox=\hbox{%
+    % \fbox{%
+    \begin{adjustbox}{width=\fitrowwidth}%
+      \renewcommand{\do}[1]{%
+        \stepcounter{fitImgIndex}%
+        \pgfmathsetmacro{\relwidth}{\csname fitRatio\thefitImgIndex\endcsname / \fitTotalRatio}%
+        % \expandafter\fbox{\expandafter\includegraphics\expandafter[\fitimageoptions, width=\relwidth\linewidth]{##1}}%
+        \expandafter\includegraphics\expandafter[\fitimageoptions, width=\relwidth\linewidth]{##1}%
+      }%
+      \docsvlist{#1}%
+    \end{adjustbox}%
+    % }%
+  % }%
+  \endgroup%
+}
 
+\zzcommand{\fitNimagesWithoutPrinting}[1]{%
+  \setcounter{fitImgCount}{0}%
+  \setcounter{fitImgIndex}{0}%
+  \begingroup%
+  \def\fitTotalRatio{0}%
+  \global\let\fitWidths\empty%
+  \def\fitImgList{}%
+  % Copy input to a clean list for repeated processing
+  \renewcommand{\do}[1]{%
+    \edef\fitImgList{\fitImgList,##1}%
   }%
   \docsvlist{#1}%
-  \end{adjustbox}%
-  \endgroup
-}
-\newcounter{fitCapIndex}
-\NewDocumentCommand{\autofitcaptions}{O{2ex} m}{%
-  \setcounter{fitCapIndex}{0}%
-  \begin{adjustbox}{width=\fitrowwidth}%
+  % First pass: measure ratios
   \renewcommand{\do}[1]{%
-    \stepcounter{fitCapIndex}%
-    \pgfmathsetmacro{\relwidth}{\csname fitRatio\thefitCapIndex\endcsname / \fitTotalRatio}%
-    \raisebox{#1}{\parbox[t]{\relwidth\linewidth}{\centering ##1}}%
-    }%
-    \docsvlist{#2}%
+    \stepcounter{fitImgCount}%
+    \sbox0{\includegraphics{##1}}%
+    \edef\imgWidth{\the\wd0}%
+    \edef\imgHeight{\the\ht0}%
+    \pgfmathsetmacro{\imgRatio}{\imgWidth/\imgHeight}%
+    \pgfmathparse{\fitTotalRatio + \imgRatio}%
+    \xdef\fitTotalRatio{\pgfmathresult}%
+    \expandafter\xdef\csname fitRatio\thefitImgCount\endcsname{\imgRatio}%
+  }%
+  \docsvlist{#1}%
+  % Second pass: build the row box (width = \fitrowwidth)
+  \setcounter{fitImgIndex}{0}%
+  \global\setbox\fitRowBox=\hbox{%
+    \begin{adjustbox}{width=\fitrowwidth}%
+      \renewcommand{\do}[1]{%
+        \stepcounter{fitImgIndex}%
+        \pgfmathsetmacro{\relwidth}{\csname fitRatio\thefitImgIndex\endcsname / \fitTotalRatio}%
+        \expandafter\includegraphics\expandafter[\fitimageoptions, width=\relwidth\linewidth]{##1}%
+      }%
+      \docsvlist{#1}%
+    \end{adjustbox}%
+  }%
+  \endgroup%
+}
+
+% --- new: output the cached row with a vertical label on the left ---
+\NewDocumentCommand{\addVerticalLabel}{m}{%
+  % If someone calls this before \autofitgraphics, we’ll just make an empty box.
+  \ifvoid\fitRowBox\relax \global\setbox\fitRowBox=\hbox{} \fi%
+  \par\noindent%
+  % Scale the combined (label + row) to \linewidth so it never overflows.
+  \begin{adjustbox}{width=\fitrowwidth}%
+    % \fbox{%
+      \begingroup
+        \dimen0=\dimexpr\ht\fitRowBox+\dp\fitRowBox\relax
+        % Left label column
+        % \fbox{
+            \vbox to \dimen0{%
+              \vfil
+              \hbox to \fitLabelWidth{%
+                \hfil
+                \rotatebox{90}{\centering \fitLabelfont #1}%
+                \hfil
+              }%
+              \vfil
+            }%
+        % }
+        \hspace{\fitLabelPad}%
+        % Right: the previously cached row
+        \usebox{\fitRowBox}%
+      \endgroup
+    % }%
   \end{adjustbox}%
-  \vspace{-#1}\vspace{-#1}
+  \par\smallskip%
+  % Clear the box so the next call starts fresh
+  \global\setbox\fitRowBox=\hbox{}%
+}
+
+\newcommand{\setfitratios}[1]{%
+  \setcounter{fitImgCount}{0}%
+  \def\fitTotalRatio{0}%
+  \renewcommand{\do}[1]{%
+    \stepcounter{fitImgCount}%
+    \expandafter\xdef\csname fitRatio\thefitImgCount\endcsname{##1}%
+    \pgfmathparse{\fitTotalRatio + ##1}%
+    \xdef\fitTotalRatio{\pgfmathresult}%
+  }%
+  \docsvlist{#1}%
+}
+
+\newcounter{fitCapIndex}
+% Key-value options for \autofitcaptions
+\pgfkeys{
+  /autofitcaptions/.is family, /autofitcaptions,
+  raise/.store in=\fitraiseamount,
+  fontscale/.store in=\fitfontscale,
+  % defaults
+  raise=2ex,
+  fontscale=1,
+  % Back-compat: if the user passes a lone token like [1.5ex],
+  % treat it as raise=<that>
+  .unknown/.code = {\def\fitraiseamount{#1}}
+}
+
+\NewDocumentCommand{\autofitcaptions}{O{} m}{%
+  % Load defaults, then apply user-specified options (if any)
+  \pgfkeys{/autofitcaptions, raise=1em, fontscale=1}%
+  \ifblank{#1}{}{%
+    \pgfkeys{/autofitcaptions, #1}%
+  }%
+  \setcounter{fitCapIndex}{0}%
+  % \smash[]{%
+  \raisebox{\fitraiseamount}{%
+  \begin{adjustbox}{width=\fitrowwidth}%
+    \renewcommand{\do}[1]{%
+      \stepcounter{fitCapIndex}%
+      \pgfmathsetmacro{\relwidth}{\csname fitRatio\thefitCapIndex\endcsname / \fitTotalRatio}%
+      % \fbox{%
+      % \raisebox{\fitraiseamount}{%
+        % \parbox[t]{\relwidth\linewidth}{\centering \scalebox{\fitfontscale}{##1}}%
+          \scalebox{\fitfontscale}{%
+            \parbox[t]{\relwidth\linewidth}{\centering ##1}%
+          }%
+        % }%
+      % }%
+      % }%
+    }%
+    \ifblank{#2}{%
+      \docsvlist{~}%
+    }{%
+      \docsvlist{#2}%
+    }%
+  \end{adjustbox}%
+  }%
+  % }%
 }
 
 
-
+% \citet{ref}
+\zzcommand{\citet}[1]{\citep{#1}}
 
 % \delete{text_to_remove}
 \zzcommand{\delete}[1]
@@ -685,27 +1016,28 @@
 \zzcommand{\revnote}{\comment}
 
 
-\makeatletter
-% define a macro to collect figure content
-\newcommand{\deferredfloats}{}
+% \addFileAtTheEnd{tex_file}
+\zzcommand{\addFileAtTheEnd}[1]{
+  \clearpage
+  \thispagestyle{empty}  % désactive l'en-tête et pied
+  \newgeometry{top=1.8cm, bottom=1.8cm, left=2cm, right=2cm}
 
-% define an environment that stores the full content for later use
-\newenvironment{deferredfigure}
-  {\collect@body\storedeferredfigure}
-  {}
+  % Si on est sur une page impaire, on force une page blanche pour aller à une page paire
+  \ifodd\value{page}
+  \null
+  \thispagestyle{empty}
+  \newpage
+  \fi
+  \input{#1}
+}
 
-\newcommand{\storedeferredfigure}[1]{%
-  \gappto\deferredfloats{%
-    \begin{figure}[htbp]
-    #1
-    \end{figure}
-  }%
+
+\newcommand{\listequationsname}{List of Equations}
+\newlistof{myequations}{equ}{\listequationsname}
+% \AtEndEnvironment{equation}{\addcontentsline{equ}{myequations}{Equation~\theequation: NO NAME}}
+% \AtEndEnvironment{align}{\addcontentsline{equ}{myequations}{Equation~\theequation: NO NAME}}
+\zzcommand{\eqlabel}[2]{
+  \label{#1}%
+  \ifblank{#2}{}{\addcontentsline{equ}{myequations}{\cref{#1}: #2}}
 }
 \makeatother
-
-\zzcommand{\paragraph}[1]{\noindent\textbf{#1}\ }
-
-% \floor{x}
-\zzcommand{\floor}[1]{\lfloor#1\rfloor}
-% \ceil{x}
-\zzcommand{\ceil}[1]{\lceil#1\rceil}

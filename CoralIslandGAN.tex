@@ -1,0 +1,594 @@
+%% 
+%% Copyright 2007-2025 Elsevier Ltd
+%% 
+%% This file is part of the 'Elsarticle Bundle'.
+%% ---------------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.3 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% The list of all files belonging to the 'Elsarticle Bundle' is
+%% given in the file `manifest.txt'.
+%% 
+%% Template article for Elsevier's document class `elsarticle'
+%% with numbered style bibliographic references
+%% SP 2008/03/01
+%% $Id: elsarticle-template-num.tex 272 2025-01-09 17:36:26Z rishi $
+%%
+% \documentclass[preprint,12pt]{elsarticle}
+
+%% Use the option review to obtain double line spacing
+\documentclass[authoryear,preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,1p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,3p,times]{elsarticle}
+%% \documentclass[final,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,5p,times]{elsarticle}
+%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+
+%% For including figures, graphicx.sty has been loaded in
+%% elsarticle.cls. If you prefer to use the old commands
+%% please give \usepackage{epsfig}
+
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amssymb}
+%% The amsmath package provides various useful equation environments.
+\usepackage{amsmath}
+%% The amsthm package provides extended theorem environments
+%% \usepackage{amsthm}
+
+
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{breqn}
+\usepackage{cleveref}
+\usepackage{adjustbox}
+
+\input{glossary.tex}
+
+% \usepackage[backend=biber,bibstyle=elsarticle-num,citestyle=alphabetic,backref=true]{biblatex} 
+% \addbibresource{references_terrain.bib}
+
+%% The lineno packages adds line numbers. Start line numbering with
+%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+%% for the whole article with \linenumbers.
+%% \usepackage{lineno}
+
+\journal{Computer \& Graphics}
+
+
+
+
+
+
+% \AtEveryBibitem{\clearfield{url}}
+
+\graphicspath{{./Chapter 1/figures/}
+{./Chapter 1/figures/Procedural/}
+{./Chapter 1/islands/}
+{./Chapter 1/Results/}
+{./Chapter 1/Results/Procedural/}
+{./Chapter 1/Results/Reproduction/}
+{./Chapter 1/Results/results_cGAN_PG25/} {./Chapter 1/Results/results_cGAN_PG25/Renders}
+{./Chapter 1/Results/volcanic/}
+{./Chapter 1/figures/Smoothmax/}
+{./Chapter 1/figures/vector_field/}
+{./Chapter 1/figures/SOTA/coral theories/}
+{./Chapter 1/figures/SOTA/sketching/} }
+
+
+
+\begin{document}
+
+\begin{frontmatter}
+
+%% Title, authors and addresses
+
+%% use the tnoteref command within \title for footnotes;
+%% use the tnotetext command for theassociated footnote;
+%% use the fnref command within \author or \affiliation for footnotes;
+%% use the fntext command for theassociated footnote;
+%% use the corref command within \author for corresponding author footnotes;
+%% use the cortext command for theassociated footnote;
+%% use the ead command for the email address,
+%% and the form \ead[url] for the home page:
+%% \title{Title\tnoteref{label1}}
+%% \tnotetext[label1]{}
+%% \author{Name\corref{cor1}\fnref{label2}}
+%% \ead{email address}
+%% \ead[url]{home page}
+%% \fntext[label2]{}
+%% \cortext[cor1]{}
+%% \affiliation{organization={},
+%%             addressline={},
+%%             city={},
+%%             postcode={},
+%%             state={},
+%%             country={}}
+%% \fntext[label3]{}
+
+\title{Procedural and learning-based generation of coral reef islands}
+
+%% use optional labels to link authors explicitly to addresses:
+%% \author[label1,label2]{}
+%% \affiliation[label1]{organization={},
+%%             addressline={},
+%%             city={},
+%%             postcode={},
+%%             state={},
+%%             country={}}
+%%
+%% \affiliation[label2]{organization={},
+%%             addressline={},
+%%             city={},
+%%             postcode={},
+%%             state={},
+%%             country={}}
+
+\author{} %% Author name
+
+%% Author affiliation
+% \affiliation{organization={},%Department and Organization
+            % addressline={}, 
+            % city={},
+            % postcode={}, 
+            % state={},
+            % country={}}
+
+%% Abstract
+\begin{abstract}
+We propose a procedural method for generating single volcanic islands with coral reefs based on user sketches from two projections: a top view defining the island's shape, and a profile view, establishing its elevation. 
+We add a user-defined wind field that deforms the island to mimic long-term effect of wind and wave, providing finer user control over the island's shape.
+Next, we model the coral growth on the island following biological observations.
+This results in a terrain height field of the island and its surrounding reef. 
+Our method creates a large variety of coral reef island models which we used to train a conditional Generative Adversarial Network (cGAN). 
+By applying data augmentation, the cGAN enhances the variety in the generated islands, providing users with greater freedom and intuitive controls over the shape and structure of the final output.
+\end{abstract}
+
+%%Graphical abstract
+% \begin{graphicalabstract}
+% %\includegraphics{grabs}
+%     \includegraphics[width=.33\linewidth]{Teaser1.png}
+%     \includegraphics[width=.33\linewidth]{Teaser2.png}
+%     \includegraphics[width=.33\linewidth]{Teaser3.png}
+%     \caption{Given a free hand-drawn sketch of the different regions of an island (bottom inset of each example), our method generates a corresponding height field using neural networks. Subsidence (gradual sinking of land) is controlled by the user in the luminosity channel of the input, as shown in these examples. }
+% \end{graphicalabstract}
+
+%%Research highlights
+\begin{highlights}
+\item A hybrid sketch-based and learning-driven pipeline for coral reef island terrain generation
+\item Dual-view user sketches provide intuitive semantic and geometric control
+\item Procedural geological priors enable fully synthetic dataset generation
+\item A pix2pix conditional GAN learns realistic reef morphologies from labels
+\item Real-time generation of geologically plausible reef islands from sparse sketches
+\end{highlights}
+
+%% Keywords
+\begin{keyword}
+%% keywords here, in the form: keyword \sep keyword
+Procedural terrain generation \sep
+Sketch-based modeling \sep
+Generative adversarial networks \sep
+Coral reef islands
+%% PACS codes here, in the form: \PACS code \sep code
+
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+
+\end{keyword}
+
+\end{frontmatter}
+
+
+\section{Introduction}
+
+Coral reef islands emerge from the long-term interplay between volcanic activity, coral growth, erosion, and hydrodynamics. 
+These coupled geological and biological processes give rise to distinctive morphologies such as atolls and barrier reefs, yet their complexity and data scarcity make them difficult to reproduce digitally. 
+In computer graphics and virtual environment applications, most existing terrain generators target continental landscapes, leaving reef islands underrepresented. 
+Available elevation data are limited to small regions, and physically based simulations are computationally costly.
+
+Procedural noise functions can produce varied landscapes efficiently but lack geological or biological grounding. 
+Physically based terrain simulators capture natural dynamics but require extensive computation and calibration. 
+Learning-based models can reproduce realistic details from data, yet few high-resolution coral reef datasets exist to train them effectively. 
+Each family of methods captures only part of the problem: procedural models offer control but limited realism, while data-driven models offer realism without control.
+
+To overcome these limitations, we introduce a hybrid approach that combines the controllability of sketch-based procedural generation with the realism of conditional generative learning. 
+A user sketches the island in two complementary projections: (i) top-view outlines defining the concentric regions (island, beach, lagoon, reef, abyss) and (ii) a 1D elevation profile establishing the vertical shape. 
+Stroke-based wind and current fields deform the island according to a spatial resistance function, emulating long-term wave and wind effects. 
+This procedural framework encodes key geological principles such as volcanic subsidence and coral "keep-up" growth, producing both a height field and a semantic label map used to train a conditional GAN (pix2pix). 
+The trained model then synthesizes plausible reef islands from new user sketches in real time.
+
+\paragraph{Geological context}
+Our model follows Darwin's classical subsidence theory~\cite{Darwin1842}, where fringing reefs evolve into barrier reefs and atolls as volcanic islands sink, while coral growth maintains elevation near the photic zone~\cite{Terry2013}. 
+Alternative hypotheses (including stand-still~\cite{Murray1880}, glacial control~\cite{Daly1915}, and karstification~\cite{Droxler2021}) inform our assumptions but are beyond the scope of this work.
+
+\begin{figure}[t]
+  \includegraphics[width=.95\linewidth]{other_images/Drawings/Darwin_corals-color-Terry2012.jpg}
+  \caption{Darwin's subsidence process~\cite{Terry2013}.}
+  \label{fig:context}
+\end{figure}
+
+\paragraph{Contributions}
+Our main contributions are:
+\begin{enumerate}
+  \item A sketch-based procedural algorithm combining dual-view sketches with stroke-driven deformations modulated by a resistance function;
+  \item A procedural model of volcanic subsidence and analytic coral growth blended via a smooth-maximum operator;
+  \item A dataset synthesis pipeline encoding semantic labels and subsidence levels in HSV images for conditional GAN training;
+  \item A demonstration that a standard pix2pix network, trained only on synthetic data, generates geologically plausible coral reef islands from user sketches at interactive rates while preserving semantic control.
+\end{enumerate}
+
+
+\section{Related Work}
+
+Terrain generation methods can be broadly classified into three families: procedural and simulation-based models, sketch-based control techniques, and learning-based synthesis. Our approach draws from all three, combining procedural control with learning-based realism.
+
+\paragraph{Noise- and simulation-based terrains}
+Procedural noise functions such as Perlin and simplex noise, and fractal Brownian motion (fBm), have long been used to synthesize diverse terrains efficiently~\cite{Perlin1985,Perlin2001,Musgrave1989,Ebert2003,Reinhard2010}. Although these methods provide scalability and interactivity, they lack explicit correspondence to geological or biological processes, limiting their realism for coral reef morphologies.  
+Physical and simulation-based models incorporate erosion, uplift, or sediment transport to achieve higher realism~\cite{Benes2006,Mei2007,Neidhold2005,Cordonnier2016,Cordonnier2017a,Schott2023}. However, these simulations are computationally expensive and are typically calibrated for continental or fluvial terrains rather than shallow marine systems. As a result, neither class of approaches directly captures the coupled volcanic, subsidence, and coral growth phenomena characteristic of reef islands.
+
+\paragraph{Sketch-based control}
+To increase artistic control and interactivity, sketch-based methods allow users to specify structural constraints or silhouettes directly~\cite{Gain2009,Hnaidi2010,Tasse2014,Gasch2020,Talgorn2018,Guerin2022}. Curve and gradient-domain formulations enable intuitive authoring of shapes and elevation fields while maintaining spatial coherence. These approaches are particularly relevant for procedural workflows because they reduce parameter tuning and expose higher-level control to non-expert users.  
+Our method extends this paradigm through a dual-view sketch interface, combining top and profile sketches, with stroke-defined deformation fields while preserving semantic labels that later condition the learning stage.
+
+\paragraph{Learning-based terrains}
+Data-driven methods learn terrain appearance from examples, often through adversarial or diffusion-based generative models. Generative adversarial networks (GANs) and their conditional variants (cGANs) have been used to synthesize height fields and realistic landscapes~\cite{Goodfellow2014,WulffJensen2018,Spick2019,Guerin2017,Panagiotou2020,Beckham2017}. Among these, pix2pix~\cite{Isola2017} remains an effective baseline for translating semantic maps to terrain elevations. Recent diffusion models~\cite{Ho2020,Nichol2021,Lochner2023} achieve improved detail and realism but at significantly higher computational cost, making them less suitable for real-time interaction.  
+In contrast, our approach relies on a lightweight pix2pix architecture trained entirely on synthetic data produced by the procedural sketch model, bridging controllable authoring and learned realism.
+
+\medskip
+In summary, previous methods either offer control without realism (procedural/sketch-based) or realism without control (learning-based). Our work unifies both by procedurally encoding geological and biological priors into a dataset for a conditional generative model capable of real-time, user-driven synthesis of coral reef islands.
+
+\section{Overview}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\linewidth]{pipeline_full.pdf}
+  \caption{Overview of our hybrid procedural-learning pipeline. 
+  The sketch-based procedural generator (blue) produces labeled height fields from user-defined outlines, elevation profiles, strokes, and resistance curves. 
+  These samples are automatically varied and augmented (orange) to form a synthetic dataset used to train a pix2pix cGAN (red). 
+  Once trained, the network generates coral reef islands from new user-provided semantic label maps.}
+  \label{fig:pipeline}
+\end{figure*}
+
+\Cref{fig:pipeline} summarizes the complete workflow of our hybrid pipeline, from sketch-based procedural generation to learning and real-time inference. 
+It consists of three main stages described below.
+
+\textbf{Procedural synthesis.}
+The user defines the island structure through top-view region outlines $\{\Radius_i(\angl)\}$, a one-dimensional elevation profile $\heightProfile$, and a set of stroke-based deformation fields $\{\curve\}$ modulated by a resistance function $\resistance$. 
+This module produces both a height field $\Tilde{h}$ and a corresponding semantic label map $\Tilde{I}$ at matching resolution. 
+Deformations are region-dependent: higher resistance in rocky zones yields smaller displacements, while lower resistance along the reef allows stronger erosion-like effects. 
+Finally, volcanic subsidence $\heightSubsid$ and analytic coral growth $\heightCoral$ are blended via a smooth-maximum operator to obtain the final terrain $\hat{h}$.
+
+\textbf{Dataset generation.}
+To train the learning component, we procedurally randomize user input parameters (outlines, profiles, resistance functions, and wind strokes) using bounded Perlin and fBm noise, generating thousands of base islands similar to the initial construction. 
+We then apply geometric augmentations such as translation with wrapping, rotation, scaling, and copy-paste composition. 
+When combining multiple islands, height fields are merged with a smooth-maximum operator and labels with a $\max$ operator, while intersection areas are limited by an IoU threshold to preserve distinct shapes. 
+This yields a large collection of consistent $(\text{label map}, \text{height field})$ pairs.
+
+\textbf{Learning and inference.}
+The resulting dataset is stored as HSV images, with Hue encoding the semantic label $I$ and Value representing the subsidence level $\subsidRate$ (Saturation is left neutral for potential future conditioning). 
+A pix2pix conditional GAN is trained to translate these label maps into height fields. 
+After training, the generator produces detailed, realistic reef islands directly from unseen label maps within milliseconds, supporting interactive design and exploration.
+
+\medskip
+The following sections detail each stage of this pipeline.
+
+
+\section{Procedural Island Generation}
+
+Our procedural model converts a pair of user sketches composed of a top-view outline and a vertical elevation profile into a continuous labeled height field representing an idealized volcanic island. 
+This analytic construction combines geometric mapping, stroke-based deformation, and simplified geological modeling, producing consistent height and label information that later serves as training data for the learning stage. 
+Given identical sketches and parameters, the process is deterministic and fully reproducible.
+
+\subsection{Base height field from dual-view sketches}
+
+A user specifies the island structure through radial outlines $\{\Radius_i(\angl)\}$ (top view) and a 1D elevation profile $\heightProfile$ (side view), defining successive regions such as island, beach, lagoon, and reef (Fig.~\ref{fig:ui}, left). 
+Each pixel $\p$ in the 2D domain, centered at $\Center$, is expressed in polar coordinates $(\radius_\p,\angl_\p)$:
+\begin{align}
+    \radius_\p &= \|\p-\Center\|, \quad
+    \angl_\p=\operatorname{atan2}(\p_y-\Center_y,\p_x-\Center_x), \\
+    \distRegions_\p &= i + \frac{\radius_\p-\Radius_i(\angl_\p)}{\Radius_{i+1}(\angl_\p)-\Radius_i(\angl_\p)},
+\end{align}
+where $i$ is the index of the enclosing region. 
+Interpolating $\heightProfile$ in normalized distance yields smooth transitions across boundaries:
+\begin{equation}
+    h(\p)=\heightProfile(\distRegions_\p),\qquad I(\p)=i.
+\end{equation}
+
+To avoid overly smooth shapes, we perturb $h$ with low-amplitude Perlin noise.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{user_interaction_generation.png}
+  \caption{User interface, with user-defined input for the "initial" dataset (\Cref{sec:results}). From left to right: top-view region outlines $\{\Radius_i(\angl)\}$, elevation profile $\heightProfile$, wind strokes $\{\curve\}$, and resistance function $\resistance$.}
+  \label{fig:ui}
+\end{figure}
+
+\subsection{Wind and wave deformation}
+
+To introduce directional asymmetry, the user sketches strokes representing dominant wind or current directions (Fig.~\ref{fig:ui}, right).  
+Each stroke $\curve$ is modeled as a centripetal Catmull-Rom spline with width $\std$ and strength $S_\curve$. 
+At any point $\p$, the displacement induced by $\curve$ is
+\begin{equation}
+    \warp_\curve(\p)= S_\curve
+    \frac{\curve'(\closestCp)}{\|\curve'(\closestCp)\|}
+    G_\std\!\left(\|\p-\closestCp\|\right),
+\end{equation}
+where $\closestCp$ is the closest point on the stroke and $G_\std$ is a normalized Gaussian kernel ensuring continuity between overlapping strokes. 
+Typical parameters are $\std\in[0.1,0.3]$, $S_\curve\in[0.05,0.3]$, and between two and six strokes per island.
+
+Aggregating all strokes and modulating their influence by the spatial resistance function $\resistance(\distRegions_\p)$ yields the final displacement field:
+\begin{equation}
+    \Tilde{\warp}(\p)=\bigl(1-\resistance(\distRegions_\p)\bigr)
+    \sum_{\curve}\warp_\curve(\p).
+\end{equation}
+Resistance attenuates deformation in hard or elevated regions while allowing stronger erosion in low-resistance reef zones. 
+A low-amplitude simplex noise perturbation biased toward the island center adds further irregularity. 
+Backward warping then applies this deformation consistently to both height and label fields:
+\begin{equation}
+    \Tilde{h}(\p)=h(\p-\Tilde{\warp}(\p)),\qquad 
+    \Tilde{I}(\p)=I(\p-\Tilde{\warp}(\p)).
+\end{equation}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.9\linewidth]{windByStrokes.pdf}
+  \caption{Local deformation field from a user stroke $\curve$ (red). 
+  Displacement is tangential to the stroke and decays with a Gaussian profile.}
+  \label{fig:stroke}
+\end{figure}
+
+This stage introduces anisotropy and natural variability while preserving semantic consistency, forming the base for geological modeling.
+
+\subsection{Subsidence and coral growth}
+\label{sec:coral-island-coral-reef}
+
+To emulate the long-term evolution of volcanic islands, we apply two analytic processes: tectonic subsidence and coral accretion.  
+Uniform subsidence scales the deformed terrain $\Tilde{h}(\p)$ by a user-defined rate $\subsidRate\in[0,1]$:
+\begin{equation}
+    \heightSubsid(\p) = (1-\subsidRate)\,\Tilde{h}(\p),
+\end{equation}
+which represents the proportion by which the island has sunk, applied equally across all terrain points.
+
+Our coral growth model follows the "keep-up" mechanism observed in reef ecology, in which coral colonies grow upward within the photic zone to compensate for subsidence.  
+We model this process independently from $\heightSubsid(\p)$ through an analytic reef function $\heightCoral(x)$, defined over a local parametric coordinate $x\!\in\![0,1]$ within the reef region.  
+For each pixel $\p$, we set $x = \distRegions_\p - i_{\text{reef}}$, where $i_{\text{reef}}$ is the reef region identifier in the label map.
+
+The reef profile is piecewise and parameterized by depth anchors for major subregions (back reef, reef crest and abyss):
+\[
+h_{\text{back}}=-20\text{ m},\qquad
+h_{\text{crest}}=-2\text{ m},\qquad
+h_{\text{abyss}}=-100\text{ m},
+\]
+Constant depth is given for each subregion with an interval, while transition bands use a smoothstep interpolation (\cref{fig:coral-island-reef-function} illustrates two reef profile with different subregion intervals). This analytic structure allows intuitive editing of reef depth and extent while preserving continuous slopes.
+
+Finally, the subsided and coral fields are smoothly combined using a smooth maximum operator $\smoothmax$ to ensure that coral features dominate near the surface:
+\begin{equation}
+    \smoothmax(a,b)=
+    \begin{cases}
+        a + \dfrac{b-a}{1 - e^{-2k(b-a)}}, & a\ne b,\\[4pt]
+        a+\dfrac{1}{2k}, & a=b,
+    \end{cases}
+\end{equation}
+with $k$ controlling transition sharpness (set to $k=8$ in our results), yielding the final terrain:
+\begin{equation}
+    \hat{h}(\p)=\smoothmax\!\bigl(\heightSubsid(\p),\,\heightCoral(\p)\bigr).
+\end{equation}
+The result reproduces Darwinian reef formation theory: a subsiding volcanic island surrounded by coral formations that maintain proximity to sea level.
+
+
+\begin{figure}
+    \includegraphics[width=.45\linewidth]{Reef_function_1.png}
+    % \includegraphics[width=.3\linewidth]{Reef_function_2.png}
+    \includegraphics[width=.45\linewidth]{Reef_function_3.png}
+    \caption{Our analytic reef profile is adjusted by the user to produce sharper or smoother profiles. Left: $x_{\text{back}} \in [0, 0.2]$, $x_{\text{crest}} \in [0.75, 0.95]$; Right: $x_{\text{back}} \in [0, 0.5]$, $x_{\text{crest}} \in [0.75, 0.8]$}
+    \label{fig:coral-island-reef-function}
+\end{figure}
+
+\section{Dataset Synthesis and Augmentation}
+
+Because no large annotated datasets exist for coral reef islands, we generate all training data procedurally. 
+Each sample consists of a semantic label map and a corresponding height field produced by our procedural model, ensuring pixel-wise consistency between inputs and targets.
+
+\paragraph{Procedural randomization}
+To diversify morphology, we systematically perturb the user-defined outlines $\Radius_i(\angl)$, elevation profile $\heightProfile$, and resistance function $\resistance$ using bounded Perlin and fBm noise ($|\noise_{\text{outline}}| \le 0.2$, $\noise_{\text{height}},\noise_{\text{resistance}} \in [0.8,1.2]$). We obtain altered inputs: 
+\begin{align*}
+    \Radius^*_i(\angl) &= \Radius_i(\angl) \cdot (1 + \noise_{\text{outline}}(\angl)), \\
+    \heightProfile^*(\distRegions) &= \heightProfile(\distRegions)\;\noise_{\text{height}}(\distRegions), \\
+    \resistance^*(\distRegions) &= \resistance(\distRegions)\;\noise_{\text{resistance}}(\distRegions). 
+\end{align*}
+
+We generate a random number $n$ of strokes with random paths. Spread and intensity of each stroke is also randomised with uniform sampling of spread $0.1 \leq \std \leq 0.3$ and strength $0.05 \leq S_\curve \leq 0.3$. Random wind stroke paths are smooth, simplex noise-driven trajectories biased toward the island's center, ensuring that distortions remain mainly around the main landmass.
+
+Finally, to further enrich the dataset with erosion-like structures, we add a set of radial strokes of small width and low strength, extending between the island center and the exterior of the canvas, oriented alternately landward and seaward, producing simple radial drainage patterns.% This produces simple radial drainage patterns illustrated in \cref{fig:coral-island-radial-pattern-example}.
+
+Each base island is exported with multiple subsidence factors $\subsidRate \in [0,1]$, producing a continuous sequence of geological states from young volcanic islands to mature atolls.
+
+\paragraph{Encoding}
+Inputs are stored as HSV images: the \textit{Hue} channel encodes the discrete region label $I$ (quantized per class), the \textit{Value} channel encodes the subsidence rate $\subsidRate$, and the \textit{Saturation} channel remains neutral but can be reused for future conditioning (e.g., wind intensity). 
+Target outputs are saved as RGB height fields normalized to $[0,1]$ and used directly as supervision for the cGAN.
+
+\paragraph{Augmentation}
+To expand diversity and improve generalization, we apply geometric augmentations identically on the rastered height field $\hat h$ and label map $I$ such as translation with wrapping, rotation, mirroring, and uniform scaling. 
+We also compose multiple islands in a single image by copy-paste: height fields are blended using the $\smoothmax$ operator, while label maps use a standard $\max$ operator. 
+Compositions are constrained by an intersection-over-union (IoU) threshold to prevent excessive overlap, yielding coherent multi-island scenes with consistent semantic encoding.
+
+\medskip
+The resulting dataset comprises between $10{,}000$ and $15{,}000$ paired examples, sufficient to train the pix2pix network to convergence without overfitting, as discussed in the following section.
+
+
+
+\section{Learning with Pix2Pix}
+
+We train a conditional generative adversarial network based on the pix2pix architecture~\cite{Isola2017} to translate semantic label maps into height fields. 
+All training data are synthetic, generated by our procedural model, showing that a deep model can be trained effectively without real elevation datasets.
+
+% \paragraph{Architecture and training}
+We use the default pix2pix configuration implemented in PyTorch: a U-Net generator with eight encoder-decoder layers and skip connections, and a $70\times70$ PatchGAN discriminator that classifies local patches. 
+The objective combines adversarial and reconstruction terms:
+\begin{equation}
+\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{GAN}}(G,D) + \lambda \mathcal{L}_{L_1}(G), \qquad \lambda = 100.
+\end{equation}
+Optimization uses Adam with learning rate $2\times10^{-4}$, $\beta_1=0.5$, $\beta_2=0.999$, and batch size~1.
+
+% \paragraph{Dataset and convergence}
+From roughly $1{,}000$ procedurally generated base islands, our augmentations yield about $10{,}000$ samples per epoch. 
+Training runs for ten epochs: the network produces coherent height maps after the first epoch, grid-like artefacts disappear by the second, and results stabilize around epoch~3.
+
+% \paragraph{Inference performance}
+During inference, the user paints a $256\times256$ HSV label map (Hue$=I$, Value$=\subsidRate$). 
+The trained generator produces the corresponding height map in approximately $5$\,ms on an NVIDIA GTX~1650\,Ti GPU. 
+For comparison, our C++ procedural generator computes one island in about $50$\,ms on CPU, confirming that the learned model, GPU-based, supports real-time terrain exploration.
+
+
+\section{Results}
+\label{sec:results}
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{volcanic_islands_inputs.pdf}
+    \caption{User inputs for the generation of the "volcanic" dataset. The profile function (middle) exhibit a small concavity at the island center. Resistance is globally lower than the "initial" inputs, allowing wind and wave deformations to be stronger on the overall islands and increasing the importance of our simple radial drainage patterns.}
+    \label{fig:inputs-volcano}
+\end{figure}
+
+We trained a first model "initial" from a dataset generated from user-defined inputs from \cref{fig:ui}. A second model "volcanic" is trained with user-defined inputs from \cref{fig:inputs-volcano}, on which we increase the strength of radial strokes and modify the profile function to introduce a crater-like shape at island center.
+
+Fig.~\ref{fig:coral-island-results-reproductions} illustrate that our method produce visually plausible coral reef island height fields from sketches. Four islands are mimicked with increasing subsidence, given by the brightness of the input, presenting successively islands with a fringing reef, barrier reef, larger barrier reef, and atoll. Results obtain with the "initial" model and "volcanic" model both respect the user-defined input layout, generating a base terrain in real-time with few paint strokes. The "initial" model produce smoother, uneroded terrains while the "volcanic" model introduce large dendritic patterns visible at the transition between the island center and the beaches, and between the lagoon and the reefs. A slight depression appears at the center of the island, visible when the center island region is large (first island).
+% and the accompanying examples illustrate that our model produces visually plausible coral reef islands even from coarse or fuzzy sketches. 
+
+Fig.~\ref{fig:coral-island-results-volcanic-training-1} presents two volcanic islands with different characteristics. We used a fuzzy brush on top island, which result in a smoother transition between the island center and the beaches. Bottom island has large reef regions which the network integrate seamlessly to obtain a fore reef, reef crest and back reef. 
+
+Island sketched in \cref{fig:coral-island-results-volcanic-training-3} does not respect the training set layout (island center, beach, lagoon, reef, abyss). The network still outputs smooth elevation continuity between unseen neighboring regions (here, a transition from island center and lagoon), balancing results between user constaints and plausibility.
+
+An island presenting multiple unseen characteristics is sketched in \cref{fig:coral-island-results-volcanic-training-2}: non-plausible island shape, designed with in-between colors of regions, and use of smudge tool between some regions. Result is consistent with user-given shape, recognizable in the height field. Thanks to translation augmentation used in the dataset generation, no artifact appears on the border of the height field.
+
+% The network remains robust to inconsistent inputs such as small mislabelled pixels or abrupt region transitions  and maintains smooth elevation continuity across regions. 
+% Retraining on a variant "volcanic" procedural dataset, obtained by reducing reef resistance $\resistance$ and introducing a central crater in $\heightProfile$, allows users to steer the overall island style. 
+% Compared to purely procedural outputs, the learned model removes the inherent radial symmetry while preserving semantic coherence, enabling texture or instance placement directly from region labels.
+
+\begin{figure}
+    % \autofitcaptions{Kauai Island, Tuvuca Island, Mascarene Island, Cocos Island}
+    \includegraphics[width=.23 \linewidth]{Kauai_island-square.png}
+    \includegraphics[width=.23 \linewidth]{Tuvuca_island-square.png}
+    \includegraphics[width=.23 \linewidth]{Mascarene_island-square.png}
+    \includegraphics[width=.23 \linewidth]{Cocos_island-square.png}
+%
+    \includegraphics[width=.23 \linewidth]{island-1-labels.png}
+    \includegraphics[width=.23 \linewidth]{island-2-labels.png}
+    \includegraphics[width=.23 \linewidth]{island-3-labels.png}
+    \includegraphics[width=.23 \linewidth]{island-4-labels.png}
+%
+    % \includegraphics[width=.23 \linewidth]{island-1-out.png}
+    % \includegraphics[width=.23 \linewidth]{island-2-out.png}
+    % \includegraphics[width=.23 \linewidth]{island-3-out.png}
+    % \includegraphics[width=.23 \linewidth]{island-4-out.png}
+%
+    \includegraphics[width=.23 \linewidth]{island-1-neutral-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-2-neutral-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-3-neutral-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-4-neutral-cropped.png}
+%
+    \includegraphics[width=.23 \linewidth]{island-1-render-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-2-render-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-3-render-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-4-render-cropped.png}
+%
+    \includegraphics[width=.23 \linewidth]{island-1-volcano-neutral-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-2-volcano-neutral-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-3-volcano-neutral-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-4-volcano-neutral-cropped.png}
+    %
+    \includegraphics[width=.23 \linewidth]{island-1-volcano-render-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-2-volcano-render-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-3-volcano-render-cropped.png}
+    \includegraphics[width=.23 \linewidth]{island-4-volcano-render-cropped.png}
+    %
+    \caption{Reproduction of islands. From left to right: Kauai Island, Tuvuca Island, Mascarene Island, and Cocos Island. From top to bottom: reference island, user input label map, "initial" neutral and shaded outputs, "volcanic" neutral and shaded outputs. }
+    \label{fig:coral-island-results-reproductions}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-1-labels.png}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-1-out.png}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-1-neutral-cropped.png}
+    % \includegraphics[width=.32 \linewidth]{volcanic-render-1-render-cropped.png}
+%
+    \includegraphics[width=.32 \linewidth]{volcanic-render-5-labels.png}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-5-out.png}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-5-neutral-cropped.png}
+    % \includegraphics[width=.32 \linewidth]{volcanic-render-5-render-cropped.png}
+    \caption{Two volcanic island drawn by a user (right) are output as height fields (middle) and 3D rendered (right). Results are consistent even with the presence of blurry regions (top) and out-of-distribution large or thin regions (bottom).}
+    \label{fig:coral-island-results-volcanic-training-1}
+\end{figure}
+%
+\begin{figure}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-4-labels.png}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-4-out.png}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-4-neutral-cropped.png}
+    % \includegraphics[width=.32 \linewidth]{volcanic-render-4-render-cropped.png}
+
+    \caption{User sketches creates various islands, following the initial user inputs even with unexpected island layouts (here, a transition from island center to lagoon without beach). }
+    \label{fig:coral-island-results-volcanic-training-3}
+\end{figure}
+%
+\begin{figure}
+    % \includegraphics[width=.32 \linewidth]{volcanic-render-2-labels.png}
+    % \includegraphics[width=.32 \linewidth]{volcanic-render-2-out.png}
+    % \includegraphics[width=.32 \linewidth]{volcanic-render-2-neutral-cropped.png}
+    % \includegraphics[width=.32 \linewidth]{volcanic-render-2-render-cropped.png}
+%
+    \includegraphics[width=.32 \linewidth]{volcanic-render-3-labels.png}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-3-out.png}
+    \includegraphics[width=.32 \linewidth]{volcanic-render-3-neutral-cropped.png}
+    % \includegraphics[width=.32 \linewidth]{volcanic-render-3-render-cropped.png}
+    \caption{Results of a artistic design of an island in an out-of-distribution shape, extended color palette, and smudge tool applied on various transitions. }
+    \label{fig:coral-island-results-volcanic-training-2}
+\end{figure}
+
+
+% \paragraph{Performance}
+% Inference time is approximately $5$\,ms per $256{\times}256$ image on an NVIDIA GTX~1650\,Ti GPU, supporting real-time editing.
+% Procedural dataset synthesis takes about $50$\,ms per island with our optimized C++ implementation. 
+% Training converges within ten epochs on the synthetic dataset, after which grid-like artefacts vanish and realistic coastal and reef details appear.
+
+\section{Discussion}
+
+Our hybrid approach combines the strengths of procedural modeling and deep learning. 
+Sketch-based inputs provide intuitive, high-level control of large-scale structure through outlines $\{\Radius_i(\angl)\}$ and elevation profile $\heightProfile$, while the cGAN introduces fine-grained, non-symmetric details that overcome some procedural biases. 
+Because the model is trained entirely on synthetic data, it avoids dependence on scarce digital elevation maps, yet retains explicit semantic labels $I$ for downstream tasks such as texturing, vegetation placement, or region-specific editing. 
+Real-time inference further supports interactive workflows.
+
+Despite these benefits, some limitations remain. 
+The cGAN inherits biases from the procedural dataset, which restricts generalization to out-of-distribution island layouts. 
+Resolution is limited to $256^2$ pixels due to the network architecture, and user control during inference is indirect, mediated through label maps and the global subsidence rate $\subsidRate$. 
+Addressing these aspects would broaden applicability to larger and more varied coastal environments.
+
+\section{Conclusion and Future Work}
+
+We presented a procedural-to-learning pipeline for the generation of coral reef islands, combining domain-inspired procedural rules with a conditional generative adversarial network trained on synthetic data. 
+Our system produces plausible island terrains from simple semantic sketches at interactive rates, bridging controllability and realism without relying on real-world datasets.
+
+Future extensions include conditioning the network on explicit wind or current fields (i.e., incorporating $\Tilde{\warp}$ as an input), enhancing user control during inference, and enriching the procedural model with higher-fidelity erosion and tidal dynamics. Style-transfer or super-resolution networks could further increase detail while maintaining interactivity. Given the fast training and inference times of our models, and the stability of their outputs with respect to input sketches, an alternative to explicit parameter conditioning is to train multiple generators on datasets produced with different curve-based procedural settings. Continuous user control can then be approximated at inference time by linearly blending the outputs of these generators, effectively interpolating between learned terrain styles.
+
+\paragraph{Reproducibility}
+Releasing the dataset generation scripts, training configurations, and pretrained weights is straightforward and planned for publication to support reproducibility and further exploration.
+
+
+\bibliographystyle{elsarticle-harv} 
+\bibliography{references_terrain.bib}
+% \printbibliography
+\end{document}
+
+\endinput
+%%
+%% End of file `elsarticle-template-num.tex'.

@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%% start of egpubl.cls %%%%%%%%%%%%%%%%%%%%%%
-\def\fileversion{3.97}
-\def\filedate{2024/12/20}
-\def\docdate {2024/12/20}
+\def\fileversion{3.96}
+\def\filedate{2024/09/24}
+\def\docdate {2024/09/24}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{egpubl}[\filedate \space
                        Document Style for EG Publications v\fileversion ]
@@ -15,7 +15,6 @@
 % ...modifications by Sue Brooks, BUSS Ltd
 % ... and Graham White 8.ix.92
 % ...redesign for LaTeX2e and adaption to Conf. Proc. by D.Fellner
-% 24-12-20 SB  3.97 introduce \EuroVisVisGames
 % 24-09-13 SB  3.96 some adaptions concerning copyright line on behalf of Wiley, and adaption of EG publications accordingly.
 % 24-09-13 SB  3.95 introduce \WsConferencePaper
 % 24-05-28 SB  3.94 XeTeX and LuaTeX support added in context of hyperref package with courtesy of Luca Fascione
@@ -974,9 +973,6 @@ Categories and Subject Descriptors {\small (according to ACM CCS)}: }
 \newcommand\EuroVisEducationEditors[1]{\gdef\p@EuroVisEducationEditors{#1}}
 \gdef\p@EuroVisEducationEditors{N.N. and N.N.}
 %
-\newcommand\EuroVisVisGamesEditors[1]{\gdef\p@EuroVisVisGamesEditors{#1}}
-\gdef\p@EuroVisVisGamesEditors{N.N. and N.N.}
-%
 
 
 \newcommand\EGyear[1]{\gdef\p@EGyear{#1}}
@@ -1840,26 +1836,6 @@ submitted to \textit{#1}%
 \gdef\ps@titlepage{\let\@mkboth\@gobbletwo
  \def\@oddhead{\raisebox{\z@}[8pt][1pt]{\parbox{\textwidth}{\small
    EUROVIS \p@EGyear  / \p@EuroVisEducationEditors{} \hfill {\itshape Education Paper}}}}
- \def\@oddfoot{{\tiny\raisebox{\z@}[8pt][1pt]{\parbox[t]{20pc}{\sloppy
-  \p@copyrightTextTitPag}}}\hfill}
- \let\@evenhead=\@oddhead
- \let\@evenfoot=\@oddfoot
- \let\sectionmark=\EmptySectionmark
- \let\subsectionmark=\EmptySubsectionmark
-}}
-% -------
-% -------
-\def\EuroVisVisGames{%
-\EGlocalpagenumber%
-\copyrightTextTitPag{\p@copyrightTextEG{\p@ConfYear}}
-\copyrightTextRunPag{\p@copyrightTextEGodd{\p@ConfYear}}
- \def\@oddfoot{{\tiny\raisebox{\z@}[8pt][1pt]{\parbox[t]{20pc}{\sloppy
-  \p@copyrightTextRunPag}}}\hfill}
-\def\@evenfoot{\mbox{}\hfill {\tiny\raisebox{\z@}[8pt][1pt]{\parbox[t]{20pc}{\sloppy
-  \p@copyrightTextEGeven{\p@ConfYear}}}}} 
-\gdef\ps@titlepage{\let\@mkboth\@gobbletwo
- \def\@oddhead{\raisebox{\z@}[8pt][1pt]{\parbox{\textwidth}{\small
-   EUROVIS \p@EGyear  / \p@EuroVisVisGamesEditors{} \hfill {\itshape VisGames Abstract}}}}
  \def\@oddfoot{{\tiny\raisebox{\z@}[8pt][1pt]{\parbox[t]{20pc}{\sloppy
   \p@copyrightTextTitPag}}}\hfill}
  \let\@evenhead=\@oddhead

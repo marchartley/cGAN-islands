@@ -1,0 +1,111 @@
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+
+% In this thesis we propose novel contributions in the field of procedural environment generation for underwater scenes. We will briefly summarise these contributions then propose future research perspectives.
+
+
+This thesis presents our work on the procedural generation of underwater environments, focusing particularly on coral reef islands. By situating our work at the intersection of computer graphics and marine biology, we addressed the unique challenges posed by seascapes: sparse and incomplete data, multi-scale structural complexity, dynamic biological and hydrodynamic processes, and the tension between automation and user control.
+
+Our first contribution introduced a user-guided procedural framework for coral reef island generation (\cref{chap:coral-island}). The method begins with sketch-based input, where the user provides two orthogonal projections defining the island's outline and elevation. A long-term environmental deformation field representing factors like prevailing wind or current is then applied to shape the coarse geometry realistically over time. The resulting heightmaps serve as training data for a conditional Generative Adversarial Network (cGAN), which learns to produce diversified yet controllable variations of reef islands. This hybrid approach leverages both deterministic user input and stochastic neural synthesis, ensuring that the generated terrains remain ecologically plausible while enabling rapid, large-scale seascape generation.
+
+The second contribution proposed a semantic representation of terrains using environmental objects (\cref{chap:semantic-representation}). Here, underwater features such as canyons, coral colonies, or rocky outcrops are abstracted into symbolic entities governed by rule-based interactions. Instead of simulating full multiphysics processes, these semantic objects encode simplified ecological and geological relationships. By decoupling terrain structure from heavy physical simulations, this representation enables interactive editing: users can rearrange symbolic layouts or modify ecosystem composition without committing to a specific geometric representation. The result is a fast, low-cost synthesis pipeline that preserves expert knowledge and bridges the gap between domain specialists and procedural modelling tools.
+
+Our third contribution introduced a particle-based erosion model that is parallelisable, representation-agnostic, and applicable to both terrestrial and underwater terrains (\cref{chap:erosion}). Designed with user control in mind, the model exposes intuitive parameters and guiding fields that allow users to steer erosion behaviour and achieve desired landscape outcomes by adjusting flow direction, particle emission positions and erosive agent properties. Sediment transport and deposition are simulated using discrete particles that move under simplified hydrodynamic and gravitational forces: they erode material from steep slopes, carry it along currents, and deposit it in calmer regions, reproducing processes such as coastal cliff retreat, reef slope scouring, and lagoon sedimentation. Implemented for efficient execution on modern hardware, the algorithm operates across various data representations (heightmaps, voxel grids, or layered models) while maintaining scalability. This controllable erosion stage enriches procedural terrains with naturalistic details and realistic ageing effects, reinforcing the creative and interpretative role of the user in shaping virtual environments.
+
+Together, these contributions form a coherent pipeline that keeps the user central in the content creation loop, from large-scale landscape definition to robot-scale detail refinement. This philosophy of guiding rather than replacing the human designer responds directly to the need for controllable, transparent, and explainable virtual environments.
+
+Beyond the specific methods presented, this work underscores a broader insight: procedural generation for underwater environments is most powerful when it blends process-informed models, simplified ecological rules, and human expertise. It is this combination that enables both scientific discovery and creative exploration in domains where direct observation is difficult or even impossible.
+
+
+
+
+
+
+% Procedural generation of virtual terrains has matured over decades, yet user control remains a central challenge. This thesis has addressed this challenge in the context of underwater environments, with particular attention to coral reef islands and broader implications for biology, geology and graphics. The guiding question has been how to support the user in the creation process rather than replace creative intent, while ensuring flexibility, interactivity and modularity.
+
+% \paragraph{User-guided learning-based approach} We introduced in \cref{chap:coral-island} a user-guided procedural method for coral reef island generation that combines sketch-based specification of island shape with wind-driven deformation and a conditional Generative Adversarial Network for diversity. This approach avoids reliance on large real-world elevation datasets, achieves training in approximately one hour on procedurally generated data, and enables inference in milliseconds. This method demonstrates how neural expressivity can be harnessed to lift procedural constraints and present a more flexible interface for designers. It is important to note that the use case was simple enough for a neural network as the generation rules are distance-based, meaning that the network may simply learn to create distance maps; more complex scenarios are possibly not as fast to learn.
+
+% \paragraph{Semantic ecosystem modelling} \cref{chap:semantic-representation} proposed a semantic, entity-based ecosystem modelling framework based on phenomenological principles. By representing biotic and abiotic elements as symbolic objects with user-definable interactions, this work trades physics and biological fidelity for computation speed. The abstraction permits rule definitions informed by domain insights without committing to heavy simulation, thereby offering a lightweight yet extensible means for environment design across multiple representations. The quality and fidelity of the generation is directly dependent on rule definitions, shifting the responsibility into the user's hands, which is far from ideal in a user-oriented application.
+
+% \paragraph{Particle-based erosion} In \cref{chap:erosion}, we presented a particle-based erosion framework operating on 2.5D and 3D terrain representations. Each particle is simulated independently along its trajectory, so that the process may be halted at any point without yielding inconsistent partial states. This representation-agnostic and parallelisable method permits interactive control of erosion and can be combined with more accurate submodules if higher fidelity is required. The modular design ensures that improvements in flow modelling or material response can be integrated without altering the overall pipeline. Inter-particle interaction removal is a large physical simplification, trading accuracy with simulation time.
+
+\section*{Future work and research perspectives}
+
+Future work and research perspectives span several directions that extend the foundations established in this thesis. These directions aim to deepen the modular, user-centric approach to terrain generation by incorporating recent advances in data-driven modelling, procedural inference, and simulation surrogates. Each perspective addresses a distinct aspect of the pipeline. While technically diverse, these perspectives share a common goal: to enhance user control while reducing reliance on manual tuning or exhaustive simulation, and promote adaptability across creative and scientific domains.
+
+\paragraph{Inverse procedural generation} An interesting direction would be to infer procedural rules from an observed terrain and its semantic elements by inverting the symbolic framework of \cref{chap:semantic-representation}. The aim is to analyse a single scene, and abstract it as \glosses{EnvObj} to hypothesise placement, implicit geometry \cite{Guerin2016a} and interaction rules that could generate similar patterns \cite{Stava2010,Stava2014}. Scene analysis involves mapping observed entities and spatial distributions \cite{Emilien2015a} into the symbolic vocabulary. Rule hypothesis then explores candidate constructs, followed by forward simulation to validate and adjust parameters until regenerated outputs resemble the original scene. Once validated, the inferred rules can be used to extend the terrain beyond observed boundaries, simulate temporal evolution, or perform inpainting.
+
+\paragraph{User-data-driven generation} We could develop generative models that learn terrain design style from a limited archive of prior creations of a single user by building on the sketch-based cGAN method of \cref{chap:coral-island} or through neuroevolution \cite{Stanley2005,Cortes2024} in association with the generation rules inferred on the semantic representation of the user terrains. Generating label maps from point, curve and region \glosses{EnvObj} may provide a way to produce a dataset with data generation and data augmentation. Once trained, freehand sketching of a label map generates the \glosses{EnvObj} to populate the landscape, which stays conform to prior creations. The challenge is to propose a representation scheme for the cGAN architecture that outputs \glosses{EnvObj}' skeleton and properties.
+
+\paragraph{Learned erosion model} A final work proposed from this thesis is the learned approximation of erosion from \cref{chap:erosion} to enable fast terrain ageing with controllable fidelity. Provided an initial flow field \cite{Tompson2017} and terrain as a voxelised image and the resulting grid after erosion iterations with varied particle counts, the training of a 3D cGAN \cite{Ongun2018} or Transformer \cite{Vaswani2017} could result in a learned-based erosion model. If stable enough, this model would enable interpolation directly on a desired number of particles and wind flow direction in the way of a Nerf \cite{Mildenhall2020}. Providing a model for each possible \gloss{EnvObj} of a terrain could be a means to generate each 3D model plausibly.
+
+
+% \midConclusion
+
+% The research perspectives outlined above build directly on the thematic contributions and modular philosophy of this thesis. By advancing user-data-driven generation, inverse procedural generation and analytic erosion models, future work can deepen and extend the foundations established in this thesis. Interdisciplinary collaboration remains essential, drawing on expertise in machine learning, human-computer interaction, computer vision, geology, ecology and related fields. The modular abstractions and human-in-the-loop design principles presented in this thesis offer a groundwork for these investigations. Pursuing these directions is expected to yield more robust, flexible and user-centered terrain generation tools that serve both creative and scientific objectives. 
+
+
+
+
+% \section*{Contributions}
+% \paragraph{Association of procedural generation with deep learning methods}  Deep learning and machine learning have been expanding domains for the last few decades, and the Computer Graphics community has been brittle to incorporate these fields' methods. Through our work (\cref{chap:coral-island}), we trained a deep learning method in association with sketch-based modeling to improve usability, without replacing the fundamental importance of modeling methods for data-sparse domains such as, in our case, coral reef islands.
+
+% We have seen that this wrapper around procedural modeling can improve performences and interaction, allowing for user inputs with less constraints, and less restrictions. This interface between the complex requirements of a procedural method and the needs for intuitive UI for the user is shown to be easy to put in place, with the illustration of the out-of-the-box pix2pix model. 
+
+% We limit our scope to output 2.5D height fields, but the acceleration of fluid simulations with convolutional neural networks suggests that even the most complex fields may be candidates to this type of associations. That the main challenge for completely including neural networks (NN) in CG works may be the design of intuitive controls as inputs of the NN.
+
+
+% \paragraph{Ecosystem simulation for terrain modeling} % \paragraph{User-oriented generation}  User Interaction is a whole field of Computer Graphics and is in constant evolution since the begining of computer science. Procedural generation, and more specifically procedural terrain generation, has been relying on random generators and the increase of computation power to produce infinite content or include physical simulations, focusing on automatic generation to produce quantity. More recently, authoring has taken more importance in the field, showing an increasing concern for user-oriented generation over automatic generation, which we may summarise as the desire to obtain quality over quantity.
+
+% In \cref{chap:coral-island} we introduced learning-based methods through the use of cGAN as an interface between curve-based modeling algorithms and drawing-based interaction. The neural network is trained on procedural data that follows user-designed parameters specifically proposed for data-sparse domain, in our case, coral reef islands. We then introduced in \cref{chap:semantic-representation} 
+
+\newpage
+\section*{Publications and Conferences}
+
+The erosion method presented in \cref{chap:erosion} led to a publication in an international journal:
+
+\begin{itemize}
+    \item \textbf{M. Hartley}, N. Mellado, C. Fiorio, N. Faraj. \textit{Flexible Terrain Erosion}. \textit{The Visual Computer} \textbf{40}, 4593--4607 (2024). \textbf{Best Student Paper Award.}
+\end{itemize}
+
+Additional works are currently in preparation for publication:
+
+\begin{itemize}
+    \item \textbf{M. Hartley}, L. Jean, K. Godary-Dejean, O. Deussen, B. Benes, N. Faraj. \textit{Procedural Underwater Terrain Generation with Environmental Objects}. \textit{In preparation.}
+    \item \textbf{M. Hartley}, N. Faraj. \textit{Procedural and Learning-Based Generation of Coral Reef Islands}. \textit{In preparation.}
+\end{itemize}
+
+These works have also been presented on multiple occasions:
+
+\begin{itemize}
+    \item \textbf{International Conferences:}
+    \begin{itemize}
+        \item \textbf{M. Hartley}, N. Mellado, C. Fiorio, N. Faraj. \textit{Flexible Terrain Erosion}. \textit{Computer Graphics International}, Geneva, Switzerland, 2024.
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{National Conferences:}
+    \begin{itemize}
+        \item \textbf{M. Hartley}, N. Mellado, C. Fiorio, N. Faraj. \textit{Algorithmes d'érosion pour la génération de terrains 3D}. \textit{Journées Françaises d'Informatique Graphique}, Bordeaux, France, 2022.
+        \item \textbf{M. Hartley}, L. Barthe, B. Benes, O. Deussen, C. Fiorio, N. Faraj, K. Godary-Dejean. \textit{Génération de terrains par processus itératif : application à la génération d'îles coralliennes}. \textit{Journées Françaises d'Informatique Graphique}, Montpellier, France, 2023.
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{Workshops:}
+    \begin{itemize}
+        \item \textbf{M. Hartley}. \textit{Procedural Generation of 3D Underwater Environments}. \textit{Computer Science and Robotics Tools for 3D Marine Underwater Environment Monitoring and Modelling}, Montpellier, France, 2022.
+        \item \textbf{M. Hartley}. \textit{Procedural Generation of 3D Underwater Environments}. \textit{Workshop on Underwater Environment Monitoring and Modelling}, Montpellier, France, 2024.
+    \end{itemize}
+\end{itemize}
+
+This work was carried out in collaboration with national and international partners, whom I would like to thank sincerely:
+
+\begin{itemize}
+    \item \textbf{IRIT}, Université de Toulouse, France: with N. Mellado and L. Barthe (including a one-month visit),
+    \item \textbf{Universität Konstanz}, Germany: with O. Deussen,
+    \item \textbf{Purdue University}, USA: with B. Benes (including a one-month visit).
+\end{itemize}
+
+The overall goal of this work is to propose methods for generating underwater environments for mission simulation and planning in the context of autonomous robot validation. To enable practical use, our methods were integrated into a mission editing tool based on Unreal Engine 5, developed by our software engineer Q. Guillot.
