@@ -2,27 +2,28 @@
 \usepackage{ifthenx}
 \usepackage{xparse}
 \usepackage{caption}
+\usepackage{glossaries}
 
 \def\zzcommand#1{\let#1\undefined\newcommand#1}
 
 
-\let\Oldincludegraphics\includegraphics
-\RenewDocumentCommand{\includegraphics}{O{} m}{%
-	\begin{adjustbox}{max width=\linewidth, max height=\textheight-5\baselineskip}
-	    \Oldincludegraphics[#1]{#2}
-	\end{adjustbox}
-}
+% \let\Oldincludegraphics\includegraphics
+% \RenewDocumentCommand{\includegraphics}{O{} m}{%
+% 	\begin{adjustbox}{max width=\linewidth, max height=\textheight-5\baselineskip}
+% 	    \Oldincludegraphics[#1]{#2}
+% 	\end{adjustbox}
+% }
 
-\let\origfigure\figure
-\let\endorigfigure\endfigure
+% \let\origfigure\figure
+% \let\endorigfigure\endfigure
 
-\renewenvironment{figure}[1][tbp]{%
-    \captionsetup{width=\linewidth}
-    \origfigure[#1]%
-    \centering
-}{%
-    \endorigfigure
-}
+% \renewenvironment{figure}[1][tbp]{%
+%     \captionsetup{width=\linewidth}
+%     \origfigure[#1]%
+%     \centering
+% }{%
+%     \endorigfigure
+% }
 
 
 % \eqref{label}
