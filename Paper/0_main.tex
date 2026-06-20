@@ -1,0 +1,49 @@
+% \resetgraphicspath
+% \appendtographicspath{{./Chapter 1/figures/} }
+% \appendtographicspath{{./Chapter 1/figures/Procedural/} }
+% \appendtographicspath{{./Chapter 1/islands/} }
+% \appendtographicspath{{./Chapter 1/Results/} }
+% \appendtographicspath{{./Chapter 1/Results/Procedural/} }
+% \appendtographicspath{{./Chapter 1/Results/Reproduction/} }
+% \appendtographicspath{{./Chapter 1/Results/results_cGAN_PG25/} {./Chapter 1/Results/results_cGAN_PG25/Renders} }
+% \appendtographicspath{{./Chapter 1/Results/volcanic/} }
+% \appendtographicspath{{./Chapter 1/figures/Smoothmax/} }
+% \appendtographicspath{{./Chapter 1/figures/vector_field/} }
+% \appendtographicspath{{./Chapter 1/figures/SOTA/coral theories/} }
+% \appendtographicspath{{./Chapter 1/figures/SOTA/sketching/} }
+
+% \chapter{Automatic generation of coral reef islands}
+% \label{chap:coral-island}
+% \teaser{
+%     \autofitgraphics[]{Teaser1.png, Teaser2.png, Teaser3.png}
+%     \caption[Example of an island with gradual subsidence]{Given a free hand-drawn sketch of the different regions of an island (bottom inset of each example), our method generates a corresponding height field using neural networks. Subsidence (gradual sinking of land) is controlled by the user in the luminosity channel of the input. These examples show the gradual subsidence of the same island over time.}
+%     \label{fig:teaser_cGAN}
+% }
+
+% \abstract
+% In this chapter, we propose a procedural method for generating single volcanic islands with coral reefs based on user sketches from two projections commonly used in geological and remote sensing domains: a top view defining the island's shape, and a profile view, establishing its elevation. 
+% We add a user-defined wind field that deforms the island to mimic long-term effect of wind and wave, providing finer user control over the island's shape.
+% Next, we model the coral growth on the island following biological observations.
+% This results in a terrain height field of the island and its surrounding reef. 
+% Our method creates a large variety of coral reef island models which we used to train a conditional Generative Adversarial Network (cGAN). 
+% By applying data augmentation, the cGAN enhances the variety in the generated islands, providing users with greater freedom and intuitive controls over the shape and structure of the final output.
+% \pagebreak
+
+% \minitoc
+
+\input{Paper/1_intro.tex}
+
+\input{Paper/2_related-work.tex}
+
+\input{Paper/3_overview.tex}
+
+\input{Paper/4_procedural-generation.tex}
+
+\input{Paper/5_dataset-generation.tex}
+
+\input{Paper/6_training.tex}
+
+\input{Paper/7_results.tex}
+
+\input{Paper/8_conclusion.tex}
+

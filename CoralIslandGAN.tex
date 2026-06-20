@@ -22,7 +22,8 @@
 % \documentclass[preprint,12pt]{elsarticle}
 
 %% Use the option review to obtain double line spacing
-\documentclass[authoryear,preprint,review,12pt]{elsarticle}
+% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
+\documentclass[preprint,review,12pt]{elsarticle}
 
 %% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
 %% for a journal layout:
@@ -203,9 +204,14 @@ Coral reef islands
 
 \end{frontmatter}
 
+\teaser{
+    \autofitgraphics[]{Teaser1.png, Teaser2.png, Teaser3.png}
+    \caption[Example of an island with gradual subsidence]{Given a free hand-drawn sketch of the different regions of an island (bottom inset of each example), our method generates a corresponding height field using neural networks. Subsidence (gradual sinking of land) is controlled by the user in the luminosity channel of the input. These examples show the gradual subsidence of the same island over time.}
+    \label{fig:teaser_cGAN}
+}
 
 
-\input{Paper/main.tex}
+\input{Paper/0_main.tex}
 
 
 
@@ -602,7 +608,9 @@ Coral reef islands
 % Releasing the dataset generation scripts, training configurations, and pretrained weights is straightforward and planned for publication to support reproducibility and further exploration.
 
 
-\bibliographystyle{elsarticle-harv} 
+% \bibliographystyle{EG} 
+% \bibliographystyle{elsarticle-harv} 
+\bibliographystyle{elsarticle-num} 
 \bibliography{references_terrain.bib}
 % \printbibliography
 \end{document}

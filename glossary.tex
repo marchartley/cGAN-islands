@@ -6,26 +6,6 @@
 
 \def\zzcommand#1{\let#1\undefined\newcommand#1}
 
-
-% \let\Oldincludegraphics\includegraphics
-% \RenewDocumentCommand{\includegraphics}{O{} m}{%
-% 	\begin{adjustbox}{max width=\linewidth, max height=\textheight-5\baselineskip}
-% 	    \Oldincludegraphics[#1]{#2}
-% 	\end{adjustbox}
-% }
-
-% \let\origfigure\figure
-% \let\endorigfigure\endfigure
-
-% \renewenvironment{figure}[1][tbp]{%
-%     \captionsetup{width=\linewidth}
-%     \origfigure[#1]%
-%     \centering
-% }{%
-%     \endorigfigure
-% }
-
-
 % \eqref{label}
 \zzcommand{\eqref}[1]{\cref{#1}}
 % \to 

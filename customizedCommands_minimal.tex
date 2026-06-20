@@ -18,6 +18,27 @@
 
 % \setcounter{secnumdepth}{3}
 
+
+\let\Oldincludegraphics\includegraphics
+\RenewDocumentCommand{\includegraphics}{O{} m}{%
+	\begin{adjustbox}{max width=\linewidth, 
+        % max height=\textheight-5\baselineskip
+        }
+	    \Oldincludegraphics[#1]{#2}
+	\end{adjustbox}
+}
+
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+
+% \renewenvironment{figure}[1]{ %[tbp]{%
+%     % \captionsetup{width=\linewidth}
+%     \origfigure[#1]%
+%     % \centering
+% }{%
+%     \endorigfigure
+% }
+
 \SetKwRepeat{DoWhile}{do}{while}
 
 % Macros to hold current titles
@@ -936,8 +957,8 @@
 }
 
 
-% \citet{ref}
-\zzcommand{\citet}[1]{\citep{#1}}
+% % \citet{ref}
+% \zzcommand{\citet}[1]{\citep{#1}}
 
 % \delete{text_to_remove}
 \zzcommand{\delete}[1]

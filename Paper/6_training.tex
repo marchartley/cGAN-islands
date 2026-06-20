@@ -1,0 +1,30 @@
+\section{Learning-based generation}
+\label{sec:coral-island-cGAN-training}
+
+In this section, we introduce the use of a cGAN, specifically the pix2pix model, to enhance the island generation process by increasing the variety and flexibility of terrains. While the initial procedural algorithm generates diverse island examples (convex and concave outlines), cGAN provides additional flexibility in generating more complex terrain without the rigid constraints of the procedural algorithm that stem from our initial assumptions based on coral reef formation theory.
+
+Our model is trained using a batch size of 1, and optimised using the Adam optimiser with a learning rate of 0.0002 and momentum parameters $\beta_1 = 0.5$ and $\beta_2 = 0.999$. The loss function combined a conditional adversarial loss and an L1 loss, where the L1 loss was weighted by a factor $\lambda = 100$. The generator follows a U-Net architecture with encoder-decoder layers and skip connections, while the discriminator was based on a PatchGAN, classifying local image patches. These parameters are directly adopted from the original pix2pix paper \cite{Isola2017}. We use a dataset of 1~000 single islands, augmented with the various methods seen in \cref{sec:coral-island-data-augmentation} to obtain about 10~000 samples that are all seen once during an epoch (representing about 30 minutes of training).  
+
+During inference after a single epoch, our model still outputs grid artefacts, visible in \cref{fig:coral-island-first-epoch}. After the second epoch, visual artefacts are already rare. Illustrations displayed in the remainder of this chapter are results of models trained over less than ten epochs. The training time is relatively short compared to typical deep-learning terrain generation pipelines, largely thanks to the synthetic nature and consistency of our dataset.
+% This training time seems long but, to the best of our knowledge, is the shortest training time for terrain generation with a learning-based approach in the literature, mostly due to the synthetic nature of our dataset.
+
+\begin{figure}[t]
+    \autofitgraphics[]{epoch-1-output.png, epoch-2-output.png, epoch-3-output.png}
+    \autofitgraphics[]{epoch-1-render.png, epoch-2-render.png, epoch-3-render.png}
+    \autofitcaptions[]{Epoch 1 \linebreak (\textasciitilde10 000 samples), Epoch 1.5 \linebreak (\textasciitilde15 000 samples), Epoch 2 \linebreak (\textasciitilde20 000 samples)}
+    \caption[Outputs of the cGAN after training on 10 000, 15 000 and 20 000 samples]{After the first epoch (left), grid artefacts similar to a low-resolution image are visible, but are being corrected during a second epoch (middle) where erosion patterns appear in the height fields (right).}
+    \label{fig:coral-island-first-epoch}
+\end{figure}
+
+Once the model is trained, the user colours a $256\times256$ RGB image to sketch the different regions. Each region is given a specific colour based on the HSV encoding used for the dataset generation. The examples presented in this paper use red for abysses, blue for reefs, cyan for lagoons, green for beaches, and yellow for mountains. The subsidence factor presented in \cref{sec:coral-island-subsidence} is controllable through the luminosity of the input image.
+
+The Python script for the initial island dataset generation is unoptimised and takes about 2.5 s per island of size $256 \times 256$ as we do not perform parallelisation here. Implementing an optimised C++ version of the initial generation process reduces this execution time to 50 ms per generation.
+
+On the other hand, the inference time of our deep learning model for a single input image of dimension $256 \times 256$ remains constant regardless of scene complexity. Using the NVIDIA GeForce GTX 1650 Ti GPU with Python 3.10 and PyTorch version 2.5.1+cu121, the inference time measured is 5 ms (std 1.1 ms).
+
+Once trained, the cGAN model generates a height field from a given label map. The output is a complete 2D height map representing the terrain's elevation at each point. Although the cGAN's internal logic is not easily interpretable, the label map remains available after inference and retains semantic terrain structure for the user.
+
+% The label map is a symbolic representation of the terrain, where each pixel of the map (each colour) represents a class. We can use this information to keep a sparse representation of the environment using medial axis transform shape descriptor, for which we will see how to treat in the next chapter about \glosses{EnvObj}.
+
+% The training of the model can be done in the other direction, from height field to label map. \
+% If we wish to extract its content into \glosses{EnvObj}, we can use the label map, skeletonise each class blob through medial axes, then attribute to each resulting polyline a class, that we will call, in the next chapter, \glosses{EnvObj}.

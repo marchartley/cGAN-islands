@@ -1,0 +1,60 @@
+\section{Conclusion and future works}
+\label{sec:coral-island-conclusion}
+
+In this work we presented a novel approach to generating coral reef island terrains by combining traditional procedural methods with deep learning techniques. We first developed a procedural generation algorithm capable of creating a wide variety of island terrains through a combination of top-view and profile-view sketches, wind deformation, and subsidence and coral reef growth modelling. By applying these methods, we produced plausible terrains based on geological processes, capturing key features of coral reef islands: island, beaches, lagoons, and coral reefs.
+
+To further enhance flexibility and realism in the generation process, we incorporated a Conditional Generative Adversarial Network, using the pix2pix model to generate height maps from label maps of island features. The cGAN model allowed us to overcome some of the constraints inherent in the procedural algorithm, such as radial symmetry and fixed island positioning. Through data augmentation, we trained the cGAN on a synthetic dataset, enabling the generation of varied and plausible island terrains.
+
+% \subsection{Future works}
+
+There are several directions for future research and improvements. One promising avenue is to incorporate the wind velocity field directly into the cGAN training process, potentially as an additional input condition. This would allow the model to better capture wind-driven terrain features such as cliffs or other deformations influenced by wind patterns.
+
+Another area for exploration is improving user interaction during the terrain generation process. While the current model allows for rapid terrain generation, adding more options for users to interact with the cGAN, such as adjusting parameters (wind strength and main direction, erosion, reef function parameters, ...), could improve control over the terrain generation process of our system and help the user to generate his target results.
+
+Finally, further improvements could be made to the synthetic dataset. Incorporating additional geological processes, such as higher fidelity physical simulation of wave and rain erosion, and tidal influences, could lead to even more realistic terrains at the cost of interactivity. Additionally, refining the way islands are blended in multi-island samples, or adding more diverse input conditions (e.g., different geological settings), could help the model generalise and produce more varied and dynamic landscapes.
+
+Various other neural network models could be exploited to increase user interactions and improve user control, with newer variants of cGANs \cite{Park2019}, or models with style transfer functionalities \cite{Gatys2015,Zhu2020} in order to change the overall aspect of a terrain \cite{Perche2023a,Perche2023b}, use text-to-image models \cite{Rombach2021,Radford2021} to generate height fields from a verbal prompt, or super-resolution models \cite{Dong2014} to increase the definition of details in the final output \cite{Guerin2016a}.
+
+In summary, this chapter has demonstrated how procedural rules and deep learning can produce convincing island terrains. Yet, terrains alone are not enough: seascapes also depend on the biotic and abiotic features that inhabit them. The following chapter therefore moves beyond geometry to explore ecosystem generation.
+
+
+\begin{figure}
+    % \autofitgraphics[]{label-demo-0.png, label-demo-1.png, label-demo-2.png, label-demo-3.png, label-demo-4.png, label-demo-5.png, label-demo-6.png, label-demo-7.png, label-demo-8.png, label-demo-9.png}
+    % \autofitgraphics[]{Render-demo-0.png, Render-demo-1.png, Render-demo-2.png, Render-demo-3.png, Render-demo-4.png, Render-demo-5.png, Render-demo-6.png, Render-demo-7.png, Render-demo-8.png, Render-demo-9.png}
+
+
+    % \autofitgraphics[]{label-demo-10.png, label-demo-11.png, label-demo-12.png, label-demo-13.png, label-demo-14.png, label-demo-15.png, label-demo-16.png, label-demo-17.png, label-demo-18.png, label-demo-19.png}
+    % \autofitgraphics[]{Render-demo-10.png, Render-demo-11.png, Render-demo-12.png, Render-demo-13.png, Render-demo-14.png, Render-demo-15.png, Render-demo-16.png, Render-demo-17.png, Render-demo-18.png, Render-demo-19.png}
+
+
+    % \autofitgraphics[]{label-demo-20.png, label-demo-21.png, label-demo-22.png, label-demo-23.png, label-demo-24.png, label-demo-25.png, label-demo-26.png, label-demo-27.png, label-demo-28.png, label-demo-29.png}
+    % \autofitgraphics[]{Render-demo-20.png, Render-demo-21.png, Render-demo-22.png, Render-demo-23.png, Render-demo-24.png, Render-demo-25.png, Render-demo-26.png, Render-demo-27.png, Render-demo-28.png, Render-demo-29.png}
+
+
+
+    % \autofitgraphics[]{label-demo-0.png, label-demo-1.png, label-demo-2.png, label-demo-3.png, label-demo-4.png, label-demo-5.png, label-demo-6.png}
+    % \autofitgraphics[]{Render-demo-0.png, Render-demo-1.png, Render-demo-2.png, Render-demo-3.png, Render-demo-4.png, Render-demo-5.png, Render-demo-6.png}
+
+
+    % \autofitgraphics[]{label-demo-11.png, label-demo-12.png, label-demo-13.png, label-demo-14.png, label-demo-15.png, label-demo-16.png, label-demo-17.png}
+    % \autofitgraphics[]{Render-demo-11.png, Render-demo-12.png, Render-demo-13.png, Render-demo-14.png, Render-demo-15.png, Render-demo-16.png, Render-demo-17.png}
+
+
+    % \autofitgraphics[]{label-demo-21.png, label-demo-22.png, label-demo-23.png, label-demo-24.png, label-demo-25.png, label-demo-26.png, label-demo-27.png}
+    % \autofitgraphics[]{Render-demo-21.png, Render-demo-22.png, Render-demo-23.png, Render-demo-24.png, Render-demo-25.png, Render-demo-26.png, Render-demo-27.png}
+
+    \autofitgraphics[]{label-demo-0.png, heightmap-demo-0.png, label-demo-1.png, heightmap-demo-1.png, label-demo-2.png, heightmap-demo-2.png, label-demo-3.png, heightmap-demo-3.png, label-demo-4.png, heightmap-demo-4.png}
+    \autofitgraphics[]{Render-demo-0.png, Render-demo-1.png, Render-demo-2.png, Render-demo-3.png, Render-demo-4.png}
+    \autofitcaptions[]{~}
+    \autofitgraphics[]{label-demo-5.png, heightmap-demo-5.png, label-demo-6.png, heightmap-demo-6.png, label-demo-11.png, heightmap-demo-11.png, label-demo-12.png, heightmap-demo-12.png, label-demo-13.png, heightmap-demo-13.png}
+    \autofitgraphics[]{Render-demo-5.png, Render-demo-6.png, Render-demo-11.png, Render-demo-12.png, Render-demo-13.png}
+    \autofitcaptions[]{~}
+    \autofitgraphics[]{label-demo-14.png, heightmap-demo-14.png, label-demo-15.png, heightmap-demo-15.png, label-demo-16.png, heightmap-demo-16.png, label-demo-17.png, heightmap-demo-17.png, label-demo-22.png, heightmap-demo-22.png}
+    \autofitgraphics[]{Render-demo-14.png, Render-demo-15.png, Render-demo-16.png, Render-demo-17.png, Render-demo-22.png}
+    \autofitcaptions[]{~}
+    \autofitgraphics[]{label-demo-23.png, heightmap-demo-23.png, label-demo-24.png, heightmap-demo-24.png, label-demo-25.png, heightmap-demo-25.png, label-demo-26.png, heightmap-demo-26.png, label-demo-27.png, heightmap-demo-27.png}
+    \autofitgraphics[]{Render-demo-23.png, Render-demo-24.png, Render-demo-25.png, Render-demo-26.png, Render-demo-27.png}
+
+    \label{fig:coral-island-editing-session}
+    \caption[Editing session of an island generation]{Few frames of an editing session for the generation of a coral reef island on Paint. The resulting height fields are output in real-time and each generation is consistant, allowing to interact fluently with the system without unexpected behaviour. The shaded outputs (bottom of each frame) are rendered in Blender, which are not real-time.}
+\end{figure}
