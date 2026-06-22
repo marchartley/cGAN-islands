@@ -54,7 +54,7 @@ This configuration enables rapid generation of large quantity of samples, with m
 \subsection{Data augmentation}
 \label{sec:coral-island-data-augmentation}
 
-\begin{figure}[H]
+\begin{figure}
     \autofitgraphics[]{6_features.png, 6_heightmaps.png, 6_results.png}
     \autofitcaptions{Input sketch, Output height field, Result}
     \caption[A sample of the dataset with multiple transformations]{A sample of the dataset with the input and output of the island copied and scaled at multiple positions of the image, creating three different islands in a single image.}
@@ -78,7 +78,7 @@ To enhance the variety of the dataset and improve the model's ability to general
 All augmentation techniques are simultaneously applied to both the height field and the label map ensuring consistency between input (the label map) and output (the height field). We summarise the complete dataset generation in \cref{alg:dataset-generation}.
 
 
-\begin{algorithm}[H]
+\begin{algorithm}
     \caption{Procedural dataset generation.}
     \label{alg:dataset-generation}
     \DontPrintSemicolon

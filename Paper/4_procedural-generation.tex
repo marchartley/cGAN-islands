@@ -6,34 +6,34 @@ We propose a structured process for generating coral reef island terrains that t
 
 The generation of coral reef islands with our system begins with two intuitive sketch-based inputs from the user: a top-view sketch and a profile-view sketch, which define the island's horizontal layout and vertical elevation profile. Users further refine the terrain by applying wind deformation strokes, approximating wind and waves effects on the island's shape. This combination of sketches and wind inputs gives users precise control over both the island's structure and its natural variations, such as irregular coastlines or concave features. In this section we demonstrate the usefulness of these sketches, describe the technical details, and present the method in \cref{alg:sketch-to-height-wind}.
 
-\subsection{Initial height field generation}
-\label{sec:coral-island-generation-initial}
+% \subsection{Initial height field generation}
+% \label{sec:coral-island-generation-initial}
 
-\begin{figure}
-    \autofitgraphics[width=0.90 \linewidth]{Cicia_island.png, Cicia_island-outlines.png}
-    \autofitgraphics[width=0.90 \linewidth]{Cicia_island-3D.png}
-    \caption[A real island and its different regions]{(Left) A real-world example of aerial image (and 3D visualisation on bottom) of an island (Cicia Island) may be segmented into regions. (Right) We represent the different regions boundaries.}
-    \label{fig:coral-island-top-view-sketch}
-\end{figure}
+% \begin{figure}
+%     \autofitgraphics[width=0.90 \linewidth]{Cicia_island.png, Cicia_island-outlines.png}
+%     \autofitgraphics[width=0.90 \linewidth]{Cicia_island-3D.png}
+%     \caption[A real island and its different regions]{(Left) A real-world example of aerial image (and 3D visualisation on bottom) of an island (Cicia Island) may be segmented into regions. (Right) We represent the different regions boundaries.}
+%     \label{fig:coral-island-top-view-sketch}
+% \end{figure}
 
-The top-view sketch defines the island's outline as seen from above. Using a simple drawing interface, the user can delineate the boundaries between key regions of the island, including the island itself, beaches, lagoons, and surrounding abysses (\cref{fig:coral-island-top-view-sketch}). Our system assumes that these regions are arranged concentrically around the centre of the island, with each boundary defined by a radial distance from the centre (\cref{fig:coral-island-parametric-distance}).
+The top-view sketch defines the island's outline as seen from above. Using a simple drawing interface, the user can delineate the boundaries between key regions of the island, including the island itself, beaches, lagoons, and surrounding abysses. Our system assumes that these regions are arranged concentrically around the centre of the island, with each boundary defined by a radial distance from the centre (\cref{fig:coral-island-parametric-distance}).
 
 Each region's boundary is represented in polar coordinates $\left(\radius_\p, \angl_\p\right)$, with $\radius_\p$ indicating the radial distance from the island's centre and $\angl_\p$ representing the angular position. This polar representation allows us to map the user's sketch onto a circular framework, ensuring smooth transitions between regions and maintaining a coherent island layout.
 
 In this sketch, the user defines the overall horizontal layout of the island, including the size and shape of each feature (\cref{fig:coral-island-procedural-height-only}). Variations in the outline are introduced by allowing the radial distances to vary with angle, ensuring that the island is not strictly symmetrical and introducing more natural, irregular shapes.
 
-\begin{figure}[H]
-    \autofitgraphics[]{binary-heights-input-only-outlines-2.png, binary-heights-output-only-heightmap-2.png, binary-heights-render-2.png}
-    \autofitcaptions{Input sketch, Output height field, Result}
-    \caption[Curve-based island generation using only outlines]{Using only the outlines of the island as an input sketch (left), we provide a height field depending on the region in which it relies (middle). The resulting terrain is displayed (right). }
-    \label{fig:coral-island-procedural-height-only}
-\end{figure}
+% \begin{figure}
+%     \autofitgraphics[]{binary-heights-input-only-outlines-2.png, binary-heights-output-only-heightmap-2.png, binary-heights-render-2.png}
+%     \autofitcaptions{Input sketch, Output height field, Result}
+%     \caption[Curve-based island generation using only outlines]{Using only the outlines of the island as an input sketch (left), we provide a height field depending on the region in which it relies (middle). The resulting terrain is displayed (right). }
+%     \label{fig:coral-island-procedural-height-only}
+% \end{figure}
 
-\begin{figure}
-    \autofitgraphics[]{profileFunction.pdf, schema_profile.jpg}
-    \caption[Our profile function inspired by the typical cross-section representation of islands' reefs]{(Left) A profile function $\heightProfile$ is defined as a 1D function and represents the surface from the centre of the island to the abysses. (Right) The cross-section representation of an island is often represented as a 1D function defined using terrain features as landmarks.}
-    \label{fig:coral-island-profile-function}
-\end{figure}
+% \begin{figure}
+%     \autofitgraphics[]{profileFunction.pdf, schema_profile.jpg}
+%     \caption[Our profile function inspired by the typical cross-section representation of islands' reefs]{(Left) A profile function $\heightProfile$ is defined as a 1D function and represents the surface from the centre of the island to the abysses. (Right) The cross-section representation of an island is often represented as a 1D function defined using terrain features as landmarks.}
+%     \label{fig:coral-island-profile-function}
+% \end{figure}
 
 The profile-view sketch defines the vertical elevation profile of the island along any radial direction, offering control over the island's height. In this view, the user specifies the elevation of different regions of the island, such as the island peak, beach, lagoon, abyss, and everything in between, by drawing the corresponding profile curve (\cref{fig:coral-island-profile-function}).
 
@@ -207,7 +207,7 @@ The deformation vector previously described is then scaled by the resistance fun
     \Tilde{\warp}(\p) = \left(1 - \resistance(\distRegions_\p) \right) \cdot \warp(\p).
 \end{align}
 
-\begin{algorithm}[H]
+\begin{algorithm}
     \caption{Sketches to height field with wind deformation.}
     \label{alg:sketch-to-height-wind}
     \DontPrintSemicolon
@@ -388,7 +388,7 @@ Here, $a = \heightSubsid(\p)$ is the height from the subsided island, $b = \heig
 This smooth max function guarantees continuity by preventing abrupt height and slope differences between coral regions and the subsided terrain, creating a smooth, gradual transition that mimics the natural blending of coral reefs with deeper areas. The coral feature height field takes precedence where coral can grow, typically in shallow regions. In deeper regions, such as the abyss, the subsided height field naturally dominates, ensuring that the final terrain accurately reflects both subsidence and coral growth processes (\cref{fig:coral-island-volcano-example}).
 
 
-\begin{algorithm}[H]
+\begin{algorithm}
     \caption{Subsidence, coral growth, and smooth blending.}
     \label{alg:subsidence-coral-blend}
     \DontPrintSemicolon
