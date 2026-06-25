@@ -64,48 +64,43 @@ This configuration enables rapid generation of large quantity of samples, with m
 To enhance the variety of the dataset and improve the model's ability to generalise, we apply several data augmentation techniques in addition to the usual affine transformations (rotation, scaling, and flipping):
 
 \begin{Itemize}
-    \AltTextImage{
-        \Item{} \textbf{Translation:} Since the original algorithm always centres the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island-cGAN-examples}). This ensures that the cGAN can generate islands in any position within the frame. By wrapping the island on the borders (see example \cref{fig:coral-island-data-augmentation-translation}), the model learns that data can appear on the edges of the image.}
-    {translation_example.png}{As we translate, we wrap the height field and the label map, reducing border artefacts appearing when datasets rarely contain content on edges.}{fig:coral-island-data-augmentation-translation}{Example of translation on a training sample}
-
-    \AltTextImage{
-        \Item{} \textbf{Copy-paste:} In some cases, we combine multiple islands into a single sample (\cref{fig:coral-island-data-augmentation-copy-paste}), with only a maximum intersection over union (IoU) of 10\%, allowing the abysses to overlap but without obtaining other region types to merge. Height fields are blend using the smooth maximum function from \cref{eq:coral-island-smoothmax-function}, and label blending uses the usual $\max$ operator. Regions not covered by any island are assigned the abyss ID, which correspond to the minimal height. In this case specifically, the subsidence factor (Value channel) is close to irrelevant (\cref{fig:coral-island-cGAN-examples}, rightmost).}
-    {copy_paste_example.png}{We enforce the possibility to have multiple islands at once.}{fig:coral-island-data-augmentation-copy-paste}{Example of copy-paste on a training sample}
-
-
+    \Item{} \textbf{Translation:} Since the original algorithm always centres the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island-cGAN-examples}). This ensures that the cGAN can generate islands in any position within the frame. By wrapping the island on the borders, the model learns that data can appear on the edges of the image.
+    
+    \Item{} \textbf{Copy-paste:} In some cases, we combine multiple islands into a single sample with only a maximum intersection over union (IoU) of 10\%, allowing the abysses to overlap but without obtaining other region types to merge. Height fields are blend using the smooth maximum function from \cref{eq:coral-island-smoothmax-function}, and label blending uses the usual $\max$ operator. Regions not covered by any island are assigned the abyss ID, which correspond to the minimal height. In this case specifically, the subsidence factor (Value channel) is close to irrelevant (\cref{fig:coral-island-cGAN-examples}, rightmost).
 \end{Itemize}
 
-All augmentation techniques are simultaneously applied to both the height field and the label map ensuring consistency between input (the label map) and output (the height field). We summarise the complete dataset generation in \cref{alg:dataset-generation}.
+All augmentation techniques are simultaneously applied to both the height field and the label map ensuring consistency between input (the label map) and output (the height field). 
+% We summarise the complete dataset generation in \cref{alg:dataset-generation}.
 
 
-\begin{algorithm}
-    \caption{Procedural dataset generation.}
-    \label{alg:dataset-generation}
-    \DontPrintSemicolon
-    \KwIn{Base outline radii $\radius^*$, profile $\heightProfile^*$, resistance $\resistance^*$, noise $\noise$, stroke generator, subsidence grid $\{\subsidRate\}$}
-    \KwOut{Pairs $\{(\text{label map},\ \text{height field})\}$}
+% \begin{algorithm}
+%     \caption{Procedural dataset generation.}
+%     \label{alg:dataset-generation}
+%     \DontPrintSemicolon
+%     \KwIn{Base outline radii $\radius^*$, profile $\heightProfile^*$, resistance $\resistance^*$, noise $\noise$, stroke generator, subsidence grid $\{\subsidRate\}$}
+%     \KwOut{Pairs $\{(\text{label map},\ \text{height field})\}$}
 
-    \BlankLine
-    \tcp{(1) Randomise sketches}
-    \ForEach{outline}{
-    $\radius(\angl) \gets \radius^* + \noise(\angl)$
-    }
-    $\heightProfile(\distRegions_\p) \gets \heightProfile^*(\distRegions_\p)\cdot \noise(\distRegions_\p)$\;
-    $\resistance(\distRegions_\p) \gets \resistance^*(\distRegions_\p)\cdot \noise(\distRegions_\p)$\;
+%     \BlankLine
+%     \tcp{(1) Randomise sketches}
+%     \ForEach{outline}{
+%     $\radius(\angl) \gets \radius^* + \noise(\angl)$
+%     }
+%     $\heightProfile(\distRegions_\p) \gets \heightProfile^*(\distRegions_\p)\cdot \noise(\distRegions_\p)$\;
+%     $\resistance(\distRegions_\p) \gets \resistance^*(\distRegions_\p)\cdot \noise(\distRegions_\p)$\;
 
-    \tcp{(2) Random strokes}
-    Generate $n$ strokes $\{\curve\}$ by uniformly sampling $m$ control points each; sample $\std$ and $S_\curve$ per stroke\;
+%     \tcp{(2) Random strokes}
+%     Generate $n$ strokes $\{\curve\}$ by uniformly sampling $m$ control points each; sample $\std$ and $S_\curve$ per stroke\;
 
-    \tcp{(3) Synthesis over subsidence levels}
-    \ForEach{$\subsidRate \in [0,1]$}{
-    Build $h$ and $I$ via \cref{alg:sketch-to-height-wind} and apply \cref{alg:subsidence-coral-blend} to get $\hat{h}$\;
-    label map $\gets$ HSV image with $I$ in the Hue channel and $\subsidRate$ in the Value channel\;
-    Store pair $(\text{label map},\, \hat{h})$\;
-    }
+%     \tcp{(3) Synthesis over subsidence levels}
+%     \ForEach{$\subsidRate \in [0,1]$}{
+%     Build $h$ and $I$ via \cref{alg:sketch-to-height-wind} and apply \cref{alg:subsidence-coral-blend} to get $\hat{h}$\;
+%     label map $\gets$ HSV image with $I$ in the Hue channel and $\subsidRate$ in the Value channel\;
+%     Store pair $(\text{label map},\, \hat{h})$\;
+%     }
 
-    \tcp{(4) Augmentation}
-    Apply translations with wrapping, rotations, scalings, flips to both label map and height field consistently\;
-    Copy-paste multiple islands with IoU$\le 0.1$; blend heights with $\smoothmax$ and labels with $\max$; and assign abyss ID for uncovered regions\;
+%     \tcp{(4) Augmentation}
+%     Apply translations with wrapping, rotations, scalings, flips to both label map and height field consistently\;
+%     Copy-paste multiple islands with IoU$\le 0.1$; blend heights with $\smoothmax$ and labels with $\max$; and assign abyss ID for uncovered regions\;
 
-    \Return dataset
-\end{algorithm}
+%     \Return dataset
+% \end{algorithm}

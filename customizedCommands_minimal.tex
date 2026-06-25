@@ -138,10 +138,10 @@
 
 % \teaser{/* Inside commands of the figure* environment */}
 \zzcommand{\teaser}[1]{
-  \begin{figure}[ht]
+  \begin{figure*}[ht]
     \centering
         #1
-    \end{figure}
+    \end{figure*}
 }
 
 % \minitoc
@@ -465,7 +465,7 @@
 }
 % \AltTextImageTop{item_content}{placeholder.pdf}{caption}{label}{alt_caption}
 \zzcommand{\AltTextImageTop}[5] {
-  \begin{figure}[H]
+  \begin{figure}%[H]
     \autofitgraphics[]{#2}
     \caption[#5]{#3}
     \label{#4}
@@ -475,7 +475,7 @@
 % \AltTextImageBottom{item_content}{placeholder.pdf}{caption}{label}{alt_caption}
 \zzcommand{\AltTextImageBottom}[5] {
   #1
-  \begin{figure}[H]
+  \begin{figure}%[H]
     \autofitgraphics[]{#2}
     \caption[#5]{#3}
     \label{#4}
