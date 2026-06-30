@@ -28,3 +28,16 @@ Once trained, the cGAN model generates a height field from a given label map. Th
 
 % The training of the model can be done in the other direction, from height field to label map. \
 % If we wish to extract its content into \glosses{EnvObj}, we can use the label map, skeletonise each class blob through medial axes, then attribute to each resulting polyline a class, that we will call, in the next chapter, \glosses{EnvObj}.
+
+\paragraph{Other deep learning architectures}
+We note that the the pix2pix original paper is more than a decade old, thus a comparison with modern models is necessary. However, the interactive condition (results in less than one second) eliminates most modern models. Secondly, the pix2pix model VRAM footprint is light ($<$4GB during training), while most models exceeds the capacity of low-end PCs (e.g.: pix2pixHD for $512\times512$ images is not usable on 4GB GPUs). Finally, we require the model to be flexible on the user inputs, meaning that the label map colors at any pixel may not exactly match a semantic map (see \cref{fig:coral-island-results-fuzzy}). For this last reason, models such as GauGAN requiring strict semantic inputs are unfit.
+
+For illustration purpose, we proposed a simple prompt to three diffusion models inside the authors proposed interactive tools: OpenAI (GPT 5.5), Anthropic (Mistral Medium 3.5), and Flux2 (using the HuggingFace interface). We did not work on the prompt writting, it is possible that better results could be achieved with more work into it. Inference times using the proprietarian servers exceed greatly the interactive time limit ($>$6s for Flux2, $>$30s for Mistral Medium 3.5, and $>$45s for GPT 5.5). Results are shown in \cref{fig:training-llm-models}. 
+
+\begin{figure}
+    \autofitgraphics[]{LLM-to-terrain-trainings/input1.png, LLM-to-terrain-trainings/chatGPT/chatgpt-output1.png, LLM-to-terrain-trainings/mistral/mistral-output1.png, LLM-to-terrain-trainings/flux2/flux2-save2-output.png}
+    \autofitgraphics[]{LLM-to-terrain-trainings/input2.png, LLM-to-terrain-trainings/chatGPT/chatgpt-output2.png, LLM-to-terrain-trainings/mistral/mistral-output2.png, LLM-to-terrain-trainings/flux2/flux2-save1-output.png}
+    \autofitcaptions[]{Original input, GPT, Mistral, Flux2}
+    \caption{Results of GPT5.5, Mistral, and Flux2. Prompt: "Transform the segmented image of this island into a grayscale heightmap of the island. Red is open ocean, dark blue is coral reef, light blue is lagoon, green is beach and yellow is the island center. The darkness of the image represents the age of the island, meaning that darker images creates more eroded and subsided islands compared to light images. The image must not be shaded. Each pixel of the output represent the height of the terrain."}
+    \label{fig:training-llm-models}
+\end{figure}
