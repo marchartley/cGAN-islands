@@ -12,14 +12,14 @@ Each region's boundary is represented in polar coordinates $\left(\radius_\p, \a
 
 In this sketch, the user defines the overall horizontal layout of the island, including the size and shape of each feature. Variations in the outline are introduced by allowing the radial distances to vary with angle, ensuring that the island is not strictly symmetrical and introducing more natural, irregular shapes.
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \autofitgraphics[]{binary-heights-input-only-outlines-2.png, binary-heights-output-only-heightmap-2.png, binary-heights-render-2.png}
 %     \autofitcaptions{Input sketch, Output height field, Result}
 %     \caption[Curve-based island generation using only outlines]{Using only the outlines of the island as an input sketch (left), we provide a height field depending on the region in which it relies (middle). The resulting terrain is displayed (right). }
 %     \label{fig:coral-island-procedural-height-only}
 % \end{figure}
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \autofitgraphics[]{profileFunction.pdf, schema_profile.jpg}
 %     \caption[Our profile function inspired by the typical cross-section representation of islands' reefs]{(Left) A profile function $\heightProfile$ is defined as a 1D function and represents the surface from the centre of the island to the abysses. (Right) The cross-section representation of an island is often represented as a 1D function defined using terrain features as landmarks.}
 %     \label{fig:coral-island-profile-function}
@@ -62,7 +62,7 @@ By combining the top-view and profile-view sketches, our method generates a cohe
 
 The result is a height field that captures both the radial structure of the island (from the top-view sketch) and the vertical elevation profile (from the profile-view sketch), producing an organic representation of islands with smooth transitions between the key terrain features. Three slightly edited height functions on an identical island layout and their associated outputs are presented in \cref{fig:coral-island-procedural-smooth-heights}. To avoid perfectly smooth surfaces, we also apply a very low-amplitude Perlin noise perturbation to the final height field, adding fine-scale irregularities.
 
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{smooth-input-outline-heights-1.png, smooth-output-heights-1.png, smooth-render-1.png}
     \autofitgraphics[]{smooth-input-outline-heights-2.png, smooth-output-heights-2.png, smooth-render-2.png}
     \autofitgraphics[]{smooth-input-outline-heights-3.png, smooth-output-heights-3.png, smooth-render-3.png}
@@ -91,7 +91,7 @@ The wind field is represented as a series of strokes drawn by the user on a 2D c
 % Once the strokes are applied to the velocity field, we displace each points of the terrain accordingly. The height field, originally generated from the user's sketches, is modified by the wind field to create non-radial features, breaking the initial radial symmetry and producing a more organic island shape (\cref{fig:coral-island-wind-stroke-edition}).
 
 
-% \begin{figure} 
+% \begin{figure}[tb] 
 %     \autofitgraphics[]{
 %         1i-init-top-view.pdf, 
 %         1i-init-side-view.pdf, 
@@ -164,7 +164,7 @@ The wind field is represented as a series of strokes drawn by the user on a 2D c
 %     G_\std(x) &= \frac{1}{\std \sqrt{2\pi}} e^{-\frac{x^2}{2 \std^2}}. \nonumber
 % \end{align}
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \includegraphics[width = 0.8 \linewidth]{windByStrokes.pdf}
 %     \caption[Computation of a vector field from a single user wind stroke]{From the parametric curve defined by a user (red), we define the velocity field by considering the directional derivative $\curve'$ of the curve $\curve$ at the closest point $\closestCp$, modulated by a Gaussian distance function $G_{\std}(x)$ and scaled by the user-defined strength $S_\curve$.}
 %     \label{fig:coral-island-wind-from-strokes}
@@ -178,7 +178,7 @@ The final deformation vector $\warp(\p)$ is computed as a sum of the influences 
 
 This process introduces variations in the terrain, distorting the coastline, creating concave regions, and breaking the original radial symmetry defined by the top-view and profile-view sketches.
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \includegraphics[width=0.45 \linewidth]{resistanceFunction.pdf}
 %     \caption[Resistance function]{The resistance function of the island is defined with a similar strategy as the $\heightProfile$ function. The resistance to erosion and deformation arises from multiple factors such as depth, materials, wind shadowing, biotic and abiotic factors, ... Modelling all these factors is complex. As such, using a user-defined approximation through a resistance function $\resistance$ allows for more control.}
 %     \label{fig:coral-island-resistance-function}
@@ -244,7 +244,7 @@ We then compute the final height
 
 
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \autofitgraphics[]{result_low_resistance.png, result_high_resistance.png}
 %     \autofitcaptions[]{Low resistance on reefs, High resistance on reefs}
 %     \caption[An island deformed with and without resistance]{(Left) Given a uniform velocity field and a resistance function similar to \cref{fig:coral-island-resistance-function}, the coasts are smoothly eroded while the interior of the island is almost unaffected. (Right) Modifying the resistance function to affect a strong resistance to borders emulates the effect of coast reinforcements.}
@@ -257,7 +257,7 @@ We then compute the final height
 
 % In \cref{fig:coral-island-wind-stroke-edition}, a simple circular island is generated from the initial height field. By applying strokes along one side of the island, the deformation process can create concave regions along the coastline, making the shape more irregular and mimicking the effects of real-world wind and wave erosion. The resistance function ensures that while the beach and lagoon areas are deformed, the abyss remains largely unaffected as they are far from the wind and wave effective areas, preserving the island's overall structure.
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \setfitratios{1,1,1,1}
 %     \autofitcaptions[]{Top-view, Side-view, Deformation field, Resistance}
 %     \autofitgraphics[]{wind-deform-input-crop.png}
@@ -296,7 +296,7 @@ To account for the island subsidence due to tectonic activity we propose to scal
 % \subsubsection{Coral reef growth}
 % \label{sec:coral-island-reef-growth}
 
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{Reef_function_1.png, Reef_function_2.png, Reef_function_3.png}
     \caption[Coral reef growth from analytical model]{The modelling of the reef growth in our model is described by a piecewise function $\heightCoral$ which is flat in the lagoon, the crest and abyss, and follows a smoothstep function as transitions for the back reef and fore reef regions. The model is easily edited by tuning the height values and delimitations of the subregions. Here, three examples of reef growth function with different delimitations (vertical dotted lines), providing more or less smooth transitions between reef subregions.}
     \label{fig:coral-island-reef-function}
@@ -346,7 +346,7 @@ We model transition zones between these regions using a smoothstep operator \cit
 % \subsubsection{Blending height fields}
 % \label{subsubsec:height-functions-blending}
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \includegraphics[width=.45\linewidth]{smoothmax_min-max_k-5_large.png}
 %     \includegraphics[width=.45\linewidth]{smoothmax_min-max_k-50_large.png} \\
 %     \includegraphics[width=.45\linewidth]{smoothmax_min-max_k-5_short.png}
@@ -357,7 +357,7 @@ We model transition zones between these regions using a smoothstep operator \cit
 %     \label{fig:coral-island-blend-function-island-with-upper}
 % \end{figure}
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \autofitgraphics[]{smoothmax_all-k_large.png, smoothmax_all-k_short.png}
 %     \caption[Effect of $k$ on the $\smoothmax$ operator]{Blending two functions $f: \R \to \R$ (black, dotted) and $g: \R \to \R$ (blue, dotted) with the $\max$ operator (red curve), causing discontinuities when $f(x)=g(x)$, and with the $\smoothmax$ operator (green curves) with various sharpness values $k$, resolving the issue at the cost of slight overestimations with low values of $k$. Right presents a zoom on the domain $x \in [0.5, 1.3]$. }
 %     \label{fig:coral-island-blend-function-island}
@@ -408,7 +408,7 @@ Here, $a = \heightSubsid(\p)$ is the height from the subsided island, $b = \heig
 % \subsubsection{Output}
 % \label{sec:coral-island-procedural-output}
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \autofitgraphics[]{volcano-input.png, volcano-render.png}
 %     \autofitgraphics[]{volcano-heightmap.png, volcano-corals.png, volcano-output.png}
 %     \autofitcaptions{Initial height field, Reef only, Blended height field}

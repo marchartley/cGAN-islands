@@ -5,14 +5,14 @@ All terrains presented in this work are defined in normalized coordinates $(x, y
 
 The resulting model for coral reef island generation enables a high level of user control as unconstrained painting allows complex scenarios while producing height fields in real-time. In this paper we used Blender to provide renders directly from the output height fields. As our pix2pix model is trained to output $256\times256$ images, the resolution of the 3D models is limited by this architecture.
 
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{3_features.png, 3_heightmaps.png, 3_results.png}
     \autofitgraphics[]{4_features.png, 4_heightmaps.png, 4_results.png}
     \autofitcaptions{Input sketches, Output height field, Result}
     \caption[Output of the cGAN on fuzzy inputs]{User applied fuzzy brushes to draw the label map, resulting in some pixels that are inconsistent with the dataset and illogical island layouts: abyss regions (red) are found between beach (green), lagoon (cyan) and reef regions (blue). The neural model ignores the layout inconsistencies, and partial over-brightness as long as the pixel is not completely white.}
     \label{fig:coral-island-results-fuzzy}
 \end{figure}
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{DinoIsland_features.png, DinoIsland_heightmaps.png, DinoIsland_results.png}
     \autofitcaptions{Input sketches, Output height field, Result}
     \caption[Output of the cGAN with new colors in the input]{Without constraints on the generation, the user may use unrealistic layout and the neural network will however output a plausible result. Here new colours have been added (pistachio), but the network naturally considers it as a transition from mountain to beach.}
@@ -31,7 +31,7 @@ Because our curve-based procedural phase included low randomness, the output of 
 
 \cref{fig:coral-island-results-volcanic-training} (bottom) presents results of a second cGAN training for which the procedural parameters used for the generation of the training dataset "volcanic" are slightly adjusted for lower overall resistance and to have a crater in the center of islands (\cref{fig:coral-island-results-volcanic-training}, top). The $\heightProfile$ function include a hole at the center of the island to emulate a volcaninc crater, which we can see strongly in the first and last examples, and more slightly in the second example; the resistance function $\resistance$ is lowered on the reefs, creating visible dents in the reef and dendritic patterns on the island sides.
 
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{Mayotte-example.png, 5_features.png, 5_results.png}
     \caption[Comparison of  the cGAN output with Mayotte Island]{Comparison between real (left, from Google Earth) and synthetic (right) islands of Mayotte. The label map (centre) is hand-drawn to match approximately its real-world counterpart.}
     \label{fig:coral-island-example-Mayotte}

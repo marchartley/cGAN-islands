@@ -22,7 +22,7 @@ Next, we generate a random deformation field. We do not target realism in stroke
 
 Finally, to further enrich the dataset with erosion-like structures, we add a set of radial strokes of small width and low strength, extending between the island centre and the exterior of the canvas, oriented alternately landward and seaward. This produces simple radial drainage patterns illustrated in \cref{fig:coral-island-radial-pattern-example}, available by the radial definition of our islands contours.
 
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{circular-without-radial-erosion.png, circular-without-radial-erosion-render-wireframe.png, circular-with-radial-erosion.png, circular-with-radial-erosion-render-wireframe.png}
     \autofitcaptions[]{Height field, Unshaded, Height field, Unshaded}
     \autofitgraphics[]{circular-without-radial-erosion-render.png, circular-with-radial-erosion-render.png}
@@ -33,7 +33,7 @@ Finally, to further enrich the dataset with erosion-like structures, we add a se
 
 Once all inputs are set, we generate an example for multiple levels of subsidence $\subsidRate \in [0, 1]$ producing height fields that incorporate coral reef modelling along with its associated label map.
 
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{2_features.png, 2_heightmaps.png, 2_results.png}
     \autofitgraphics[]{1_features.png, 1_heightmaps.png, 1_results.png}
     \autofitcaptions{Input sketches, Output height field, Result}
@@ -47,7 +47,7 @@ For the purpose of training the pix2pix model with HSV images as input, we use t
 
 Moreover, we purposefully left the Saturation component unchanged at this stage, reserving space for potentially including another parameter in the future, which would allow us to expand the model's utility without altering the foundational HSV encoding scheme established during its initial training. By adhering to this encoding format, we ensure continuity in data representation, which maximises the efficiency of the pretrained model. This strategic update enhances the model's adaptability and broadens its applicability to tackle new, complex challenges more effectively.
 
-\begin{figure}
+\begin{figure}[tb]
     \autofitgraphics[]{6_features.png, 6_heightmaps.png, 6_results.png}
     \autofitcaptions{Input sketch, Output height field, Result}
     \caption[A sample of the dataset with multiple transformations]{A sample of the dataset with the input and output of the island copied and scaled at multiple positions of the image, creating three different islands in a single image.}

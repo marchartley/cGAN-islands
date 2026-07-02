@@ -27,7 +27,7 @@
 % \subsubsection*{User interaction}
 % \label{sec:coral-island-description-UI}
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \includegraphics[width = 0.9 \linewidth]{user_interaction_generation.png}
 %     \caption{The user can interact directly on the island by editing the different canvases in no specific order. This UI shows, from left to right, the top-view sketch with the different outlines of each regions, the profile-view sketch with the outlines represented in dotted lines, the wind velocity sketch drawn with strokes (last stroke is visible), and the resistance function showing here a high resistance at the top of the island and on the front reef.}
 %     \label{fig:coral-island-wind-from-strokes-interaction}
@@ -68,7 +68,7 @@ Second, we propose a learning-based generation algorithm (right red blocks \cref
 
 We connect these two algorithms through a process of dataset generation (central orange block \cref{fig:coral-island-pipeline}, described in \cref{sec:coral-island-dataset-generation}) in order to enforce the benefits of each while reducing their limitations. Given the initial curve-based user inputs, we create a dataset composed of similar samples processed by our first algorithm, rasterised into a 2D image of the parametrised regions, and paired with the resulting height field. We then significantly augment the dataset by employing various data augmentation techniques: translations, scaling, and copy-pasting of multiple islands in a single sample. We then obtain a dataset large enough for training our cGAN and enable users to procedurally create coral reef islands with a high level of control.
 
-\begin{figure}
+\begin{figure}[tb]
     \includegraphics[width = 0.9 \linewidth]{user_interaction_generation.png}
     \caption[User interface in the curve-based island generation method]{The user interacts directly on the island by editing the different canvases in any order. This UI shows, from left to right: the top-view sketch with the different outlines of each region, the profile-view sketch with the outlines represented by dotted lines, the wind velocity sketch drawn with strokes (last stroke is visible), and the resistance function showing here a high resistance at the top of the island and on the front reef.}
     \label{fig:coral-island-wind-from-strokes-interaction}

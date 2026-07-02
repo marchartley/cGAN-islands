@@ -102,7 +102,7 @@ In summary, previous methods either offer control with limited realism (procedur
 
 % \subsubsection{Noise-based terrain generation}
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \includegraphics[width = \linewidth]{noise_examples3.pdf}
 %     \caption[Islands generation using fBm noise and falloff masks]{Three different results of an island generated from noise functions. In each case, the initial height field is identical, computed using flow noise. The falloff masks are created by combining fBm noise, modulated by the Euclidean distance from the image centre, and further shaped through domain warping and power-law remapping of the mask values. The only parameter modified between the three examples is the exponent used in this remapping. The resulting islands differ significantly in shape and scale, and the method offers limited control over specific coastal features such as lagoons and reefs.}
 %     \label{fig:coral-island-noise-example}
@@ -241,7 +241,7 @@ In summary, previous methods either offer control with limited realism (procedur
 % \subsection{Deep learning}
 % \label{sec:coral-island-sota-deep-learning}
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \includegraphics{schemaGAN_cGAN.jpg}
 %     \caption[GAN and cGAN architectures]{The general structure of GAN and cGAN networks is similar: (a) a generator network $G$ is trained to take some noise $z$ as input to try to create a "realistic" output $X_{\text{fake}}$, and a discriminator network $D$ is trained in parallel to distinguish generated data from real data. (b) cGAN networks introduce a class input $c$, used by both the generator and discriminator in their inference process. In the end, only the generator is used to create new data.}
 %     \label{fig:coral-island-GAN-scheme}
@@ -280,7 +280,7 @@ In summary, previous methods either offer control with limited realism (procedur
 
 % While traditional GANs generate data from noise, cGANs extend this concept by incorporating additional information, often called a class map or label map, to guide generation toward user-specified outcomes \cite{Mirza2014} (the $c$ class in \cref{fig:coral-island-GAN-scheme}). This makes them particularly attractive for structured content synthesis tasks, including terrain generation, where user input often defines large-scale layout and realism must emerge from learned detail. The pix2pix framework \cite{Isola2017} is the canonical cGAN formulation for image-to-image translation. It uses a U-Net generator conditioned on an input image (a sketch or a label map, for example), and a PatchGAN discriminator that evaluates realism at the patch level, thus encouraging fine detail and local consistency (\cref{fig:coral-island-pix2pix-example} presents two image-to-image translations from the same pix2pix network architecture).
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \includegraphics[width = 0.8 \linewidth]{example_pix2pix_facade.png}
 %     \includegraphics[width = 0.8 \linewidth]{example_pix2pix_maps.png}
 %     \caption[Examples of pix2pix use cases]{Example of pix2pix image-to-image translation: (top) a trained model converts semantic label maps into realistic façade images, and (bottom) constructs highly plausible aerial images from navigation map sketches. This paradigm generalises to many tasks, including terrain generation.}
@@ -309,7 +309,7 @@ In summary, previous methods either offer control with limited realism (procedur
 % \end{Itemize}
 
 
-% \begin{figure}
+% \begin{figure}[tb]
 %     \autofitgraphics[]{examples-going-more-complex.pdf}
 %     \caption[Examples of procedural region maps used for training a cGAN]{Examples of procedural region maps used for training: left to right, canonical island, off-centre island, elongated shapes, and multi-island scenes. These maps serve as semantic inputs to our cGAN.}
 %     \label{fig:coral-island-difficulties-dataset}
