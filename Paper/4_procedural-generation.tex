@@ -178,13 +178,13 @@ The final deformation vector $\warp(\p)$ is computed as a sum of the influences 
 
 This process introduces variations in the terrain, distorting the coastline, creating concave regions, and breaking the original radial symmetry defined by the top-view and profile-view sketches.
 
-\begin{figure}
-    \includegraphics[width=0.45 \linewidth]{resistanceFunction.pdf}
-    \caption[Resistance function]{The resistance function of the island is defined with a similar strategy as the $\heightProfile$ function. The resistance to erosion and deformation arises from multiple factors such as depth, materials, wind shadowing, biotic and abiotic factors, ... Modelling all these factors is complex. As such, using a user-defined approximation through a resistance function $\resistance$ allows for more control.}
-    \label{fig:coral-island-resistance-function}
-\end{figure}
+% \begin{figure}
+%     \includegraphics[width=0.45 \linewidth]{resistanceFunction.pdf}
+%     \caption[Resistance function]{The resistance function of the island is defined with a similar strategy as the $\heightProfile$ function. The resistance to erosion and deformation arises from multiple factors such as depth, materials, wind shadowing, biotic and abiotic factors, ... Modelling all these factors is complex. As such, using a user-defined approximation through a resistance function $\resistance$ allows for more control.}
+%     \label{fig:coral-island-resistance-function}
+% \end{figure}
 
-To ensure that certain regions of the terrain such as deep-water areas remain relatively unaffected by the wind, a resistance function $\resistance(\distRegions_\p)$ is applied. The resistance function modulates the effect of deformation based on the previously computed piecewise parametric distance $\distRegions_\p$, with the same interaction means as the $\heightProfile$ function (\cref{fig:coral-island-resistance-function}).
+To ensure that certain regions of the terrain such as deep-water areas remain relatively unaffected by the wind, a resistance function $\resistance(\distRegions_\p)$ is applied. The resistance function modulates the effect of deformation based on the previously computed piecewise parametric distance $\distRegions_\p$, with the same interaction means as the $\heightProfile$ function. % (\cref{fig:coral-island-resistance-function}).
 
 % We define the resistance function $\resistance(\distRegions_\p)$ similarly to the profile function, and use it to modulate the magnitude of the displacement at each point. 
 % For example, regions near the coastline (such as the beach and lagoon) have lower resistance, allowing for significant deformation (emulating coastal erosion from wave energy), while regions farther away (such as the abyss) have higher resistance, limiting the wind and coastal erosion impact.
@@ -318,7 +318,7 @@ For instance:
     \Item{} Abyss begins at $x_{\text{abyss,start}} = 1$.
 \end{Itemize}
 
-We model transition zones between these regions using a smoothstep operator \cite{Perlin2002} $\smooth(x) = 3x^2 - 2x^3$.
+We model transition zones between these regions using a smoothstep operator \cite{Perlin2002}. % $\smooth(x) = 3x^2 - 2x^3$.
 
 % For conciseness, denote the interpolating function as:
 % \begin{align*}
@@ -363,17 +363,15 @@ We model transition zones between these regions using a smoothstep operator \cit
 %     \label{fig:coral-island-blend-function-island}
 % \end{figure}
 
-The final step is to blend the subsided height field $\heightSubsid(\p)$ with the coral feature height field $\heightCoral(\p)$ to produce the final terrain. The goal is to ensure that coral features remain near the water surface while allowing the rest of the island to subside.
-
-To achieve this, we use a smooth maximum function defined as the mean of an overestimation and an underestimation of the $\max$ operator: 
+The final step is to blend the subsided height field $\heightSubsid(\p)$ with the coral feature height field $\heightCoral(\p)$ to produce the final terrain. To achieve this, we use a smooth maximum function defined as : 
 \begin{align}
     \eqlabel{eq:coral-island-smoothmax-function}{Smoothmax function}
     \smoothmax(a, b) = \begin{dcases}
         a + \frac{1}{k} & \text{if } a = b, \\
-        a + \frac{b - a}{1 - e^{-k(b-a)}} & \text{otherwise,}
+        a + \frac{b - a}{1 - e^{k(a-b)}} & \text{otherwise,}
     \end{dcases}
 \end{align}
-which smoothly blends the two height fields, ensuring that the coral regions dominates where coral growth is present, while the subsided island terrain dominates in other regions. This blending method ensures that the transition between the coral and subsided regions is smooth and visually consistent.
+which smoothly blends the two height fields, ensuring that the coral regions dominates where coral growth is present, while the subsided island terrain dominates in other regions. This blending method ensures that transitions between the coral and subsided regions are smooth and visually consistent.
 
 % We define our smooth maximum function $\smoothmax(a, b) \in \R$ for $(a, b) \in \R^2$ as the mean of two functions, $\smoothmax^-$ and $\smoothmax^+$ (shown in \cref{fig:coral-island-blend-function-island-with-upper}), adapted from Inigo Quilez's smooth min function \cite{Quilez2013}, that respectively underestimate and overestimate the function $\max$:
 
@@ -418,7 +416,7 @@ Here, $a = \heightSubsid(\p)$ is the height from the subsided island, $b = \heig
 %     \label{fig:coral-island-volcano-example}
 % \end{figure}
 
-The resulting terrain represents a plausible coral reef island, where the volcanic island has subsided, and coral reefs have grown upward to keep pace with the water level. The smooth blending between the subsided terrain and the coral features ensures a natural transition between regions (island, lagoon, coral reefs, and abysses).
+The resulting terrain represents a plausible coral reef island, where the volcanic island has subsided, and coral reefs have grown upward to keep pace with the water level. %The smooth blending between the subsided terrain and the coral features ensures a natural transition between regions (island, lagoon, coral reefs, and abysses).
 
 One of the key strengths of this method is its flexibility, as the subsidence and coral reef growth processes are modelled independently, allowing for a wide range of configurations. Users can generate plausible island terrains with or without coral features, or apply the coral reef growth modelling to existing height fields from other sources. 
 % Note that each of the pseudo-code section proposed in \cref{alg:subsidence-coral-blend} can be replaced with surrogate methods if desired (e.g., realistic subsidence or coral reef simulations, or the use of another blending function).

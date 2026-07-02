@@ -3,26 +3,24 @@
 
 The creation of the dataset is done through the use of the procedural algorithm for which we alter the input parameters.
 
-For each generation, the top-view and profile-view sketches use the user-given layout. Each outline of the top-view sketch $\radius^*$ is modified by adding values of Perlin noise $\noise$, giving the final outlines:
+For each generation, the top-view and profile-view sketches use the user-given input. Each outline of the top-view sketch $\radius$ is modified by adding continuous noise $\noise$, giving the final outlines:
 \begin{align*}
-    \radius(\angl) = \radius^* + \noise_{\text{outlines}}(\angl).
+    \radius^*(\angl) = \radius(\angl) + \noise_{\text{outlines}}(\angl).
 \end{align*}
 
-On the other hand, we define an initial profile-view sketch by defining $\heightProfile^*(\distRegions_\p)$, the initial height function, for which fBm noise $\noise_{\text{height}}$ ($\abs{\noise_{\text{height}}} \leq 0.2$ in the examples) is applied to obtain
+On the other hand, we define a new initial profile-view sketch by defining $\heightProfile^*(\distRegions_\p)$, the initial height function on which fBm noise $\noise_{\text{height}}$ is applied to obtain
 \begin{align*}
-    \heightProfile(\distRegions_\p) = \heightProfile^*(\distRegions_\p) \cdot \noise_{\text{height}}(\distRegions_\p).
+    \heightProfile^*(\distRegions_\p) = \heightProfile(\distRegions_\p) \cdot \noise_{\text{height}}(\distRegions_\p).
 \end{align*}
 
 An identical process is done for the resistance function:
 \begin{align*}
-    \resistance(\distRegions_\p) = \resistance^*(\distRegions_\p) \cdot \noise_{\text{resistance}}(\distRegions_\p).
+    \resistance^*(\distRegions_\p) = \resistance(\distRegions_\p) \cdot \noise_{\text{resistance}}(\distRegions_\p).
 \end{align*}
 
-In the examples below, all terrains are defined in normalized coordinates $(x, y) \in [-1, 1]^2$ and $z \in [0, 1]$. Noise amplitudes used are bounded by $\abs{\noise_{\text{outlines}}} \leq 0.2$, $0.8 \leq \noise_{\text{height}} \leq 1.2$, $0.8 \leq \noise_{\text{resistance}} \leq 1.2$.
+Next, we generate a random deformation field. We do not target realism in stroke generation. Instead we generate a random number $n$ of strokes with random paths. Spread and intensity of each stroke is also randomised, providing complexity and variety in the results. Our random wind stroke paths are smooth, simplex noise-driven trajectories biased toward the island's center, ensuring that distortions remain mainly around the main landmass.
 
-Next, we generate a random deformation field. We do not target realism in stroke generation. Instead we generate a random number $n$ of strokes with random paths. Spread and intensity of each stroke is also randomised, providing complexity and variety in the results. The results presented in this chapter uses between 2 to 6 random wind strokes. Our random wind stroke paths are smooth, simplex noise-driven trajectories biased toward the island's center, ensuring that distortions remain mainly around the main landmass, with uniform sampling of spread $0.1 \leq \std \leq 0.3$ and strength $0.05 \leq S_\curve \leq 0.3$.
-
-Finally, to further enrich the dataset with erosion-like structures, we add a set of radial strokes of small width and low strength, extending between the island centre and the exterior of the canvas, oriented alternately landward and seaward. This produces simple radial drainage patterns illustrated in \cref{fig:coral-island-radial-pattern-example}.
+Finally, to further enrich the dataset with erosion-like structures, we add a set of radial strokes of small width and low strength, extending between the island centre and the exterior of the canvas, oriented alternately landward and seaward. This produces simple radial drainage patterns illustrated in \cref{fig:coral-island-radial-pattern-example}, available by the radial definition of our islands contours.
 
 \begin{figure}
     \autofitgraphics[]{circular-without-radial-erosion.png, circular-without-radial-erosion-render-wireframe.png, circular-with-radial-erosion.png, circular-with-radial-erosion-render-wireframe.png}
@@ -43,16 +41,11 @@ Once all inputs are set, we generate an example for multiple levels of subsidenc
     \label{fig:coral-island-results-subsidence}
 \end{figure}
 
-The pix2pix model was originally pretrained using RGB images. In this training phase, the images were labelled using the HSV (Hue, Saturation, Value) colour space, where the Hue component specifically carried the label information. Both the Saturation and Value components were kept neutral, meaning they did not convey any significant label-related data. The target images, the ones the model aimed to reproduce, were formatted in RGB.
+% The pix2pix model was originally pretrained using RGB images. In this training phase, the images were labelled using the HSV (Hue, Saturation, Value) colour space, where the Hue component specifically carried the label information. Both the Saturation and Value components were kept neutral, meaning they did not convey any significant label-related data. The target images, the ones the model aimed to reproduce, were formatted in RGB.
 
-For the purpose of fine-tuning the model, we continue to use the Hue component to encode the labels from the label map. We introduced a new dimension to the model's learning capabilities by incorporating the subsidence rate, denoted as $\subsidRate$, into the Value component. This addition not only utilises the model's existing capability to interpret the HSV format but also enriches the input data, which now carries additional, valuable environmental information.
+For the purpose of training the pix2pix model with HSV images as input, we use the Hue component to encode the labels from the label map. We introduced a new dimension to the model's learning capabilities by incorporating the subsidence rate, denoted as $\subsidRate$, into the Value component.
 
 Moreover, we purposefully left the Saturation component unchanged at this stage, reserving space for potentially including another parameter in the future, which would allow us to expand the model's utility without altering the foundational HSV encoding scheme established during its initial training. By adhering to this encoding format, we ensure continuity in data representation, which maximises the efficiency of the pretrained model. This strategic update enhances the model's adaptability and broadens its applicability to tackle new, complex challenges more effectively.
-
-This configuration enables rapid generation of large quantity of samples, with multiple parameters, of a single island centred in the image.
-
-\subsection{Data augmentation}
-\label{sec:coral-island-data-augmentation}
 
 \begin{figure}
     \autofitgraphics[]{6_features.png, 6_heightmaps.png, 6_results.png}
@@ -61,13 +54,11 @@ This configuration enables rapid generation of large quantity of samples, with m
     \label{fig:coral-island-cGAN-examples}
 \end{figure}
 
-To enhance the variety of the dataset and improve the model's ability to generalise, we apply several data augmentation techniques in addition to the usual affine transformations (rotation, scaling, and flipping):
+This configuration enables rapid generation of large quantity of samples, with multiple parameters, of a single island centred in the image. We enhance each sample with several data augmentation techniques in addition to the usual affine transformations (rotation, scaling, and flipping).
 
-\begin{Itemize}
-    \Item{} \textbf{Translation:} Since the original algorithm always centres the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island-cGAN-examples}). This ensures that the cGAN can generate islands in any position within the frame. By wrapping the island on the borders, the model learns that data can appear on the edges of the image.
-    
-    \Item{} \textbf{Copy-paste:} In some cases, we combine multiple islands into a single sample with only a maximum intersection over union (IoU) of 10\%, allowing the abysses to overlap but without obtaining other region types to merge. Height fields are blend using the smooth maximum function from \cref{eq:coral-island-smoothmax-function}, and label blending uses the usual $\max$ operator. Regions not covered by any island are assigned the abyss ID, which correspond to the minimal height. In this case specifically, the subsidence factor (Value channel) is close to irrelevant (\cref{fig:coral-island-cGAN-examples}, rightmost).
-\end{Itemize}
+\textit{Translation:} Since the original algorithm always centres the island, we translate the islands within the image to remove this constraint (\cref{fig:coral-island-cGAN-examples}). This ensures that the cGAN can generate islands in any position within the frame. By wrapping the island on the borders, the model learns that data can appear on the edges of the image.
+
+\textit{Copy-paste:} We combine multiple islands into a single sample with only a maximum intersection over union (IoU) of 10\%, allowing the abysses to overlap but without obtaining other region types to merge. Height fields are blend using the smooth maximum function from \cref{eq:coral-island-smoothmax-function}, and label blending uses the usual $\max$ operator. Regions not covered by any island are assigned the abyss ID, which correspond to the minimal height.
 
 All augmentation techniques are simultaneously applied to both the height field and the label map ensuring consistency between input (the label map) and output (the height field). 
 % We summarise the complete dataset generation in \cref{alg:dataset-generation}.

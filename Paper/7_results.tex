@@ -1,6 +1,8 @@
 \section{Results}
 \label{sec:coral-island-results}
 
+Allterrains presented in this work are defined in normalized coordinates $(x, y) \in [-1, 1]^2$ and $z \in [0, 1]$. Noise amplitudes used are bounded by $\abs{\noise_{\text{outlines}}} \leq 0.2$, $0.8 \leq \noise_{\text{height}} \leq 1.2$, $0.8 \leq \noise_{\text{resistance}} \leq 1.2$ with 2 to 6 random wind strokes (with uniform sampling of spread $0.1 \leq \std \leq 0.3$ and strength $0.05 \leq S_\curve \leq 0.3$).
+
 The resulting model for coral reef island generation enables a high level of user control as unconstrained painting allows complex scenarios while producing height fields in real-time. In this paper we used Blender to provide renders directly from the output height fields. As our pix2pix model is trained to output $256\times256$ images, the resolution of the 3D models is limited by this architecture.
 
 \begin{figure}
@@ -34,28 +36,3 @@ Because our curve-based procedural phase included low randomness, the output of 
     \caption[Comparison of  the cGAN output with Mayotte Island]{Comparison between real (left, from Google Earth) and synthetic (right) islands of Mayotte. The label map (centre) is hand-drawn to match approximately its real-world counterpart.}
     \label{fig:coral-island-example-Mayotte}
 \end{figure}
-
-
-
-
-\subsection{Advantages of the approach}
-\label{sec:coral-island-advantages}
-
-One of the main strengths of this approach is its ability to produce a wide variety of island terrains, even in the absence of real-world data. The procedural generation methods allow for high flexibility in designing both the shape and features of the island, while the use of cGAN enables further refinement and the generation of terrains not bound by the original constraints of the procedural model. By combining these two methods, we leverage the complementary advantages of both: the structured control of procedural techniques and the pattern-learning capabilities of deep learning.
-
-A key advantage of this approach is the preservation of semantic information throughout the generation process. The label map, which serves as the input to the cGAN, can also be used after terrain generation to provide a detailed semantic representation of the different regions of the island (island, beach, lagoon, coral reef, and island body). This label map can be useful to guide post-processing operations, such as applying different textures based on terrain features or adding other environmental elements, vegetation for instance. The preservation of semantic information provides a useful connection to the next stage of terrain manipulation, making the process more versatile and adaptable to different use cases.
-
-Furthermore, the use of an out-of-the-box cGAN model highlights the feasibility of employing existing neural network architectures with minimal modifications in the field of procedural generation. This is particularly important for domains where real-world data is scarce, such as coral reef islands, allowing synthetic data to be effectively used for training purposes.
-
-\subsection{Limitations}
-\label{sec:coral-island-limitations}
-
-While the cGAN model provides increased flexibility and variety in island generation, it does come with certain limitations:
-
-\begin{Itemize}
-    \Item{} \textbf{Data-driven dependence:} Just as any deep learning method, the quality of generated terrains strongly depends on the quality of the dataset. Unusual layouts or out-of-distribution inputs are not entirely interpretable by the models. Our dataset generation method lifts some restrictions, but some remain such as the required presence of all regions in the input map. This limitation reduces the true diversity of the generated terrains, as the cGAN cannot generate terrains that deviate too far from the examples in the training set.
-    % The quality of the generated terrain depends entirely on the quality of the training dataset. Since the dataset is synthetically generated, any limitations or biases in the initial dataset directly affect the cGAN's output. This dependence on data quality makes it crucial to design a well-augmented and varied dataset to ensure diverse and realistic outputs.
-    \Item{} \textbf{Biases from the synthetic dataset:} Since the cGAN model is trained entirely on a procedurally generated dataset, it inherits the biases present in the initial algorithm. For example, while the model breaks free from the radial symmetry constraint and centre positioning, it remains dependant on the structure and patterns of the synthetic data (e.g., our procedural drainage patterns, our reef analytic morphology, etc.). %This limitation reduces the true diversity of the generated terrains, as the cGAN cannot generate terrains that deviate too far from the examples in the training set.
-    The "realistic" aspect of the results thus depends on the generation methods used to create the dataset.
-    \Item{} \textbf{Lack of user control:} Another limitation of using cGAN in this context is the lack of real-time user control during terrain generation. While traditional procedural generation methods allow users to adjust parameters during the generation process, the cGAN model operation is abstracted from the user, providing no mechanism for direct interaction beyond the initial label map. This reduces the level of customisation available to the user.
-\end{Itemize}
